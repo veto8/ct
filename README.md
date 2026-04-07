@@ -1,4 +1,5 @@
-# [![CT - CryptText](pages/public/img/ct.png "CryptText")](pages/public/img/ct.png)
+# <img src="pages/public/img/ct.png" width="100" height="100"> CryptText
+
 
 Basic Text editor to encrypt fast and easy text for Linux, Windows and Mac.
 It used the Galois/Counter Mode (GCM), an AEAD mode of operation for symmetric-key cryptographic. It's extremely secure and simple to use. Furthermore, it comes with a GUI less app ct_nox, so you can use it for your other programs.
