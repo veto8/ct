@@ -1,4 +1,4 @@
-# CT - CryptText
+#  ![CT - CryptText](pages/public/img/ct.png) CT - CryptText
 Basic Text editor to encrypt fast and easy text for Linux, Windows and Mac.
 It used the Galois/Counter Mode (GCM), an AEAD mode of operation for symmetric-key cryptographic. It's extremely secure and simple to use. Furthermore, it comes with a GUI less app ct_nox, so you can use it for your other programs.
 
@@ -45,4 +45,10 @@ rustup target add x86_64-apple-darwin
 ### Build to Mac
 ```Bash
 PATH="$(pwd)/osxcross/target/bin:$PATH" cargo build --target x86_64-apple-darwin
+```
+
+
+### Extra Repro
+```
+  git remote add codeberg ssh://git@codeberg.org/veto/ct
 ```
