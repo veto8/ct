@@ -2,8 +2,8 @@
 name = "ct_nox"
 version = "0.1.0"
 authors = ["veto"]
-edition = "2021"
-rust-version = "1.80"
+edition = "2024"
+rust-version = "1.94.1"
 [dependencies]
 clap = {version='*', features = ["cargo"]}
 hex = "*"

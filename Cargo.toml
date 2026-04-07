@@ -2,8 +2,8 @@
 name = "ct"
 version = "0.1.0"
 authors = ["veto"]
-edition = "2021"
-rust-version = "1.80"
+edition = "2024"
+rust-version = "1.94.1 "
 
 
 [dependencies]
@@ -11,7 +11,7 @@ ct_nox = { path = "./ct_nox"}
 
 
 #https://docs.rs/eframe/latest/eframe/
-eframe = { version = "0.23.0", default-features = false, features = [
+eframe = { version = "*", default-features = false, features = [
 "__screenshot",
 "default_fonts",
 "glow",
@@ -30,4 +30,5 @@ image = "*"
 
 #https://docs.rs/cli-clipboard/latest/cli_clipboard/
 cli-clipboard = {version="*"}
+target = "2.1.0"
 #native-dialog = "0.6.3"
