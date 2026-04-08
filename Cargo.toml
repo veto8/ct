@@ -32,3 +32,9 @@ image = "*"
 cli-clipboard = {version="*"}
 target = "2.1.0"
 #native-dialog = "0.6.3"
+
+[workspace]
+resolver = "3"
+members = [
+    "ct_nox",    
+]
