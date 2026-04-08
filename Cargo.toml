@@ -8,33 +8,12 @@ rust-version = "1.94.1 "
 
 [dependencies]
 ct_nox = { path = "./ct_nox"}
+eframe = "0.26"
+egui_extras = "0.26"
 
-
-#https://docs.rs/eframe/latest/eframe/
-eframe = { version = "*", default-features = false, features = [
-"__screenshot",
-"default_fonts",
-"glow",
-"accesskit",
-"persistence"
-] }
-
-#https://docs.rs/egui_file/latest/egui_file/
-egui_file = {version = "*"}
-
-#https://docs.rs/rfd/latest/rfd/
-rfd = "*"
-
-#https://docs.rs/image/latest/image/
-image = "*"
-
-#https://docs.rs/cli-clipboard/latest/cli_clipboard/
-cli-clipboard = {version="*"}
-target = "2.1.0"
-#native-dialog = "0.6.3"
 
 [workspace]
-resolver = "3"
+resolver = "2"
 members = [
     "ct_nox",    
 ]
