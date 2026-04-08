@@ -16,10 +16,11 @@ jobs:
   build_macos:
     runs-on: macos-15
     steps:
-      - name: get_repository
+      - name: install Rust
         run: |
           #brew install rust rustc-completion
           curl https://sh.rustup.rs -sSf | sh -s -- -y
+          source $HOME/.cargo/env
           cargo --version 
           
       #- name: checkout repo
