@@ -1,9 +1,9 @@
-
+name: macos_linux
 on:
-  workflow_run:
-    workflows: ["release_linux"]
-    types:
-      - completed
+  push:
+    branches: ["main"]
+    tags:
+      - '*'
   workflow_dispatch:
 
 permissions:
@@ -14,7 +14,6 @@ permissions:
 
 jobs:
   build_macos:
-    if: github.repository_owner == 'myridiax'
     runs-on: macos-15
     steps:
       - name: get_repository
@@ -35,13 +34,14 @@ jobs:
           
       - name: rename macos binary
         run: |
-          cp target/release/mtranslate target/release/mtranslate_macos
+          cp target/release/ct target/release/ct_macos
 
       - name: Upload Macos Intel Binary to release
+        if: github.repository_owner == 'myridia'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'target/release/mtranslate_macos'
+          file: 'target/release/ct_macos'
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true   

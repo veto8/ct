@@ -1,5 +1,4 @@
 name: release_linux
-
 on:
   push:
     branches: ["main"]
@@ -38,6 +37,7 @@ jobs:
           cp target/release/ct target/release/ct_linux
 
       - name: Upload Linux Binary to release
+        if: github.repository_owner == 'myridia'                  
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
