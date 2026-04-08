@@ -35,7 +35,7 @@ jobs:
 
       - name: list macos binary
         run: |
-          ls target/release 
+          ls target
           
       - name: rename macos binary
         run: |
