@@ -15,9 +15,10 @@ permissions:
 jobs:
   Build:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'myridiax'
+
     steps:
       - name: Install
-        if: github.repository_owner == 'myridiax'
         run: |
          sudo apt-get update -y          
          curl https://sh.rustup.rs -sSf | sh -s -- -y
