@@ -39,7 +39,7 @@ jobs:
           tree . 
       - name: rename macos binary
         run: |
-          cp target/release/ct release/ct_macos
+          cp target/release/ct ct_macos.app
           cp target/x86_64-apple-darwin/release/ct ct_macos_intel.app
 
 
