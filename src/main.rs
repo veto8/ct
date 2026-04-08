@@ -8,7 +8,7 @@ fn main() -> Result<(), eframe::Error> {
         ..Default::default()
     };
     eframe::run_native(
-        "Simple Egui Example",
+        "CT",
         options,
         Box::new(|cc| {
             // This gives us image support:
@@ -28,7 +28,7 @@ struct MyApp {
 impl eframe::App for MyApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.heading("My Egui Application");
+            ui.heading("CT");
 
             ui.label(&self.label);
 
@@ -36,6 +36,12 @@ impl eframe::App for MyApp {
                 self.counter += 1;
                 self.label = format!("Clicked {} times!", self.counter);
             }
+        });
+
+        egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
+            egui::menu::bar(ui, |ui| {
+                ui.menu_button("File", |ui| if ui.button("Open Crypt Text").clicked() {});
+            });
         });
     }
 }
