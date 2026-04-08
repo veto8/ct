@@ -1,4 +1,4 @@
-name: macos_release
+name: Macos
 on:
   push:
     branches: ["main"]
