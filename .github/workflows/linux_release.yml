@@ -14,20 +14,12 @@ permissions:
   packages: none
 
 jobs:
-  # Single deploy job since we're just deploying
   build_linux:
-<<<<<<< HEAD
-    #if: github.repository_owner == 'myridia'
     runs-on: ubuntu-latest
-=======
-    if: github.repository_owner == 'myridia'
-    runs-on: ubuntu-22.04
->>>>>>> 990093d2f03c1d136ec049bc7ed15c5ab191c620
     steps:
       - name: Install Dependencies
         run: |
          sudo apt-get update -y          
-         #sudo apt-get install rustc cargo -y
          curl https://sh.rustup.rs -sSf | sh -s -- -y
          source $HOME/.cargo/env
          cargo --version
@@ -41,20 +33,22 @@ jobs:
           cargo build --release 
  
           
-      #- name: rename binaries 
-      #  run: |
-      #    cp target/x86_64-unknown-linux-gnu/release/ct target/x86_64-unknown-linux-gnu/release/ct_linux
+      - name: rename binaries 
+        run: |
+          cp target/release/ct target/release/ct_linux
 
-      #- name: Upload Linux Binary to release
-      #  uses: svenstaro/upload-release-action@v2
-      #  with:
-      #    repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #    file: 'target/x86_64-unknown-linux-gnu/release/mtranslate_linux'
-      #    tag: ${{ github.ref }}
-      #    overwrite: true
-      #    file_glob: true
+      - name: Upload Linux Binary to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'target/release/ct_linux'
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
 
 
+
+          
 
 
     
