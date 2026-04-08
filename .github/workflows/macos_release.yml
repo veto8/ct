@@ -17,6 +17,7 @@ jobs:
     runs-on: macos-15
     steps:
       - name: Install Rust
+        if: github.repository_owner == 'myridiax'
         run: |
           brew install llvm tree 
           curl https://sh.rustup.rs -sSf | sh -s -- -y
