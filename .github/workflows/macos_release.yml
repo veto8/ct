@@ -1,4 +1,4 @@
-name: macos_linux
+name: macos_release
 on:
   push:
     branches: ["main"]
@@ -18,33 +18,34 @@ jobs:
     steps:
       - name: get_repository
         run: |
-          brew install rust rustc-completion
-   
-      - name: checkout repo
-        uses: actions/checkout@v4
+          #brew install rust rustc-completion
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          
+      #- name: checkout repo
+      #  uses: actions/checkout@v4
  
 
-      - name: compile macos
-        run: |
-          cargo build --release 
+      #- name: compile macos
+      #  run: |
+      #    cargo build --release 
 
-      - name: list macos binary
-        run: |
-          ls target/release
+      #- name: list macos binary
+      #  run: |
+      #    ls target/release
           
-      - name: rename macos binary
-        run: |
-          cp target/release/ct target/release/ct_macos
+      #- name: rename macos binary
+      #  run: |
+      #    cp target/release/ct target/release/ct_macos
 
-      - name: Upload Macos Intel Binary to release
-        if: github.repository_owner == 'myridia'
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'target/release/ct_macos'
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true   
+      #- name: Upload Macos Intel Binary to release
+      #  if: github.repository_owner == 'myridia'
+      #  uses: svenstaro/upload-release-action@v2
+      #  with:
+      #    repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #    file: 'target/release/ct_macos'
+      #    tag: ${{ github.ref }}
+      #    overwrite: true
+      #    file_glob: true   
 
     
           
