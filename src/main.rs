@@ -6,9 +6,12 @@ use ct_nox::ct_nox::{read_file, write_file};
 use ct_nox::decrypt::decrypt;
 use ct_nox::encrypt::encrypt;
 
+use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use eframe::egui;
+use egui::TextBuffer as _;
 use egui::Vec2;
 use rfd::FileDialog;
+
 fn main() -> Result<(), eframe::Error> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default().with_inner_size(Vec2::new(900.0, 700.0)), // Set initial window size here
@@ -28,8 +31,6 @@ fn main() -> Result<(), eframe::Error> {
 
 #[derive(Default)]
 struct CT {
-    label: String,
-    counter: usize,
     text: String,
     picked_path: String,
     cursor1: usize,
@@ -67,24 +68,47 @@ impl eframe::App for CT {
                 if ui
                     .add(egui::Button::new("Save").min_size(button_size))
                     .clicked()
-                {}
+                {
+                    if let Some(path) = rfd::FileDialog::new().save_file() {
+                        self.picked_path = path.display().to_string();
+                        println!("save crypt text to: {}", self.picked_path);
+                        let ct = encrypt(&self.text, &self.password);
+                        let _x = write_file(&self.picked_path.clone(), &ct);
+                    }
+                }
 
                 if ui
                     .add(egui::Button::new("Cut").min_size(button_size))
                     .clicked()
-                {}
+                {
+                    let r = get_char_range(self.cursor1, self.cursor2);
+                    let st = self.text.char_range(r.clone());
+                    ui.output_mut(|o| o.copied_text = st.to_string());
+                    self.text.delete_char_range(r.clone());
+                }
                 if ui
                     .add(egui::Button::new("Copy").min_size(button_size))
                     .clicked()
-                {}
+                {
+                    let r = get_char_range(self.cursor1, self.cursor2);
+                    let st = self.text.char_range(r.clone());
+                    ui.output_mut(|o| o.copied_text = st.to_string());
+                }
                 if ui
                     .add(egui::Button::new("Paste").min_size(button_size))
                     .clicked()
-                {}
+                {
+                    let txt = cli_clipboard::get_contents().unwrap();
+                    let r = get_char_range(self.cursor1, self.cursor2);
+                    self.text.insert_text(&txt, r.start);
+                }
                 if ui
                     .add(egui::Button::new("Search").min_size(button_size))
                     .clicked()
-                {}
+                {
+                    //let t = self.text.clone();
+                    //print!("{}", t);
+                }
                 if ui
                     .add(egui::Button::new("Close").min_size(button_size))
                     .clicked()
@@ -129,4 +153,16 @@ impl eframe::App for CT {
             });
         });
     }
+}
+
+fn get_char_range(c1: usize, c2: usize) -> std::ops::Range<usize> {
+    //https://docs.rs/egui/latest/egui/widgets/text_edit/trait.TextBuffer.html#method.char_range
+    let mut a = c1;
+    let mut b = c2;
+    if a > b {
+        a = c2;
+        b = c1;
+    }
+    let r = std::ops::Range { start: a, end: b };
+    return r;
 }

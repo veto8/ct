@@ -10,7 +10,9 @@ rust-version = "1.94.1 "
 ct_nox = { path = "./ct_nox"}
 eframe = "0.26"
 egui_extras = "0.26"
-rfd = "0.14"
+rfd = "*"
+cli-clipboard = "*" 
+
 
 [workspace]
 resolver = "2"
