@@ -15,7 +15,7 @@ use rfd::FileDialog;
 
 fn main() -> Result<(), eframe::Error> {
     let options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default().with_inner_size(Vec2::new(900.0, 700.0)), // Set initial window size here
+        viewport: egui::ViewportBuilder::default().with_inner_size(Vec2::new(900.0, 750.0)), // Set initial window size here
         ..Default::default()
     };
     eframe::run_native(
@@ -24,7 +24,7 @@ fn main() -> Result<(), eframe::Error> {
         Box::new(|cc| {
             // This gives us image support:
             egui_extras::install_image_loaders(&cc.egui_ctx);
-            cc.egui_ctx.set_pixels_per_point(2.5);
+            cc.egui_ctx.set_pixels_per_point(2.2);
             Box::new(CT::default())
         }),
     )
@@ -34,6 +34,8 @@ fn main() -> Result<(), eframe::Error> {
 struct CT {
     text: String,
     picked_path: String,
+    status_text: String,
+    progress: f32,
     cursor1: usize,
     cursor2: usize,
     password: String,
@@ -140,6 +142,7 @@ impl eframe::App for CT {
                 }
             });
 
+            ui.add_space(2.0);
             let _scroll = egui::ScrollArea::vertical().show(ui, |ui| {
                 let textedit = egui::TextEdit::multiline(&mut self.text)
                     .desired_width(f32::INFINITY)
@@ -167,6 +170,14 @@ impl eframe::App for CT {
                         ui.close_menu();
                     }
                 });
+            });
+        });
+
+        egui::TopBottomPanel::bottom("status_panel").show(ctx, |ui| {
+            ui.horizontal(|ui| {
+                ui.label(format!("Status: {}", self.status_text));
+                ui.separator();
+                //ui.add(egui::ProgressBar::new(self.progress).show_percentage());
             });
         });
     }
