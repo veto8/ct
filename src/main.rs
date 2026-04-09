@@ -8,8 +8,9 @@ use ct_nox::encrypt::encrypt;
 
 use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use eframe::egui;
-use egui::TextBuffer as _;
-use egui::Vec2;
+use eframe::egui::TextBuffer as _;
+use eframe::egui::Vec2;
+use eframe::egui::containers::popup;
 use rfd::FileDialog;
 
 fn main() -> Result<(), eframe::Error> {
