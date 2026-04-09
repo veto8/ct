@@ -1,8 +1,14 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
+extern crate ct_nox;
+use ct::icon::get_icon;
+use ct_nox::ct_nox::{read_file, write_file};
+use ct_nox::decrypt::decrypt;
+use ct_nox::encrypt::encrypt;
+
 use eframe::egui;
 use egui::Vec2;
-
+use rfd::FileDialog;
 fn main() -> Result<(), eframe::Error> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default().with_inner_size(Vec2::new(900.0, 700.0)), // Set initial window size here
@@ -38,7 +44,7 @@ impl eframe::App for CT {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.add_space(20.0);
             ui.horizontal(|ui| {
-                let num_buttons = 6.0;
+                let num_buttons = 7.0;
                 let spacing = ui.spacing().item_spacing.x;
                 let total_spacing = spacing * (num_buttons - 1.0);
 
@@ -50,7 +56,13 @@ impl eframe::App for CT {
                 if ui
                     .add(egui::Button::new("Open").min_size(button_size))
                     .clicked()
-                {}
+                {
+                    if let Some(path) = rfd::FileDialog::new().pick_file() {
+                        self.picked_path = path.display().to_string();
+                        let ct = read_file(&self.picked_path.clone());
+                        self.text = decrypt(&ct, &self.password);
+                    }
+                }
 
                 if ui
                     .add(egui::Button::new("Save").min_size(button_size))
@@ -70,9 +82,15 @@ impl eframe::App for CT {
                     .clicked()
                 {}
                 if ui
-                    .add(egui::Button::new("Close").min_size(button_size))
+                    .add(egui::Button::new("Search").min_size(button_size))
                     .clicked()
                 {}
+                if ui
+                    .add(egui::Button::new("Close").min_size(button_size))
+                    .clicked()
+                {
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+                }
             });
             let _password = ui.add(
                 egui::TextEdit::singleline(&mut self.password)
