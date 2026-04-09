@@ -36,6 +36,7 @@ struct CT {
     cursor1: usize,
     cursor2: usize,
     password: String,
+    search: String,
     window_help_open: bool,
     window_about_open: bool,
 }
@@ -44,8 +45,36 @@ impl eframe::App for CT {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.add_space(20.0);
+
+            let _password = ui.add(
+                egui::TextEdit::singleline(&mut self.password)
+                    .hint_text("Password")
+                    .desired_width(f32::INFINITY)
+                    .password(true),
+            );
             ui.horizontal(|ui| {
-                let num_buttons = 7.0;
+                let spacing = ui.spacing().item_spacing.x;
+                let available_width = ui.available_width() - (spacing * 2.0);
+                let button_width = (available_width / 100.00) * 15.00;
+                let search_width = (available_width / 100.00) * 85.00;
+                let button_height = 20.0;
+                let button_size = egui::Vec2::new(button_width, button_height);
+
+                let _search = ui.add(
+                    egui::TextEdit::singleline(&mut self.search)
+                        .hint_text("Search")
+                        .desired_width(search_width)
+                        .password(false),
+                );
+
+                if ui
+                    .add(egui::Button::new("Search").min_size(button_size))
+                    .clicked()
+                {}
+            });
+
+            ui.horizontal(|ui| {
+                let num_buttons = 6.0;
                 let spacing = ui.spacing().item_spacing.x;
                 let total_spacing = spacing * (num_buttons - 1.0);
 
@@ -103,25 +132,12 @@ impl eframe::App for CT {
                     self.text.insert_text(&txt, r.start);
                 }
                 if ui
-                    .add(egui::Button::new("Search").min_size(button_size))
-                    .clicked()
-                {
-                    //let t = self.text.clone();
-                    //print!("{}", t);
-                }
-                if ui
                     .add(egui::Button::new("Close").min_size(button_size))
                     .clicked()
                 {
                     ctx.send_viewport_cmd(egui::ViewportCommand::Close);
                 }
             });
-            let _password = ui.add(
-                egui::TextEdit::singleline(&mut self.password)
-                    .hint_text("Please enter your password")
-                    .desired_width(f32::INFINITY)
-                    .password(true),
-            );
 
             let _scroll = egui::ScrollArea::vertical().show(ui, |ui| {
                 let textedit = egui::TextEdit::multiline(&mut self.text)
