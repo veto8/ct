@@ -42,19 +42,44 @@ struct CT {
     search: String,
     window_help_open: bool,
     window_about_open: bool,
+    hide_password: bool,
 }
 
 impl eframe::App for CT {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.add_space(20.0);
+            ui.horizontal(|ui| {
+                let spacing = ui.spacing().item_spacing.x;
+                let available_width = ui.available_width() - (spacing * 2.0);
+                let button_width = (available_width / 100.00) * 25.00;
+                let password_width = (available_width / 100.00) * 75.00;
+                let button_height = 20.0;
+                let button_size = egui::Vec2::new(button_width, button_height);
 
-            let _password = ui.add(
-                egui::TextEdit::singleline(&mut self.password)
-                    .hint_text("Password")
-                    .desired_width(f32::INFINITY)
-                    .password(true),
-            );
+                let _password = ui.add(
+                    egui::TextEdit::singleline(&mut self.password)
+                        .hint_text("Password")
+                        .desired_width(password_width)
+                        .password(!self.hide_password),
+                );
+
+                let button_text = if self.hide_password {
+                    "Hide Password"
+                } else {
+                    "Show Password"
+                };
+                if ui
+                    .add(egui::Button::new(button_text).min_size(button_size))
+                    .clicked()
+                {
+                    if self.hide_password == false {
+                        self.hide_password = true
+                    } else {
+                        self.hide_password = false
+                    }
+                }
+            });
             ui.horizontal(|ui| {
                 let spacing = ui.spacing().item_spacing.x;
                 let available_width = ui.available_width() - (spacing * 2.0);
@@ -66,8 +91,7 @@ impl eframe::App for CT {
                 let _search = ui.add(
                     egui::TextEdit::singleline(&mut self.search)
                         .hint_text("Search")
-                        .desired_width(search_width)
-                        .password(false),
+                        .desired_width(search_width),
                 );
 
                 if ui
