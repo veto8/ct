@@ -103,31 +103,6 @@ impl eframe::App for CT {
                 {
                     if !self.search.is_empty() {
                         println!("{:?}", self.search);
-                        let start_index = self.last_find_index.map(|i| i + 1).unwrap_or(0);
-                        if let Some(found_index) = self.text[start_index..]
-                            .to_lowercase()
-                            .find(&self.search.to_lowercase())
-                            .map(|i| i + start_index)
-                        {
-                            let found_end = found_index + self.search.len();
-                            self.last_find_index = Some(found_index);
-                            /*
-                                if let Some(state) = egui::text_edit::State::load(ctx, text_edit_id) {
-                                    state.set_cursor_range(CursorRange {
-                                        primary: egui::text_edit::Cursor {
-                                            index: found_index,
-                                            preferred_x_pos: None,
-                                        },
-                                        secondary: egui::text_edit::Cursor {
-                                            index: found_end,
-                                            preferred_x_pos: None,
-                                        },
-                                    });
-                                    state.store(ctx, text_edit_id);
-                                    text_edit_response.request_focus(); // Keep focus on the TextEdit
-                            }
-                                */
-                        }
                     }
                 }
             });
@@ -207,7 +182,7 @@ impl eframe::App for CT {
                     let mut layout_job = egui::text::LayoutJob::default();
 
                     // Example: Color the word "world" in red
-                    let target_word = "world";
+                    let target_word: &str = self.search.as_str();
                     if let Some(pos) = string.find(target_word) {
                         // Append normal text
                         layout_job.append(
@@ -245,9 +220,9 @@ impl eframe::App for CT {
 
                 let textedit = egui::TextEdit::multiline(&mut self.text)
                     .desired_width(f32::INFINITY)
-                    .hint_text("Please enter your text")
-                    .layouter(&mut layouter);
-
+                    .hint_text("Please enter your text");
+                //                    .layouter(&mut layouter);
+                //textedit.layouter(&mut layouter);
                 let response = ui.add_sized(ui.available_size(), textedit);
                 //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
                 let resp_id = response.id;
