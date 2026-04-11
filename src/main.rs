@@ -1,16 +1,18 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
 extern crate ct_nox;
+
+use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use ct::icon::get_icon;
 use ct_nox::ct_nox::{read_file, write_file};
 use ct_nox::decrypt::decrypt;
 use ct_nox::encrypt::encrypt;
-
-use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use eframe::egui;
-use eframe::egui::TextBuffer as _;
-use eframe::egui::Vec2;
+use eframe::egui::TextBuffer;
 use eframe::egui::containers::popup;
+
+use eframe::egui::{Color32, Context, Id, TextEdit, Vec2};
+
 use rfd::FileDialog;
 
 fn main() -> Result<(), eframe::Error> {
@@ -43,6 +45,7 @@ struct CT {
     window_help_open: bool,
     window_about_open: bool,
     hide_password: bool,
+    last_find_index: Option<usize>,
 }
 
 impl eframe::App for CT {
@@ -97,7 +100,36 @@ impl eframe::App for CT {
                 if ui
                     .add(egui::Button::new("Search").min_size(button_size))
                     .clicked()
-                {}
+                {
+                    if !self.search.is_empty() {
+                        println!("{:?}", self.search);
+                        let start_index = self.last_find_index.map(|i| i + 1).unwrap_or(0);
+                        if let Some(found_index) = self.text[start_index..]
+                            .to_lowercase()
+                            .find(&self.search.to_lowercase())
+                            .map(|i| i + start_index)
+                        {
+                            let found_end = found_index + self.search.len();
+                            self.last_find_index = Some(found_index);
+                            /*
+                                if let Some(state) = egui::text_edit::State::load(ctx, text_edit_id) {
+                                    state.set_cursor_range(CursorRange {
+                                        primary: egui::text_edit::Cursor {
+                                            index: found_index,
+                                            preferred_x_pos: None,
+                                        },
+                                        secondary: egui::text_edit::Cursor {
+                                            index: found_end,
+                                            preferred_x_pos: None,
+                                        },
+                                    });
+                                    state.store(ctx, text_edit_id);
+                                    text_edit_response.request_focus(); // Keep focus on the TextEdit
+                            }
+                                */
+                        }
+                    }
+                }
             });
 
             ui.horizontal(|ui| {
@@ -168,9 +200,53 @@ impl eframe::App for CT {
 
             ui.add_space(2.0);
             let _scroll = egui::ScrollArea::vertical().show(ui, |ui| {
+                let text_edit_id = Id::new("my_text_edit");
+                //let mut text_buffer = TextBuffer::from(self.text.clone());
+
+                let mut layouter = |ui: &egui::Ui, string: &str, wrap_width: f32| {
+                    let mut layout_job = egui::text::LayoutJob::default();
+
+                    // Example: Color the word "world" in red
+                    let target_word = "world";
+                    if let Some(pos) = string.find(target_word) {
+                        // Append normal text
+                        layout_job.append(
+                            &string[..pos],
+                            12.0, // Font size
+                            egui::TextFormat::default(),
+                        );
+
+                        // Append colored word
+                        let red_color = egui::Color32::RED;
+                        let color_format = egui::TextFormat {
+                            color: red_color,
+                            ..Default::default()
+                        };
+                        layout_job.append(
+                            &string[pos..pos + target_word.len()],
+                            12.0,
+                            color_format,
+                        );
+
+                        // Append remaining text
+                        layout_job.append(
+                            &string[pos + target_word.len()..],
+                            12.0,
+                            egui::TextFormat::default(),
+                        );
+                    } else {
+                        // Fallback if word not found
+                        layout_job.append(string, 12.0, egui::TextFormat::default());
+                    }
+
+                    layout_job.wrap.max_width = wrap_width;
+                    ui.fonts(|f| f.layout_job(layout_job))
+                };
+
                 let textedit = egui::TextEdit::multiline(&mut self.text)
                     .desired_width(f32::INFINITY)
-                    .hint_text("Please enter your text");
+                    .hint_text("Please enter your text")
+                    .layouter(&mut layouter);
 
                 let response = ui.add_sized(ui.available_size(), textedit);
                 //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
