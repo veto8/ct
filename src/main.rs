@@ -11,7 +11,7 @@ use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::containers::popup;
 
-use eframe::egui::{Color32, Context, Id, TextEdit, Vec2};
+use eframe::egui::{Color32, Context, Id, Pos2, TextEdit, Vec2};
 
 use rfd::FileDialog;
 
@@ -46,6 +46,8 @@ struct CT {
     window_about_open: bool,
     hide_password: bool,
     search_bar: bool,
+    show_popup: bool,
+    popup_position: Pos2,
 }
 
 impl eframe::App for CT {
@@ -215,14 +217,43 @@ impl eframe::App for CT {
                 let response = ui.add_sized(ui.available_size(), textedit);
                 //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
                 let resp_id = response.id;
+
                 if let Some(state) = egui::TextEdit::load_state(ui.ctx(), resp_id) {
                     if let Some(ccursor) = state.ccursor_range() {
                         self.cursor1 = ccursor.secondary.index;
                         self.cursor2 = ccursor.primary.index;
                     }
                 }
+
+                if response.clicked_by(egui::PointerButton::Secondary) {
+                    self.show_popup = true;
+                    self.popup_position = response.interact_pointer_pos().unwrap_or(Pos2::ZERO); // Store click position
+                }
             });
         });
+
+        if self.show_popup {
+            let popup_id = egui::Id::new("my_popup");
+            egui::Area::new(popup_id)
+                .fixed_pos(self.popup_position)
+                .show(ctx, |ui| {
+                    egui::Frame::popup(ui.style()).show(ui, |ui| {
+                        if ui.button("Copy").clicked() {
+                            self.show_popup = false;
+                        }
+                        if ui.button("Paste").clicked() {
+                            self.show_popup = false;
+                        }
+                        if ui.button("Close").clicked() {
+                            self.show_popup = false;
+                        }
+                    });
+
+                    if ui.input(|i| i.pointer.button_released(egui::PointerButton::Primary)) {
+                        self.show_popup = false;
+                    }
+                });
+        }
 
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
