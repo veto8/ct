@@ -76,11 +76,7 @@ impl eframe::App for CT {
                     .add(egui::Button::new(button_text).min_size(button_size))
                     .clicked()
                 {
-                    if self.hide_password == false {
-                        self.hide_password = true
-                    } else {
-                        self.hide_password = false
-                    }
+                    self.hide_password = !self.hide_password;
                 }
             });
 
@@ -146,11 +142,7 @@ impl eframe::App for CT {
                     .add(egui::Button::new("Search").min_size(button_size))
                     .clicked()
                 {
-                    if self.search_bar == false {
-                        self.search_bar = true
-                    } else {
-                        self.search_bar = false
-                    }
+                    self.search_bar = !self.search_bar;
                 }
 
                 if ui
