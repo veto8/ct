@@ -1,19 +1,13 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
 extern crate ct_nox;
-
-use cli_clipboard::{ClipboardContext, ClipboardProvider};
-use ct::icon::get_icon;
 use ct_nox::ct_nox::{read_file, write_file};
 use ct_nox::decrypt::decrypt;
 use ct_nox::encrypt::encrypt;
 use eframe::egui;
 use eframe::egui::TextBuffer;
-use eframe::egui::containers::popup;
 
-use eframe::egui::{Color32, Context, IconData, Id, Pos2, TextEdit, Vec2};
-
-use rfd::FileDialog;
+use eframe::egui::{IconData, Pos2, Vec2};
 
 fn main() -> Result<(), eframe::Error> {
     let icon_image =
@@ -51,13 +45,10 @@ struct CT {
     text: String,
     picked_path: String,
     status_text: String,
-    progress: f32,
     cursor1: usize,
     cursor2: usize,
     password: String,
     search: String,
-    window_help_open: bool,
-    window_about_open: bool,
     hide_password: bool,
     search_bar: bool,
     show_popup: bool,
@@ -181,25 +172,14 @@ impl eframe::App for CT {
 
             ui.add_space(2.0);
             let _scroll = egui::ScrollArea::vertical().show(ui, |ui| {
-                let text_edit_id = Id::new("my_text_edit");
-                //let mut text_buffer = TextBuffer::from(self.text.clone());
-
                 let mut layouter = |ui: &egui::Ui, string: &str, wrap_width: f32| {
                     let mut layout_job = egui::text::LayoutJob::default();
-                    // Example: Color the word "world" in red
-
                     let target_word: &str = self.search.as_str();
                     if target_word != ""
                         && let Some(pos) = string.find(target_word)
                     {
-                        // Append normal text
-                        layout_job.append(
-                            &string[..pos],
-                            0.0, // Font size
-                            egui::TextFormat::default(),
-                        );
+                        layout_job.append(&string[..pos], 0.0, egui::TextFormat::default());
 
-                        // Append colored word
                         let red_color = egui::Color32::RED;
                         let color_format = egui::TextFormat {
                             color: red_color,
@@ -207,14 +187,12 @@ impl eframe::App for CT {
                         };
                         layout_job.append(&string[pos..pos + target_word.len()], 0.0, color_format);
 
-                        // Append remaining text
                         layout_job.append(
                             &string[pos + target_word.len()..],
                             0.0,
                             egui::TextFormat::default(),
                         );
                     } else {
-                        // Fallback if word not found
                         layout_job.append(string, 0.0, egui::TextFormat::default());
                     }
 
@@ -227,13 +205,13 @@ impl eframe::App for CT {
                     .desired_width(f32::INFINITY)
                     .hint_text("Please enter your text")
                     .layouter(&mut layouter);
-                //textedit.layouter(&mut layouter);
                 let response = ui.add_sized(ui.available_size(), textedit);
                 //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
                 let resp_id = response.id;
 
                 if let Some(state) = egui::TextEdit::load_state(ui.ctx(), resp_id) {
                     if let Some(ccursor) = state.ccursor_range() {
+                        //if let Some(ccursor) = self.cursor.char_range() {
                         self.cursor1 = ccursor.secondary.index;
                         self.cursor2 = ccursor.primary.index;
                     }
@@ -302,17 +280,4 @@ fn get_char_range(c1: usize, c2: usize) -> std::ops::Range<usize> {
     }
     let r = std::ops::Range { start: a, end: b };
     return r;
-}
-
-fn load_icon() -> IconData {
-    let (icon_rgba, icon_width, icon_height) = {
-        let rgba = get_icon();
-        (rgba, 64, 64)
-    };
-
-    IconData {
-        rgba: icon_rgba,
-        width: icon_width,
-        height: icon_height,
-    }
 }
