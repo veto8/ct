@@ -9,7 +9,19 @@ use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::{IconData, Pos2, Vec2};
 
+
+use i18n_embed::LanguageLoader;
+use rust_embed::RustEmbed;
+
+#[derive(RustEmbed)]
+#[folder = "locales/"] // Path to the compiled localization resources
+struct Asset;
+
+
+
+
 fn main() -> Result<(), eframe::Error> {
+    
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
         (rgba, 64, 64)

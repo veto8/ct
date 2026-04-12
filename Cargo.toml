@@ -12,10 +12,17 @@ eframe = "*"
 egui_extras = "*"
 rfd = "*"
 cli-clipboard = "*" 
-image = "*"
+i18n-embed = "*" 
+log = "*"
+env_logger = "*"
+rust-embed = "*" # For embedding static files (locales)
+
+[build-dependencies]
+i18n-embed = "*"
 
 [workspace]
 resolver = "2"
 members = [
     "ct_nox",    
 ]
+
