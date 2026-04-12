@@ -11,13 +11,27 @@ use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::containers::popup;
 
-use eframe::egui::{Color32, Context, Id, Pos2, TextEdit, Vec2};
+use eframe::egui::{Color32, Context, IconData, Id, Pos2, TextEdit, Vec2};
 
 use rfd::FileDialog;
 
 fn main() -> Result<(), eframe::Error> {
+    let icon_image =
+        image::open("pages/public/img/ct.png").expect("Should be able to open icon PNG file");
+    let width = icon_image.width();
+    let height = icon_image.height();
+    let icon_rgba8 = icon_image.into_rgba8().to_vec();
+    let icon_data = IconData {
+        rgba: icon_rgba8,
+        width,
+        height,
+    };
+
     let options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default().with_inner_size(Vec2::new(900.0, 750.0)), // Set initial window size here
+        viewport: egui::ViewportBuilder::default()
+            .with_inner_size(Vec2::new(900.0, 750.0))
+            .with_icon(icon_data),
+        //icon_data: Some(load_icon()),
         ..Default::default()
     };
     eframe::run_native(
@@ -288,4 +302,17 @@ fn get_char_range(c1: usize, c2: usize) -> std::ops::Range<usize> {
     }
     let r = std::ops::Range { start: a, end: b };
     return r;
+}
+
+fn load_icon() -> IconData {
+    let (icon_rgba, icon_width, icon_height) = {
+        let rgba = get_icon();
+        (rgba, 64, 64)
+    };
+
+    IconData {
+        rgba: icon_rgba,
+        width: icon_width,
+        height: icon_height,
+    }
 }

@@ -8,11 +8,11 @@ rust-version = "1.94.1 "
 
 [dependencies]
 ct_nox = { path = "./ct_nox"}
-eframe = "0.26"
-egui_extras = "0.26"
+eframe = "*"
+egui_extras = "*"
 rfd = "*"
 cli-clipboard = "*" 
-
+image = "*"
 
 [workspace]
 resolver = "2"
