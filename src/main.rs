@@ -45,7 +45,7 @@ struct CT {
     window_help_open: bool,
     window_about_open: bool,
     hide_password: bool,
-    last_find_index: Option<usize>,
+    search_bar: bool,
 }
 
 impl eframe::App for CT {
@@ -83,32 +83,9 @@ impl eframe::App for CT {
                     }
                 }
             });
-            ui.horizontal(|ui| {
-                let spacing = ui.spacing().item_spacing.x;
-                let available_width = ui.available_width() - (spacing * 2.0);
-                let button_width = (available_width / 100.00) * 15.00;
-                let search_width = (available_width / 100.00) * 85.00;
-                let button_height = 20.0;
-                let button_size = egui::Vec2::new(button_width, button_height);
-
-                let _search = ui.add(
-                    egui::TextEdit::singleline(&mut self.search)
-                        .hint_text("Search")
-                        .desired_width(search_width),
-                );
-
-                if ui
-                    .add(egui::Button::new("Search").min_size(button_size))
-                    .clicked()
-                {
-                    if !self.search.is_empty() {
-                        println!("{:?}", self.search);
-                    }
-                }
-            });
 
             ui.horizontal(|ui| {
-                let num_buttons = 6.0;
+                let num_buttons = 7.0;
                 let spacing = ui.spacing().item_spacing.x;
                 let total_spacing = spacing * (num_buttons - 1.0);
 
@@ -166,12 +143,33 @@ impl eframe::App for CT {
                     self.text.insert_text(&txt, r.start);
                 }
                 if ui
+                    .add(egui::Button::new("Search").min_size(button_size))
+                    .clicked()
+                {
+                    if self.search_bar == false {
+                        self.search_bar = true
+                    } else {
+                        self.search_bar = false
+                    }
+                }
+
+                if ui
                     .add(egui::Button::new("Close").min_size(button_size))
                     .clicked()
                 {
                     ctx.send_viewport_cmd(egui::ViewportCommand::Close);
                 }
             });
+
+            if self.search_bar {
+                ui.horizontal(|ui| {
+                    let _search = ui.add(
+                        egui::TextEdit::singleline(&mut self.search)
+                            .hint_text("Search")
+                            .desired_width(f32::INFINITY),
+                    );
+                });
+            }
 
             ui.add_space(2.0);
             let _scroll = egui::ScrollArea::vertical().show(ui, |ui| {
@@ -180,14 +178,16 @@ impl eframe::App for CT {
 
                 let mut layouter = |ui: &egui::Ui, string: &str, wrap_width: f32| {
                     let mut layout_job = egui::text::LayoutJob::default();
-
                     // Example: Color the word "world" in red
+
                     let target_word: &str = self.search.as_str();
-                    if let Some(pos) = string.find(target_word) {
+                    if target_word != ""
+                        && let Some(pos) = string.find(target_word)
+                    {
                         // Append normal text
                         layout_job.append(
                             &string[..pos],
-                            12.0, // Font size
+                            0.0, // Font size
                             egui::TextFormat::default(),
                         );
 
@@ -197,31 +197,28 @@ impl eframe::App for CT {
                             color: red_color,
                             ..Default::default()
                         };
-                        layout_job.append(
-                            &string[pos..pos + target_word.len()],
-                            12.0,
-                            color_format,
-                        );
+                        layout_job.append(&string[pos..pos + target_word.len()], 0.0, color_format);
 
                         // Append remaining text
                         layout_job.append(
                             &string[pos + target_word.len()..],
-                            12.0,
+                            0.0,
                             egui::TextFormat::default(),
                         );
                     } else {
                         // Fallback if word not found
-                        layout_job.append(string, 12.0, egui::TextFormat::default());
+                        layout_job.append(string, 0.0, egui::TextFormat::default());
                     }
 
                     layout_job.wrap.max_width = wrap_width;
+
                     ui.fonts(|f| f.layout_job(layout_job))
                 };
 
                 let textedit = egui::TextEdit::multiline(&mut self.text)
                     .desired_width(f32::INFINITY)
-                    .hint_text("Please enter your text");
-                //                    .layouter(&mut layouter);
+                    .hint_text("Please enter your text")
+                    .layouter(&mut layouter);
                 //textedit.layouter(&mut layouter);
                 let response = ui.add_sized(ui.available_size(), textedit);
                 //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
