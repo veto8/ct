@@ -1,26 +1,27 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
 extern crate ct_nox;
+use ct::icon::get_icon;
 use ct_nox::ct_nox::{read_file, write_file};
 use ct_nox::decrypt::decrypt;
 use ct_nox::encrypt::encrypt;
 use eframe::egui;
 use eframe::egui::TextBuffer;
-
 use eframe::egui::{IconData, Pos2, Vec2};
 
 fn main() -> Result<(), eframe::Error> {
-    let icon_image =
-        image::open("pages/public/img/ct.png").expect("Should be able to open icon PNG file");
-    let width = icon_image.width();
-    let height = icon_image.height();
-    let icon_rgba8 = icon_image.into_rgba8().to_vec();
-    let icon_data = IconData {
-        rgba: icon_rgba8,
-        width,
-        height,
+    let (icon_rgba, icon_width, icon_height) = {
+        let rgba = get_icon();
+        (rgba, 64, 64)
     };
 
+    let icon_data = IconData {
+        rgba: icon_rgba,
+        width: icon_width,
+        height: icon_height,
+    };
+
+    //let icon_data = get_icon();
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_inner_size(Vec2::new(900.0, 750.0))
