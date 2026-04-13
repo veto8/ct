@@ -237,6 +237,9 @@ impl eframe::App for CT {
                 .show(ctx, |ui| {
                     egui::Frame::popup(ui.style()).show(ui, |ui| {
                         if ui.button("Copy").clicked() {
+                            let r = get_char_range(self.cursor1, self.cursor2);
+                            let st = self.text.char_range(r.clone());
+                            ui.output_mut(|o| o.copied_text = st.to_string());
                             self.show_popup = false;
                         }
                         if ui.button("Paste").clicked() {
