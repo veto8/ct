@@ -242,7 +242,18 @@ impl eframe::App for CT {
                             ui.output_mut(|o| o.copied_text = st.to_string());
                             self.show_popup = false;
                         }
+                        if ui.button("Cut").clicked() {
+                            let r = get_char_range(self.cursor1, self.cursor2);
+                            let st = self.text.char_range(r.clone());
+                            ui.output_mut(|o| o.copied_text = st.to_string());
+                            self.text.delete_char_range(r.clone());
+                            self.show_popup = false;
+                        }
+
                         if ui.button("Paste").clicked() {
+                            let txt = cli_clipboard::get_contents().unwrap();
+                            let r = get_char_range(self.cursor1, self.cursor2);
+                            self.text.insert_text(&txt, r.start);
                             self.show_popup = false;
                         }
                         if ui.button("Close").clicked() {
