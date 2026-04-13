@@ -9,7 +9,6 @@ use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::{IconData, Pos2, Vec2};
 
-
 use i18n_embed::LanguageLoader;
 use rust_embed::RustEmbed;
 
@@ -17,11 +16,7 @@ use rust_embed::RustEmbed;
 #[folder = "locales/"] // Path to the compiled localization resources
 struct Asset;
 
-
-
-
 fn main() -> Result<(), eframe::Error> {
-    
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
         (rgba, 64, 64)
@@ -45,8 +40,6 @@ fn main() -> Result<(), eframe::Error> {
         "CT",
         options,
         Box::new(|cc| {
-            // This gives us image support:
-            egui_extras::install_image_loaders(&cc.egui_ctx);
             cc.egui_ctx.set_pixels_per_point(2.2);
             Box::new(CT::default())
         }),
