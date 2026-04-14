@@ -12,10 +12,10 @@ eframe = "*"
 egui_extras = "*"
 rfd = "*"
 cli-clipboard = "*" 
-i18n-embed = "*" 
+i18n-embed = { version = "*", features = ["fluent-system", "desktop-requester"]}
 log = "*"
 env_logger = "*"
-rust-embed = "*" # For embedding static files (locales)
+rust-embed = "*" 
 
 [build-dependencies]
 i18n-embed = "*"

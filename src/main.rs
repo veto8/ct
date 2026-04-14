@@ -9,14 +9,24 @@ use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::{IconData, Pos2, Vec2};
 
-use i18n_embed::LanguageLoader;
+use i18n_embed::{
+    DesktopLanguageRequester,
+    fluent::{FluentLanguageLoader, fluent_language_loader},
+};
 use rust_embed::RustEmbed;
 
 #[derive(RustEmbed)]
-#[folder = "locales/"] // Path to the compiled localization resources
-struct Asset;
+#[folder = "i18n"] // path to the compiled localization resources
+struct Localizations;
 
 fn main() -> Result<(), eframe::Error> {
+    let language_loader: FluentLanguageLoader = fluent_language_loader!();
+    let requested_languages = DesktopLanguageRequester::requested_languages();
+    let _result = i18n_embed::select(&language_loader, &Localizations, &requested_languages);
+    println!("{:?}", _result);
+
+    //let x = fl!("simple-example");
+
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
         (rgba, 64, 64)
