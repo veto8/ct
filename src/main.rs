@@ -13,6 +13,7 @@ use i18n_embed::{
     DesktopLanguageRequester,
     fluent::{FluentLanguageLoader, fluent_language_loader},
 };
+use i18n_embed_fl::fl;
 use rust_embed::RustEmbed;
 
 #[derive(RustEmbed)]
@@ -20,13 +21,13 @@ use rust_embed::RustEmbed;
 struct Localizations;
 
 fn main() -> Result<(), eframe::Error> {
-    let language_loader: FluentLanguageLoader = fluent_language_loader!();
+    let loader: FluentLanguageLoader = fluent_language_loader!();
     let requested_languages = DesktopLanguageRequester::requested_languages();
-    let _result = i18n_embed::select(&language_loader, &Localizations, &requested_languages);
-    println!("{:?}", _result);
+    let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
+    //println!("{:?}", _result);
 
-    //let x = fl!("simple-example");
-
+    let x = fl!(loader, "hello-world");
+    println!("{:?}", x);
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
         (rgba, 64, 64)
@@ -56,8 +57,8 @@ fn main() -> Result<(), eframe::Error> {
     )
 }
 
-#[derive(Default)]
 struct CT {
+    loader: FluentLanguageLoader,
     text: String,
     picked_path: String,
     status_text: String,
@@ -69,6 +70,28 @@ struct CT {
     search_bar: bool,
     show_popup: bool,
     popup_position: Pos2,
+}
+
+impl Default for CT {
+    fn default() -> Self {
+        let loader: FluentLanguageLoader = fluent_language_loader!();
+        let requested_languages = DesktopLanguageRequester::requested_languages();
+        let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
+        CT {
+            loader: loader,
+            text: "".to_string(),
+            picked_path: "".to_string(),
+            status_text: "".to_string(),
+            cursor1: 0,
+            cursor2: 0,
+            password: "".to_string(),
+            search: "".to_string(),
+            hide_password: false,
+            search_bar: false,
+            show_popup: false,
+            popup_position: Pos2 { x: 0.0, y: 0.0 },
+        }
+    }
 }
 
 impl eframe::App for CT {
@@ -219,7 +242,7 @@ impl eframe::App for CT {
 
                 let textedit = egui::TextEdit::multiline(&mut self.text)
                     .desired_width(f32::INFINITY)
-                    .hint_text("Please enter your text")
+                    .hint_text(fl!(self.loader, "hello-world"))
                     .layouter(&mut layouter);
                 let response = ui.add_sized(ui.available_size(), textedit);
                 //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
