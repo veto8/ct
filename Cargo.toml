@@ -8,12 +8,22 @@ rust-version = "1.94.1 "
 
 [dependencies]
 ct_nox = { path = "./ct_nox"}
-eframe = "0.26"
-egui_extras = "0.26"
+eframe = "*"
+egui_extras = "*"
+rfd = "*"
+cli-clipboard = "*" 
+i18n-embed = { version = "*", features = ["fluent-system", "desktop-requester"]}
+i18n-embed-fl = "*" 
+log = "*"
+env_logger = "*"
+rust-embed = "*" 
 
+[build-dependencies]
+i18n-embed = "*"
 
 [workspace]
 resolver = "2"
 members = [
     "ct_nox",    
 ]
+
