@@ -1,0 +1,14 @@
+password = पासवर्ड 
+open = खोल्नुहोस् 
+save = बचत गर्नुहोस् 
+copy = प्रतिलिपि गर्नुहोस् 
+paste = टाँस्नुहोस् 
+cut = काट्नुहोस् 
+search = खोज्नुहोस् 
+close = बन्द गर्नुहोस् 
+enter_text = पाठ प्रविष्ट गर्नुहोस् 
+status = स्थिति 
+show_passwod = पासवर्ड देखाउनुहोस् 
+hide_password = पासवर्ड लुकाउनुहोस् 
+! about = About 
+about_us = हाम्रो बारेमा 

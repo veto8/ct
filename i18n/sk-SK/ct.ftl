@@ -1,0 +1,14 @@
+password = heslo 
+open = OTVORENÉ 
+save = Uložiť 
+copy = Kopírovať 
+paste = Prilepiť 
+cut = Vystrihnúť 
+search = Hľadať 
+close = Zavrieť 
+enter_text = Zadajte text 
+status = Stav 
+show_passwod = Zobraziť heslo 
+hide_password = Skryť heslo 
+! about = About 
+about_us = O nás 

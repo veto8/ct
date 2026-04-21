@@ -1,0 +1,14 @@
+password = Купуя сөз 
+open = Open 
+save = Сактоо 
+copy = Көчүрмө 
+paste = Паста 
+cut = Кесүү 
+search = Издөө 
+close = Жабуу 
+enter_text = Текст киргизиңиз 
+status = Статус 
+show_passwod = Сырсөздү көрсөтүү 
+hide_password = Сырсөздү жашыруу 
+! about = About 
+about_us = Биз жөнүндө 

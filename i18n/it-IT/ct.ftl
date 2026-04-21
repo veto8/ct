@@ -1,0 +1,14 @@
+password = Password 
+open = Aprire 
+save = Salva 
+copy = Copia 
+paste = Impasto 
+cut = Taglio 
+search = Ricerca 
+close = Vicino 
+enter_text = Inserisci il testo 
+status = Stato 
+show_passwod = Mostra password 
+hide_password = Nascondi la password 
+! about = About 
+about_us = Chi siamo 

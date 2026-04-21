@@ -1,0 +1,14 @@
+password = Password 
+open = Miftuħa 
+save = Ħlief 
+copy = Kopja 
+paste = Pejst 
+cut = Aqta’ 
+search = Fittex 
+close = Agħlaq 
+enter_text = Daħħal it-test 
+status = Status 
+show_passwod = Uri password 
+hide_password = Aħbi l-password 
+! about = About 
+about_us = Dwarna 

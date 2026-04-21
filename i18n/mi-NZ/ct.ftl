@@ -1,0 +1,14 @@
+password = Kupuhipa 
+open = Tuwhera 
+save = Tiaki 
+copy = Tārua 
+paste = Whakapiri 
+cut = Tapahia 
+search = Rapu 
+close = Katia 
+enter_text = Whakauruhia te kuputuhi 
+status = Tūnga 
+show_passwod = Whakaatu kupuhipa 
+hide_password = Huna kupuhipa 
+! about = About 
+about_us = Mo matou 

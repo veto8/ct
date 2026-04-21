@@ -1,0 +1,14 @@
+password = Contrasenya 
+open = Obert 
+save = Desa 
+copy = Còpia 
+paste = Enganxa 
+cut = Tallar 
+search = Cerca 
+close = Tancar 
+enter_text = Introduïu text 
+status = Estat 
+show_passwod = Mostra la contrasenya 
+hide_password = Amaga la contrasenya 
+! about = About 
+about_us = Sobre Nosaltres 

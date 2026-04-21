@@ -1,0 +1,14 @@
+password = Jelszó 
+open = Nyitott 
+save = Megtakarítás 
+copy = Másolat 
+paste = Paszta 
+cut = Vágott 
+search = Keresés 
+close = Közeli 
+enter_text = Írja be a szöveget 
+status = Állapot 
+show_passwod = Jelszó megjelenítése 
+hide_password = Jelszó elrejtése 
+! about = About 
+about_us = Rólunk 

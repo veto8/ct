@@ -1,0 +1,14 @@
+password = Geslo 
+open = Odpri 
+save = Shrani 
+copy = Kopiraj 
+paste = Prilepi 
+cut = Cut 
+search = Iskanje 
+close = Zapri 
+enter_text = Vnesite besedilo 
+status = Stanje 
+show_passwod = Pokaži geslo 
+hide_password = Skrij geslo 
+! about = About 
+about_us = O nas 

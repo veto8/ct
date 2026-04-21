@@ -1,0 +1,14 @@
+password = စကားဝှက် 
+open = ဖွင့်သည်။ 
+save = သိမ်းဆည်းပါ။ 
+copy = ကော်ပီ 
+paste = ငါးပိ 
+cut = ဖြတ် 
+search = ရှာရန် 
+close = ပိတ်လိုက် 
+enter_text = စာသားထည့်ပါ။ 
+status = အဆင့်အတန်း 
+show_passwod = စကားဝှက်ကိုပြပါ။ 
+hide_password = စကားဝှက်ကို ဝှက်ထားပါ။ 
+! about = About 
+about_us = ကြှနျုပျတို့အကွောငျး 

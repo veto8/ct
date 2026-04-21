@@ -1,0 +1,14 @@
+password = Pasvorto 
+open = Malfermu 
+save = Konservu 
+copy = Kopiu 
+paste = Alglui 
+cut = Tranĉi 
+search = Serĉu 
+close = Fermu 
+enter_text = Enigu tekston 
+status = Statuso 
+show_passwod = Montru pasvorton 
+hide_password = Kaŝi pasvorton 
+! about = About 
+about_us = Pri Ni 

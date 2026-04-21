@@ -1,0 +1,14 @@
+password = Codice 
+open = Apertu 
+save = Salvà 
+copy = Copia 
+paste = Paste 
+cut = Tagliate 
+search = Ricerca 
+close = Chiudi 
+enter_text = Inserite u testu 
+status = Status 
+show_passwod = Mostra password 
+hide_password = Oculta a password 
+! about = About 
+about_us = Nantu à noi 

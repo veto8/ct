@@ -1,0 +1,14 @@
+password = პაროლი 
+open = გახსენით 
+save = შენახვა 
+copy = კოპირება 
+paste = პასტა 
+cut = გაჭრა 
+search = ძიება 
+close = დახურვა 
+enter_text = შეიყვანეთ ტექსტი 
+status = სტატუსი 
+show_passwod = პაროლის ჩვენება 
+hide_password = პაროლის დამალვა 
+! about = About 
+about_us = ჩვენს შესახებ 

@@ -1,0 +1,14 @@
+password = Contrasinal 
+open = Aberto 
+save = Gardar 
+copy = Copiar 
+paste = Pegar 
+cut = Cortar 
+search = Busca 
+close = Pechar 
+enter_text = Introduce texto 
+status = Estado 
+show_passwod = Mostrar contrasinal 
+hide_password = Ocultar o contrasinal 
+! about = About 
+about_us = Sobre Nós 

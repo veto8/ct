@@ -1,0 +1,14 @@
+password = Parol 
+open = Ochiq 
+save = Saqlash 
+copy = Nusxalash 
+paste = joylashtirish 
+cut = Kesish 
+search = Qidiruv 
+close = Yopish 
+enter_text = Matn kiriting 
+status = Status 
+show_passwod = Parolni ko'rsatish 
+hide_password = Parolni yashirish 
+! about = About 
+about_us = Biz haqimizda 

@@ -1,0 +1,14 @@
+password = Iphasiwedi 
+open = Vula 
+save = Londoloza 
+copy = Kopisha 
+paste = Namathisela 
+cut = Sika 
+search = Sesha 
+close = Vala 
+enter_text = Faka umbhalo 
+status = Isimo 
+show_passwod = Bonisa iphasiwedi 
+hide_password = Fihla iphasiwedi 
+! about = About 
+about_us = Mayelana NATHI 

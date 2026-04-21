@@ -1,0 +1,14 @@
+password = Nenosiri 
+open = Fungua 
+save = Hifadhi 
+copy = Nakili 
+paste = Bandika 
+cut = Kata 
+search = Tafuta 
+close = Funga 
+enter_text = Ingiza maandishi 
+status = Hali 
+show_passwod = Onyesha nenosiri 
+hide_password = Ficha nenosiri 
+! about = About 
+about_us = Kuhusu Sisi 

@@ -1,0 +1,14 @@
+password = Pasiwedhi 
+open = Vhura 
+save = Sevha 
+copy = Copy 
+paste = Paste 
+cut = Cheka 
+search = Search 
+close = Close 
+enter_text = Pinda mavara 
+status = Status 
+show_passwod = Ratidza password 
+hide_password = Viga password 
+! about = About 
+about_us = Nezvedu 

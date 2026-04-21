@@ -1,0 +1,14 @@
+password = رمز عبور 
+open = باز کنید 
+save = ذخیره کنید 
+copy = کپی کنید 
+paste = چسباندن 
+cut = برش دهید 
+search = جستجو کنید 
+close = بستن 
+enter_text = متن را وارد کنید 
+status = وضعیت 
+show_passwod = نمایش رمز عبور 
+hide_password = پنهان کردن رمز عبور 
+! about = About 
+about_us = درباره ما 

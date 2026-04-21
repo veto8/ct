@@ -1,0 +1,14 @@
+password = ಪಾಸ್ವರ್ಡ್ 
+open = ತೆರೆಯಿರಿ 
+save = ಉಳಿಸಿ 
+copy = ನಕಲು ಮಾಡಿ 
+paste = ಅಂಟಿಸಿ 
+cut = ಕತ್ತರಿಸಿ 
+search = ಹುಡುಕು 
+close = ಮುಚ್ಚಿ 
+enter_text = ಪಠ್ಯವನ್ನು ನಮೂದಿಸಿ 
+status = ಸ್ಥಿತಿ 
+show_passwod = ಪಾಸ್ವರ್ಡ್ ತೋರಿಸಿ 
+hide_password = ಗುಪ್ತಪದವನ್ನು ಮರೆಮಾಡಿ 
+! about = About 
+about_us = ನಮ್ಮ ಬಗ್ಗೆ 

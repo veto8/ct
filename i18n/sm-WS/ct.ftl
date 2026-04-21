@@ -1,0 +1,14 @@
+password = Numera e le iloa e sesi 
+open = Tatala 
+save = Faasaoina 
+copy = Kopi 
+paste = Fa'apipi'i 
+cut = tipi 
+search = Saili 
+close = Tapuni 
+enter_text = Ulufale tusitusiga 
+status = Tulaga 
+show_passwod = Faaali upu faataga 
+hide_password = Natia upu faataga 
+! about = About 
+about_us = Faatatau ia tatou 

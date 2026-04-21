@@ -1,0 +1,14 @@
+password = Password 
+open = Bula 
+save = Boloka 
+copy = Kopitsa 
+paste = Beha 
+cut = Khaola 
+search = Batla 
+close = Koala 
+enter_text = Kenya mongolo 
+status = Boemo 
+show_passwod = Hlahisa password 
+hide_password = Pata password 
+! about = About 
+about_us = Mabapi le rona 

@@ -1,0 +1,14 @@
+password = Password 
+open = Misokatra 
+save = afa-tsy 
+copy = dika mitovy 
+paste = Mametaka 
+cut = Hetezo 
+search = karohy 
+close = AKAIKY 
+enter_text = Ampidiro lahatsoratra 
+status = sata 
+show_passwod = Asehoy ny tenimiafina 
+hide_password = Afeno ny tenimiafina 
+! about = About 
+about_us = Momba anay 

@@ -1,0 +1,14 @@
+password = Рамз 
+open = Кушода 
+save = Захира кунед 
+copy = Нусхабардорӣ 
+paste = Часбонед 
+cut = Бурида 
+search = Ҷустуҷӯ 
+close = Пӯшед 
+enter_text = Матн ворид кунед 
+status = Статус 
+show_passwod = Нишон додани парол 
+hide_password = Паролро пинҳон кунед 
+! about = About 
+about_us = Дар бораи мо 

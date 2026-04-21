@@ -1,0 +1,14 @@
+password = Parolă 
+open = Deschide 
+save = Salva 
+copy = Copie 
+paste = Pastă 
+cut = Tăiați 
+search = Căutare 
+close = Aproape 
+enter_text = Introduceți text 
+status = Stare 
+show_passwod = Afișați parola 
+hide_password = Ascunde parola 
+! about = About 
+about_us = Despre noi 

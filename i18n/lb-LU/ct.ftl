@@ -1,0 +1,14 @@
+password = Passwuert 
+open = Oppen 
+save = Spueren 
+copy = Kopie 
+paste = Paste 
+cut = Schnëtt 
+search = Sichen 
+close = Zoumaachen 
+enter_text = Gitt Text an 
+status = Status 
+show_passwod = Passwuert weisen 
+hide_password = Passwuert verstoppen 
+! about = About 
+about_us = Iwwer eis 

@@ -1,0 +1,14 @@
+password = שפּריכוואָרט 
+open = עפענען 
+save = היט 
+copy = קאָפּי 
+paste = פּאַפּ 
+cut = שנייַדן 
+search = זוכן 
+close = נאָענט 
+enter_text = אַרייַן טעקסט 
+status = סטאַטוס 
+show_passwod = ווייַזן פּאַראָל 
+hide_password = באַהאַלטן פּאַראָל 
+! about = About 
+about_us = וועגן אונדז 

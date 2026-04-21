@@ -1,0 +1,14 @@
+password = Adgangskode 
+open = Åben 
+save = Spare 
+copy = Kopi 
+paste = Indsæt 
+cut = Skære 
+search = Søge 
+close = Tæt 
+enter_text = Indtast tekst 
+status = Status 
+show_passwod = Vis adgangskode 
+hide_password = Skjul adgangskode 
+! about = About 
+about_us = Om os 

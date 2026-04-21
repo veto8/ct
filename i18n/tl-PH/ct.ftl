@@ -1,0 +1,14 @@
+password = Password 
+open = Bukas 
+save = I-save 
+copy = Kopyahin 
+paste = Idikit 
+cut = Putulin 
+search = Maghanap 
+close = Isara 
+enter_text = Maglagay ng text 
+status = Katayuan 
+show_passwod = Ipakita ang password 
+hide_password = Itago ang password 
+! about = About 
+about_us = Tungkol sa Amin 

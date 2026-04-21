@@ -1,0 +1,14 @@
+password = Lösenord 
+open = Öppna 
+save = Spara 
+copy = Kopiera 
+paste = Klistra 
+cut = Skära 
+search = Söka 
+close = Nära 
+enter_text = Skriv in text 
+status = Status 
+show_passwod = Visa lösenord 
+hide_password = Dölj lösenord 
+! about = About 
+about_us = Om oss 

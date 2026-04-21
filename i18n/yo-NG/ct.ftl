@@ -1,0 +1,14 @@
+password = Ọrọigbaniwọle 
+open = Ṣii 
+save = Fipamọ 
+copy = Daakọ 
+paste = Lẹẹmọ 
+cut = Ge 
+search = Wa 
+close = Sunmọ 
+enter_text = Tẹ ọrọ sii 
+status = Ipo 
+show_passwod = Ṣafihan ọrọ igbaniwọle 
+hide_password = Tọju ọrọ igbaniwọle 
+! about = About 
+about_us = Nipa re 

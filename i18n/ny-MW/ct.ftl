@@ -1,0 +1,14 @@
+password = Mawu achinsinsi 
+open = Tsegulani 
+save = Sungani 
+copy = Koperani 
+paste = Matani 
+cut = Dulani 
+search = Sakani 
+close = Tsekani 
+enter_text = Lowetsani mawu 
+status = Mkhalidwe 
+show_passwod = Onetsani mawu achinsinsi 
+hide_password = Bisani mawu achinsinsi 
+! about = About 
+about_us = Zambiri zaife 

@@ -1,0 +1,14 @@
+password = رمز 
+open = خلاص 
+save = خوندي کړئ 
+copy = کاپي 
+paste = پیسټ 
+cut = کټ 
+search = لټون 
+close = تړل 
+enter_text = متن دننه کړئ 
+status = حالت 
+show_passwod = پټنوم ښکاره کړئ 
+hide_password = پټنوم پټ کړئ 
+! about = About 
+about_us = زموږ په اړه 

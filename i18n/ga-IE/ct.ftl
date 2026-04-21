@@ -1,0 +1,14 @@
+password = Pasfhocal 
+open = Oscail 
+save = Sábháil 
+copy = Cóip 
+paste = Greamaigh 
+cut = Gearr 
+search = Cuardach 
+close = Dún 
+enter_text = Cuir isteach téacs 
+status = Stádas 
+show_passwod = Taispeáin pasfhocal 
+hide_password = Folaigh pasfhocal 
+! about = About 
+about_us = Maidir Linne 
