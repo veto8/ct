@@ -28,7 +28,7 @@ fn main() -> Result<(), eframe::Error> {
     let loader: FluentLanguageLoader = fluent_language_loader!();
     let requested_languages = DesktopLanguageRequester::requested_languages();
     let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
-    //println!("{:?}", _result);
+    println!("{:?}", _result);
 
     let x = fl!(loader, "open");
     println!("{:?}", x);
@@ -76,6 +76,7 @@ struct CT {
     popup_position: Pos2,
     st: String,
     r: Range<usize>,
+    panel_central: bool,
 }
 
 impl Default for CT {
@@ -98,188 +99,194 @@ impl Default for CT {
             search_bar: false,
             show_popup: false,
             popup_position: Pos2 { x: 0.0, y: 0.0 },
+            panel_central: true,
         }
     }
 }
 
 impl eframe::App for CT {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::CentralPanel::default().show(ctx, |ui| {
-            let r = get_char_range(self.cursor1, self.cursor2);
-            let stl = self.text.char_range(r.clone()).to_string();
-            //println!("{:?}", r.);
+        if self.panel_central {
+            egui::CentralPanel::default().show(ctx, |ui| {
+                let r = get_char_range(self.cursor1, self.cursor2);
+                let stl = self.text.char_range(r.clone()).to_string();
+                //println!("{:?}", r.);
 
-            if stl.len() > 0 {
-                self.st = stl;
-                self.r = r;
-            }
-
-            ui.add_space(20.0);
-            ui.horizontal(|ui| {
-                let spacing = ui.spacing().item_spacing.x;
-                let available_width = ui.available_width() - (spacing * 2.0);
-                let button_width = (available_width / 100.00) * 25.00;
-                let password_width = (available_width / 100.00) * 75.00;
-                let button_height = 20.0;
-                let button_size = egui::Vec2::new(button_width, button_height);
-
-                let _password = ui.add(
-                    egui::TextEdit::singleline(&mut self.password)
-                        .hint_text("Password")
-                        .desired_width(password_width)
-                        .password(!self.hide_password),
-                );
-
-                let button_text = if self.hide_password {
-                    "Hide Password"
-                } else {
-                    "Show Password"
-                };
-                if ui
-                    .add(egui::Button::new(button_text).min_size(button_size))
-                    .clicked()
-                {
-                    self.hide_password = !self.hide_password;
-                }
-            });
-
-            ui.horizontal(|ui| {
-                let num_buttons = 7.0;
-                let spacing = ui.spacing().item_spacing.x;
-                let total_spacing = spacing * (num_buttons - 1.0);
-
-                let available_width = ui.available_width();
-                let button_width = (available_width - total_spacing) / num_buttons;
-                let button_height = 20.0;
-                let button_size = egui::Vec2::new(button_width, button_height);
-
-                if ui
-                    .add(egui::Button::new("Open").min_size(button_size))
-                    .clicked()
-                {
-                    if let Some(path) = rfd::FileDialog::new().pick_file() {
-                        self.picked_path = path.display().to_string();
-                        let ct = read_file(&self.picked_path.clone());
-                        self.text = decrypt(&ct, &self.password);
-                    }
+                if stl.len() > 0 {
+                    self.st = stl;
+                    self.r = r;
                 }
 
-                if ui
-                    .add(egui::Button::new("Save").min_size(button_size))
-                    .clicked()
-                {
-                    if let Some(path) = rfd::FileDialog::new().save_file() {
-                        self.picked_path = path.display().to_string();
-                        println!("save crypt text to: {}", self.picked_path);
-                        let ct = encrypt(&self.text, &self.password);
-                        let _x = write_file(&self.picked_path.clone(), &ct);
-                    }
-                }
-
-                if ui
-                    .add(egui::Button::new("Cut").min_size(button_size))
-                    .clicked()
-                {
-                    let r = get_char_range(self.cursor1, self.cursor2);
-                    let st = self.text.char_range(r.clone());
-                    ui.output_mut(|o| o.copied_text = st.to_string());
-                    self.text.delete_char_range(r.clone());
-                }
-                if ui
-                    .add(egui::Button::new("Copy").min_size(button_size))
-                    .clicked()
-                {
-                    let r = get_char_range(self.cursor1, self.cursor2);
-                    let st = self.text.char_range(r.clone());
-                    ui.output_mut(|o| o.copied_text = st.to_string());
-                }
-                if ui
-                    .add(egui::Button::new("Paste").min_size(button_size))
-                    .clicked()
-                {
-                    let txt = cli_clipboard::get_contents().unwrap();
-                    let r = get_char_range(self.cursor1, self.cursor2);
-                    self.text.insert_text(&txt, r.start);
-                }
-                if ui
-                    .add(egui::Button::new("Search").min_size(button_size))
-                    .clicked()
-                {
-                    self.search_bar = !self.search_bar;
-                }
-
-                if ui
-                    .add(egui::Button::new("Close").min_size(button_size))
-                    .clicked()
-                {
-                    ctx.send_viewport_cmd(egui::ViewportCommand::Close);
-                }
-            });
-
-            if self.search_bar {
+                ui.add_space(20.0);
                 ui.horizontal(|ui| {
-                    let _search = ui.add(
-                        egui::TextEdit::singleline(&mut self.search)
-                            .hint_text("Search")
-                            .desired_width(f32::INFINITY),
+                    let spacing = ui.spacing().item_spacing.x;
+                    let available_width = ui.available_width() - (spacing * 2.0);
+                    let button_width = (available_width / 100.00) * 25.00;
+                    let password_width = (available_width / 100.00) * 75.00;
+                    let button_height = 20.0;
+                    let button_size = egui::Vec2::new(button_width, button_height);
+
+                    let _password = ui.add(
+                        egui::TextEdit::singleline(&mut self.password)
+                            .hint_text("Password")
+                            .desired_width(password_width)
+                            .password(!self.hide_password),
                     );
-                });
-            }
 
-            ui.add_space(2.0);
-            let _scroll = egui::ScrollArea::vertical().show(ui, |ui| {
-                let mut layouter = |ui: &egui::Ui, string: &str, wrap_width: f32| {
-                    let mut layout_job = egui::text::LayoutJob::default();
-                    let target_word: &str = self.search.as_str();
-                    if target_word != ""
-                        && let Some(pos) = string.find(target_word)
-                    {
-                        layout_job.append(&string[..pos], 0.0, egui::TextFormat::default());
-
-                        let red_color = egui::Color32::RED;
-                        let color_format = egui::TextFormat {
-                            color: red_color,
-                            ..Default::default()
-                        };
-                        layout_job.append(&string[pos..pos + target_word.len()], 0.0, color_format);
-
-                        layout_job.append(
-                            &string[pos + target_word.len()..],
-                            0.0,
-                            egui::TextFormat::default(),
-                        );
+                    let button_text = if self.hide_password {
+                        "Hide Password"
                     } else {
-                        layout_job.append(string, 0.0, egui::TextFormat::default());
+                        "Show Password"
+                    };
+                    if ui
+                        .add(egui::Button::new(button_text).min_size(button_size))
+                        .clicked()
+                    {
+                        self.hide_password = !self.hide_password;
+                    }
+                });
+
+                ui.horizontal(|ui| {
+                    let num_buttons = 7.0;
+                    let spacing = ui.spacing().item_spacing.x;
+                    let total_spacing = spacing * (num_buttons - 1.0);
+
+                    let available_width = ui.available_width();
+                    let button_width = (available_width - total_spacing) / num_buttons;
+                    let button_height = 20.0;
+                    let button_size = egui::Vec2::new(button_width, button_height);
+
+                    if ui
+                        .add(egui::Button::new("Open").min_size(button_size))
+                        .clicked()
+                    {
+                        if let Some(path) = rfd::FileDialog::new().pick_file() {
+                            self.picked_path = path.display().to_string();
+                            let ct = read_file(&self.picked_path.clone());
+                            self.text = decrypt(&ct, &self.password);
+                        }
                     }
 
-                    layout_job.wrap.max_width = wrap_width;
-
-                    ui.fonts(|f| f.layout_job(layout_job))
-                };
-
-                let textedit = egui::TextEdit::multiline(&mut self.text)
-                    .desired_width(f32::INFINITY)
-                    .hint_text(fl!(self.loader, "open"))
-                    .layouter(&mut layouter);
-                let response = ui.add_sized(ui.available_size(), textedit);
-                //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
-                let resp_id = response.id;
-
-                if let Some(state) = egui::TextEdit::load_state(ui.ctx(), resp_id) {
-                    if let Some(ccursor) = state.ccursor_range() {
-                        //if let Some(ccursor) = self.cursor.char_range() {
-                        self.cursor1 = ccursor.secondary.index;
-                        self.cursor2 = ccursor.primary.index;
+                    if ui
+                        .add(egui::Button::new("Save").min_size(button_size))
+                        .clicked()
+                    {
+                        if let Some(path) = rfd::FileDialog::new().save_file() {
+                            self.picked_path = path.display().to_string();
+                            println!("save crypt text to: {}", self.picked_path);
+                            let ct = encrypt(&self.text, &self.password);
+                            let _x = write_file(&self.picked_path.clone(), &ct);
+                        }
                     }
+
+                    if ui
+                        .add(egui::Button::new("Cut").min_size(button_size))
+                        .clicked()
+                    {
+                        let r = get_char_range(self.cursor1, self.cursor2);
+                        let st = self.text.char_range(r.clone());
+                        ui.output_mut(|o| o.copied_text = st.to_string());
+                        self.text.delete_char_range(r.clone());
+                    }
+                    if ui
+                        .add(egui::Button::new("Copy").min_size(button_size))
+                        .clicked()
+                    {
+                        let r = get_char_range(self.cursor1, self.cursor2);
+                        let st = self.text.char_range(r.clone());
+                        ui.output_mut(|o| o.copied_text = st.to_string());
+                    }
+                    if ui
+                        .add(egui::Button::new("Paste").min_size(button_size))
+                        .clicked()
+                    {
+                        let txt = cli_clipboard::get_contents().unwrap();
+                        let r = get_char_range(self.cursor1, self.cursor2);
+                        self.text.insert_text(&txt, r.start);
+                    }
+                    if ui
+                        .add(egui::Button::new("Search").min_size(button_size))
+                        .clicked()
+                    {
+                        self.search_bar = !self.search_bar;
+                    }
+
+                    if ui
+                        .add(egui::Button::new("Close").min_size(button_size))
+                        .clicked()
+                    {
+                        ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+                    }
+                });
+
+                if self.search_bar {
+                    ui.horizontal(|ui| {
+                        let _search = ui.add(
+                            egui::TextEdit::singleline(&mut self.search)
+                                .hint_text("Search")
+                                .desired_width(f32::INFINITY),
+                        );
+                    });
                 }
 
-                if response.clicked_by(egui::PointerButton::Secondary) {
-                    self.show_popup = true;
-                    self.popup_position = response.interact_pointer_pos().unwrap_or(Pos2::ZERO); // Store click position
-                }
+                ui.add_space(2.0);
+                let _scroll = egui::ScrollArea::vertical().show(ui, |ui| {
+                    let mut layouter = |ui: &egui::Ui, string: &str, wrap_width: f32| {
+                        let mut layout_job = egui::text::LayoutJob::default();
+                        let target_word: &str = self.search.as_str();
+                        if target_word != ""
+                            && let Some(pos) = string.find(target_word)
+                        {
+                            layout_job.append(&string[..pos], 0.0, egui::TextFormat::default());
+
+                            let red_color = egui::Color32::RED;
+                            let color_format = egui::TextFormat {
+                                color: red_color,
+                                ..Default::default()
+                            };
+                            layout_job.append(
+                                &string[pos..pos + target_word.len()],
+                                0.0,
+                                color_format,
+                            );
+
+                            layout_job.append(
+                                &string[pos + target_word.len()..],
+                                0.0,
+                                egui::TextFormat::default(),
+                            );
+                        } else {
+                            layout_job.append(string, 0.0, egui::TextFormat::default());
+                        }
+
+                        layout_job.wrap.max_width = wrap_width;
+
+                        ui.fonts(|f| f.layout_job(layout_job))
+                    };
+
+                    let textedit = egui::TextEdit::multiline(&mut self.text)
+                        .desired_width(f32::INFINITY)
+                        .hint_text(fl!(self.loader, "open"))
+                        .layouter(&mut layouter);
+                    let response = ui.add_sized(ui.available_size(), textedit);
+                    //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
+                    let resp_id = response.id;
+
+                    if let Some(state) = egui::TextEdit::load_state(ui.ctx(), resp_id) {
+                        if let Some(ccursor) = state.ccursor_range() {
+                            //if let Some(ccursor) = self.cursor.char_range() {
+                            self.cursor1 = ccursor.secondary.index;
+                            self.cursor2 = ccursor.primary.index;
+                        }
+                    }
+
+                    if response.clicked_by(egui::PointerButton::Secondary) {
+                        self.show_popup = true;
+                        self.popup_position = response.interact_pointer_pos().unwrap_or(Pos2::ZERO); // Store click position
+                    }
+                });
             });
-        });
-
+        }
         if self.show_popup {
             let popup_id = egui::Id::new("my_popup");
             egui::Area::new(popup_id)
@@ -317,10 +324,40 @@ impl eframe::App for CT {
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
                 ui.menu_button("File", |ui| {
-                    if ui.button("Open Crypt Text").clicked() {
+                    if ui.button("Open").clicked() {
+                        self.panel_central = true;
                         ui.close_menu();
                     }
-                    if ui.button("Open Crypt Textx").clicked() {
+                    if ui.button("Save").clicked() {
+                        self.panel_central = true;
+                        ui.close_menu();
+                    }
+                });
+                ui.menu_button("Edit", |ui| {
+                    if ui.button("Copy").clicked() {
+                        self.panel_central = true;
+                        ui.close_menu();
+                    }
+                    if ui.button("Paste").clicked() {
+                        self.panel_central = true;
+                        ui.close_menu();
+                    }
+                    if ui.button("Cut").clicked() {
+                        self.panel_central = true;
+                        ui.close_menu();
+                    }
+                });
+                ui.menu_button("Settings", |ui| {
+                    if ui.button("Languages").clicked() {
+                        self.panel_central = false;
+                        ui.close_menu();
+                    }
+                });
+                ui.menu_button("About", |ui| {
+                    if ui.button("Help").clicked() {
+                        ui.close_menu();
+                    }
+                    if ui.button("About CT").clicked() {
                         ui.close_menu();
                     }
                 });
