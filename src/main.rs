@@ -26,7 +26,7 @@ fn main() -> Result<(), eframe::Error> {
     let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
     //println!("{:?}", _result);
 
-    let x = fl!(loader, "hello-world");
+    let x = fl!(loader, "open");
     println!("{:?}", x);
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
@@ -70,6 +70,7 @@ struct CT {
     search_bar: bool,
     show_popup: bool,
     popup_position: Pos2,
+    st: String,
 }
 
 impl Default for CT {
@@ -86,6 +87,7 @@ impl Default for CT {
             cursor2: 0,
             password: "".to_string(),
             search: "".to_string(),
+            st: "".to_string(),
             hide_password: false,
             search_bar: false,
             show_popup: false,
@@ -97,6 +99,9 @@ impl Default for CT {
 impl eframe::App for CT {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
+            let r = get_char_range(self.cursor1, self.cursor2);
+            self.st = self.text.char_range(r.clone()).to_string();
+            //self.st = "hhhhhhhh".to_string();
             ui.add_space(20.0);
             ui.horizontal(|ui| {
                 let spacing = ui.spacing().item_spacing.x;
@@ -242,7 +247,7 @@ impl eframe::App for CT {
 
                 let textedit = egui::TextEdit::multiline(&mut self.text)
                     .desired_width(f32::INFINITY)
-                    .hint_text(fl!(self.loader, "hello-world"))
+                    .hint_text(fl!(self.loader, "open"))
                     .layouter(&mut layouter);
                 let response = ui.add_sized(ui.available_size(), textedit);
                 //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
@@ -272,7 +277,7 @@ impl eframe::App for CT {
                         if ui.button("Copy").clicked() {
                             let r = get_char_range(self.cursor1, self.cursor2);
                             let st = self.text.char_range(r.clone());
-                            ui.output_mut(|o| o.copied_text = st.to_string());
+                            ui.output_mut(|o| o.copied_text = self.st.to_string());
                             self.show_popup = false;
                         }
 
