@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
 extern crate ct_nox;
+use ct::config::get_config;
 use ct::icon::get_icon;
 use ct_nox::ct_nox::{read_file, write_file};
 use ct_nox::decrypt::decrypt;
@@ -13,6 +14,7 @@ use i18n_embed::{
     fluent::{FluentLanguageLoader, fluent_language_loader},
 };
 use i18n_embed_fl::fl;
+// use libs::config::get_config;
 use rust_embed::RustEmbed;
 use std::ops::Range;
 
@@ -21,6 +23,8 @@ use std::ops::Range;
 struct Localizations;
 
 fn main() -> Result<(), eframe::Error> {
+    let config = get_config();
+
     let loader: FluentLanguageLoader = fluent_language_loader!();
     let requested_languages = DesktopLanguageRequester::requested_languages();
     let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
