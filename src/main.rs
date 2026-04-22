@@ -8,13 +8,13 @@ use ct_nox::encrypt::encrypt;
 use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::{IconData, Pos2, Vec2};
-
 use i18n_embed::{
     DesktopLanguageRequester,
     fluent::{FluentLanguageLoader, fluent_language_loader},
 };
 use i18n_embed_fl::fl;
 use rust_embed::RustEmbed;
+use std::ops::Range;
 
 #[derive(RustEmbed)]
 #[folder = "i18n"] // path to the compiled localization resources
@@ -71,6 +71,7 @@ struct CT {
     show_popup: bool,
     popup_position: Pos2,
     st: String,
+    r: Range<usize>,
 }
 
 impl Default for CT {
@@ -88,6 +89,7 @@ impl Default for CT {
             password: "".to_string(),
             search: "".to_string(),
             st: "".to_string(),
+            r: 0..0,
             hide_password: false,
             search_bar: false,
             show_popup: false,
@@ -100,8 +102,14 @@ impl eframe::App for CT {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             let r = get_char_range(self.cursor1, self.cursor2);
-            self.st = self.text.char_range(r.clone()).to_string();
-            //self.st = "hhhhhhhh".to_string();
+            let stl = self.text.char_range(r.clone()).to_string();
+            //println!("{:?}", r.);
+
+            if stl.len() > 0 {
+                self.st = stl;
+                self.r = r;
+            }
+
             ui.add_space(20.0);
             ui.horizontal(|ui| {
                 let spacing = ui.spacing().item_spacing.x;
@@ -275,8 +283,6 @@ impl eframe::App for CT {
                 .show(ctx, |ui| {
                     egui::Frame::popup(ui.style()).show(ui, |ui| {
                         if ui.button("Copy").clicked() {
-                            let r = get_char_range(self.cursor1, self.cursor2);
-                            let st = self.text.char_range(r.clone());
                             ui.output_mut(|o| o.copied_text = self.st.to_string());
                             self.show_popup = false;
                         }
@@ -288,10 +294,8 @@ impl eframe::App for CT {
                             self.show_popup = false;
                         }
                         if ui.button("Cut").clicked() {
-                            let r = get_char_range(self.cursor1, self.cursor2);
-                            let st = self.text.char_range(r.clone());
-                            ui.output_mut(|o| o.copied_text = st.to_string());
-                            self.text.delete_char_range(r.clone());
+                            ui.output_mut(|o| o.copied_text = self.st.to_string());
+                            self.text.delete_char_range(self.r.clone());
                             self.show_popup = false;
                         }
 
