@@ -8,7 +8,7 @@ use ct_nox::decrypt::decrypt;
 use ct_nox::encrypt::encrypt;
 use eframe::egui;
 use eframe::egui::TextBuffer;
-use eframe::egui::{IconData, Pos2, Vec2};
+use eframe::egui::{ComboBox, IconData, Pos2, Vec2};
 use i18n_embed::{
     DesktopLanguageRequester,
     fluent::{FluentLanguageLoader, fluent_language_loader},
@@ -77,6 +77,9 @@ struct CT {
     st: String,
     r: Range<usize>,
     panel_central: bool,
+    panel_setting: bool,
+    selected_language: String,
+    languages: Vec<String>,
 }
 
 impl Default for CT {
@@ -100,13 +103,43 @@ impl Default for CT {
             show_popup: false,
             popup_position: Pos2 { x: 0.0, y: 0.0 },
             panel_central: true,
+            panel_setting: false,
+            selected_language: "English".to_string(),
+            languages: vec![
+                "German".to_string(),
+                "English".to_string(),
+                "Thai".to_string(),
+            ],
         }
     }
 }
 
 impl eframe::App for CT {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        if self.panel_central {
+        if self.panel_central == false && self.panel_setting == true {
+            egui::CentralPanel::default().show(ctx, |ui| {
+                ui.add_space(20.0);
+                ui.heading("Select a Language");
+
+                ui.add_space(10.0); // Add some spacing
+
+                // The ComboBox widget
+                ComboBox::new("my_combobox", "Select an option") // Unique ID and label
+                    .selected_text(&self.selected_language) // Display the currently selected text
+                    .show_ui(ui, |ui| {
+                        // Iterate over your options and create a selectable item for each
+                        for i in &self.languages {
+                            if ui.selectable_label(false, i).clicked() {
+                                self.selected_language = i.clone();
+                            }
+                        }
+                    });
+
+                ui.add_space(20.0); // More spacing
+
+                ui.label(format!("You selected: {}", self.selected_language));
+            });
+        } else if self.panel_central == true && self.panel_setting == false {
             egui::CentralPanel::default().show(ctx, |ui| {
                 let r = get_char_range(self.cursor1, self.cursor2);
                 let stl = self.text.char_range(r.clone()).to_string();
@@ -286,7 +319,7 @@ impl eframe::App for CT {
                     }
                 });
             });
-        }
+        };
         if self.show_popup {
             let popup_id = egui::Id::new("my_popup");
             egui::Area::new(popup_id)
@@ -349,6 +382,7 @@ impl eframe::App for CT {
                 });
                 ui.menu_button("Settings", |ui| {
                     if ui.button("Languages").clicked() {
+                        self.panel_setting = true;
                         self.panel_central = false;
                         ui.close_menu();
                     }
