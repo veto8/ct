@@ -82,11 +82,48 @@ struct CT {
     languages: Vec<String>,
 }
 
+//    fn new(_cc: &eframe::CreationContext<'_>) -> Self {
+
 impl Default for CT {
     fn default() -> Self {
         let loader: FluentLanguageLoader = fluent_language_loader!();
         let requested_languages = DesktopLanguageRequester::requested_languages();
         let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
+        let mut fonts = egui::FontDefinitions::default();
+        fonts.font_data.insert(
+            "noto_sans".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/NotoSans-Regular.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "noto_sans_cjk".to_owned(),
+            egui::FontData::from_static(include_bytes!(
+                "../assets/fonts/noto-sans-cjk-regular.otf"
+            )),
+        );
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(0, "noto_sans".to_owned()); // Primary: Noto Sans
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(1, "noto_sans_cjk".to_owned()); // Fallback 1: Noto Sans CJK
+        // Add more fallbacks here if you've loaded more fonts
+
+        // For monospace text, you might want a different font
+        fonts
+            .families
+            .entry(egui::FontFamily::Monospace)
+            .or_default()
+            .insert(0, "noto_sans".to_owned()); // Or a dedicated monospace font if available
+
+        // Apply the font definitions
+        //_cc.egui_ctx.set_fonts(fonts);
+
         CT {
             loader: loader,
             text: "".to_string(),
