@@ -15,9 +15,9 @@ use i18n_embed::{
 };
 use i18n_embed_fl::fl;
 // use libs::config::get_config;
+use egui::{Context, FontDefinitions};
 use rust_embed::RustEmbed;
-use std::ops::Range;
-
+use std::ops::Range; // Make sure to import this
 #[derive(RustEmbed)]
 #[folder = "i18n"] // path to the compiled localization resources
 struct Localizations;
@@ -84,12 +84,10 @@ struct CT {
 
 //    fn new(_cc: &eframe::CreationContext<'_>) -> Self {
 
-impl Default for CT {
-    fn default() -> Self {
-        let loader: FluentLanguageLoader = fluent_language_loader!();
-        let requested_languages = DesktopLanguageRequester::requested_languages();
-        let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
-        let mut fonts = egui::FontDefinitions::default();
+impl CT {
+    pub fn configure_egui_fonts(ctx: &Context) {
+        let mut fonts = FontDefinitions::default();
+
         fonts.font_data.insert(
             "noto_sans".to_owned(),
             egui::FontData::from_static(include_bytes!("../assets/fonts/NotoSans-Regular.ttf")),
@@ -112,17 +110,22 @@ impl Default for CT {
             .entry(egui::FontFamily::Proportional)
             .or_default()
             .insert(1, "noto_sans_cjk".to_owned()); // Fallback 1: Noto Sans CJK
-        // Add more fallbacks here if you've loaded more fonts
 
-        // For monospace text, you might want a different font
         fonts
             .families
             .entry(egui::FontFamily::Monospace)
             .or_default()
-            .insert(0, "noto_sans".to_owned()); // Or a dedicated monospace font if available
+            .insert(0, "noto_sans".to_owned());
 
-        // Apply the font definitions
-        //_cc.egui_ctx.set_fonts(fonts);
+        ctx.set_fonts(fonts); // Apply fonts to the context
+    }
+}
+
+impl Default for CT {
+    fn default() -> Self {
+        let loader: FluentLanguageLoader = fluent_language_loader!();
+        let requested_languages = DesktopLanguageRequester::requested_languages();
+        let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
 
         CT {
             loader: loader,
@@ -175,7 +178,7 @@ impl eframe::App for CT {
                 ui.add_space(20.0); // More spacing
 
                 ui.label(format!("You selected: {}", self.selected_language));
-
+                ui.label("Chinese: 你好，世界！"); // zh-CN (covers zh-TW, zh-HK, zh-SG, zh-MO)
                 ui.label("English: Hello World!"); // en-US
                 ui.label("Thai: สวัสดีชาวโลก!"); // th-TH
                 ui.label("Amharic: ሰላም አለም!"); // am-ET
