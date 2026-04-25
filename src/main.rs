@@ -56,6 +56,8 @@ fn main() -> Result<(), eframe::Error> {
         options,
         Box::new(|cc| {
             cc.egui_ctx.set_pixels_per_point(2.2);
+            CT::configure_egui_fonts(&cc.egui_ctx); // ← Add this line
+
             Box::new(CT::default())
         }),
     )
