@@ -122,6 +122,37 @@ impl CT {
             egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-armenian.ttf")),
         );
 
+        fonts.font_data.insert(
+            "noto_serif_bengali".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-bengali.ttf")),
+        );
+        fonts.font_data.insert(
+            "noto_serif_georgian".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-georgian.ttf")),
+        );
+        fonts.font_data.insert(
+            "noto_serif_gujarati".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-gujarati.ttf")),
+        );
+        fonts.font_data.insert(
+            "noto_serif_kannada".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-kannada.ttf")),
+        );
+        fonts.font_data.insert(
+            "noto_serif_khmer".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-khmer.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "noto_serif_lao".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-lao.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "noto_serif_myammar".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-myammar.ttf")),
+        );
+
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
@@ -153,6 +184,48 @@ impl CT {
             .entry(egui::FontFamily::Proportional)
             .or_default()
             .insert(5, "noto_sans_armenian".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(6, "noto_serif_bengali".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(7, "noto_serif_georgian".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(8, "noto_serif_gujarati".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(9, "noto_serif_kannada".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(10, "noto_serif_khmer".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(11, "noto_serif_lao".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(12, "noto_serif_myammar".to_owned());
 
         fonts
             .families
@@ -221,54 +294,14 @@ impl eframe::App for CT {
                 ui.add_space(20.0); // More spacing
 
                 ui.label(format!("You selected: {}", self.selected_language));
-                ui.label("Bengali: ওহে বিশ্ব!"); // bn-BD
-                ui.label("Georgian: გამარჯობა სამყარო!"); // ka-GE
-                ui.label("Gujarati: નમસ્કાર વિશ્વ!"); // gu-IN
-                ui.label("Kannada: ನಮಸ್ಕಾರ ಜಗತ್ತು!"); // kn-IN
-                ui.label("Khmer: សួស្តី​ពិភពលោក!"); // km-KH
-                ui.label("Lao: ສະບາຍດີໂລກ!"); // lo-LA
-                ui.label("Myanmar (Burmese): မင်္ဂလာပါကမ္ဘာလောက!"); // my-MM
-                ui.label("Marathi: नमस्कार जग!"); // mr-IN
-                ui.label("Mongolian: Сайн уу дэлхий!"); // mn-MN                
-                ui.label("Kazakh: Сәлем Әлем!"); // kk-KZ                
 
-                ui.label("Luxembourgish: Moien Welt!"); // lb-LU
-                ui.label("Macedonian: Здраво свету!"); // mk-MK
-                ui.label("Malagasy: Salama izao tontolo izao!"); // mg-MG
-                ui.label("Malay: Hai dunia!"); // ms-MY
                 ui.label("Malayalam: ഹലോ ലോകം!"); // ml-IN
-                ui.label("Maltese: Bongu dinja!"); // mt-MT
-                ui.label("Maori: Kia ora e te ao!"); // mi-N
-                ui.label("Norwegian: Hei verden!"); // no-NO
-                ui.label("Polish: Witaj świecie!"); // pl-PL
-                ui.label("Portuguese: Olá Mundo!"); // pt-PT
                 ui.label("Punjabi: ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਦੁਨਿਆ!"); // pa-IN
-                ui.label("Romanian: Salut Lume!"); // ro-RO
-                ui.label("Russian: Привет мир!"); // ru-RU
-                ui.label("Samoan: Talofa le lalolagi!"); // sm-WS
-                ui.label("Scottish Gaelic: Halò a shaoghal!"); // gd-GB
-                ui.label("Serbian: Здраво свете!"); // sr-RS
-                ui.label("Sesotho: Lumela Lefatše!"); // st-ZA
-                ui.label("Shona: Mhoro!"); // sn-ZW
-                ui.label("Sindhi: سلام دنيا!"); // sd-PK
                 ui.label("Sinhala: ආයුබෝවන් ලෝකය!"); // si-LK
-                ui.label("Slovak: Ahoj svet!"); // sk-SK
-                ui.label("Slovenian: Pozdravljen svet!"); // sl-SI
-                ui.label("Somali: Salaam dunia!"); // so-SO
-                ui.label("Spanish: ¡Hola Mundo!"); // es-ES
-                ui.label("Sundanese: Sampurasun!"); // su-ID
-                ui.label("Swahili: Habari dunia!"); // sw-TZ
-                ui.label("Swedish: Hej Världen!"); // sv-SE
-                ui.label("Tajik: Салом дунё!"); // tg-TJ
+
                 ui.label("Tamil: வணக்கம் உலகம்!"); // ta-IN
                 ui.label("Telugu: నమస్కారం ప్రపంచం!"); // te-IN
-                ui.label("Turkish: Merhaba Dünya!"); // tr-TR
-                ui.label("Ukrainian: Привіт Світ!"); // uk-UA
-                ui.label("Urdu: السلام علیکم دنیا!"); // ur-PK
-                ui.label("Uzbek: Salom dunyo!"); // uz-UZ
-                ui.label("Vietnamese: Xin chào thế giới!"); // vi-VN
-                ui.label("Welsh: Helo Byd!"); // cy-GB
-                ui.label("Xhosa: Molo Lizwe!"); // xh-ZA
+
                 ui.label("Yiddish: שלום עולם!"); // yi
                 ui.label("Yoruba: Bawo ni aye!"); // yo-NG
                 ui.label("Zulu: Sawubona Mhlaba!"); // zu-ZA
@@ -321,6 +354,49 @@ impl eframe::App for CT {
                 ui.label("Nepali: नमस्कार संसार!"); // ne-NP
                 ui.label("Pashto: سلام نړی!"); // ps-AF
                 ui.label("Persian: سلام دنیا!"); // fa-IR
+                ui.label("Bengali: ওহে বিশ্ব!"); // bn-BD
+                ui.label("Georgian: გამარჯობა სამყარო!"); // ka-GE
+                ui.label("Gujarati: નમસ્કાર વિશ્વ!"); // gu-IN
+                ui.label("Kannada: ನಮಸ್ಕಾರ ಜಗತ್ತು!"); // kn-IN
+                ui.label("Khmer: សួស្តី​ពិភពលោក!"); // km-KH
+                ui.label("Lao: ສະບາຍດີໂລກ!"); // lo-LA
+                ui.label("Myanmar (Burmese): မင်္ဂလာပါကမ္ဘာလောက!"); // my-MM
+                ui.label("Marathi: नमस्कार जग!"); // mr-IN
+                ui.label("Mongolian: Сайн уу дэлхий!"); // mn-MN                
+                ui.label("Kazakh: Сәлем Әлем!"); // kk-KZ                
+
+                ui.label("Luxembourgish: Moien Welt!"); // lb-LU
+                ui.label("Macedonian: Здраво свету!"); // mk-MK
+                ui.label("Malagasy: Salama izao tontolo izao!"); // mg-MG
+                ui.label("Malay: Hai dunia!"); // ms-MY
+                ui.label("Maltese: Bongu dinja!"); // mt-MT
+                ui.label("Maori: Kia ora e te ao!"); // mi-N
+                ui.label("Norwegian: Hei verden!"); // no-NO
+                ui.label("Polish: Witaj świecie!"); // pl-PL
+                ui.label("Portuguese: Olá Mundo!"); // pt-PT
+                ui.label("Romanian: Salut Lume!"); // ro-RO
+                ui.label("Russian: Привет мир!"); // ru-RU
+                ui.label("Samoan: Talofa le lalolagi!"); // sm-WS
+                ui.label("Scottish Gaelic: Halò a shaoghal!"); // gd-GB
+                ui.label("Serbian: Здраво свете!"); // sr-RS
+                ui.label("Sesotho: Lumela Lefatše!"); // st-ZA
+                ui.label("Shona: Mhoro!"); // sn-ZW
+                ui.label("Sindhi: سلام دنيا!"); // sd-PK
+                ui.label("Slovak: Ahoj svet!"); // sk-SK
+                ui.label("Slovenian: Pozdravljen svet!"); // sl-SI
+                ui.label("Somali: Salaam dunia!"); // so-SO
+                ui.label("Spanish: ¡Hola Mundo!"); // es-ES
+                ui.label("Sundanese: Sampurasun!"); // su-ID
+                ui.label("Swahili: Habari dunia!"); // sw-TZ
+                ui.label("Swedish: Hej Världen!"); // sv-SE
+                ui.label("Tajik: Салом дунё!"); // tg-TJ
+                ui.label("Turkish: Merhaba Dünya!"); // tr-TR
+                ui.label("Ukrainian: Привіт Світ!"); // uk-UA
+                ui.label("Urdu: السلام علیکم دنیا!"); // ur-PK
+                ui.label("Uzbek: Salom dunyo!"); // uz-UZ
+                ui.label("Vietnamese: Xin chào thế giới!"); // vi-VN
+                ui.label("Welsh: Helo Byd!"); // cy-GB
+                ui.label("Xhosa: Molo Lizwe!"); // xh-ZA                
             });
         } else if self.panel_central == true && self.panel_setting == false {
             egui::CentralPanel::default().show(ctx, |ui| {
