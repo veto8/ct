@@ -92,7 +92,7 @@ impl CT {
 
         fonts.font_data.insert(
             "noto_sans".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/NotoSans-Regular.ttf")),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-regular.ttf")),
         );
 
         fonts.font_data.insert(
@@ -102,16 +102,57 @@ impl CT {
             )),
         );
 
+        fonts.font_data.insert(
+            "noto_sans_thai".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-thai.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "noto_sans_ethiopic".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-ethiopic.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "noto_sans_arabic".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-arabic.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "noto_sans_armenian".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-armenian.ttf")),
+        );
+
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(0, "noto_sans".to_owned()); // Primary: Noto Sans
+            .insert(0, "noto_sans".to_owned());
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(1, "noto_sans_cjk".to_owned()); // Fallback 1: Noto Sans CJK
+            .insert(1, "noto_sans_cjk".to_owned());
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(2, "noto_sans_thai".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(3, "noto_sans_ethiopic".to_owned());
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(4, "noto_sans_arabic".to_owned());
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(5, "noto_sans_armenian".to_owned());
 
         fonts
             .families
@@ -119,7 +160,7 @@ impl CT {
             .or_default()
             .insert(0, "noto_sans".to_owned());
 
-        ctx.set_fonts(fonts); // Apply fonts to the context
+        ctx.set_fonts(fonts);
     }
 }
 
@@ -180,68 +221,25 @@ impl eframe::App for CT {
                 ui.add_space(20.0); // More spacing
 
                 ui.label(format!("You selected: {}", self.selected_language));
-                ui.label("Chinese: 你好，世界！"); // zh-CN (covers zh-TW, zh-HK, zh-SG, zh-MO)
-                ui.label("English: Hello World!"); // en-US
-                ui.label("Thai: สวัสดีชาวโลก!"); // th-TH
-                ui.label("Amharic: ሰላም አለም!"); // am-ET
-                ui.label("Arabic: مرحبًا بالعالم!"); // ar-SA
-                ui.label("Armenian: Բարև աշխարհ!"); // hy-AM
-                ui.label("Azerbaijani: Salam Dünya!"); // az-AZ
-                ui.label("Basque: Kaixo Mundua!"); // eu-ES
-                ui.label("Belarusian: Прывітанне Сусвет!"); // be-BY
                 ui.label("Bengali: ওহে বিশ্ব!"); // bn-BD
-                ui.label("Bosnian: Zdravo svijete!"); // bs-BA
-                ui.label("Bulgarian: Здравей свят!"); // bg-BG
-                ui.label("Catalan: Hola Món!"); // ca-ES
-                ui.label("Chinese: 你好，世界！"); // zh-CN (covers zh-TW, zh-HK, zh-SG, zh-MO)
-                ui.label("Croatian: Zdravo svijete!"); // hr-HR
-                ui.label("Czech: Ahoj světe!"); // cs-CZ
-                ui.label("Danish: Hej Verden!"); // da-DK
-                ui.label("Dutch: Hallo Wereld!"); // nl-NL
-                ui.label("Esperanto: Saluton Mondo!"); // eo
-                ui.label("Estonian: Tere maailm!"); // et-EE
-                ui.label("Filipino: Kamusta Mundo!"); // tl-PH
-                ui.label("Finnish: Hei maailma!"); // fi-FI
-                ui.label("French: Bonjour le monde !"); // fr-FR
-                ui.label("Frisian: Goeie dei wrâld!"); // fy-NL
-                ui.label("Galician: Ola Mundo!"); // gl-ES
                 ui.label("Georgian: გამარჯობა სამყარო!"); // ka-GE
-                ui.label("German: Hallo Welt!"); // de-DE
-                ui.label("Greek: Γεια σου κόσμε!"); // el-GR
                 ui.label("Gujarati: નમસ્કાર વિશ્વ!"); // gu-IN
-                ui.label("Haitian Creole: Bonjou mond!"); // ht-HT
-                ui.label("Hausa: Sannu Duniya!"); // ha-NG
-                ui.label("Hawaiian: Aloha honua!"); // haw-US
-                ui.label("Hindi: नमस्ते दुनिया!"); // hi-IN
-                ui.label("Hungarian: Helló világ!"); // hu-HU
-                ui.label("Igbo: Ndewo Ụwa!"); // ig-NG
-                ui.label("Irish: Dia duit an domhan!"); // ga-IE
-                ui.label("Italian: Ciao mondo!"); // it-IT
-                ui.label("Japanese: こんにちは世界！"); // ja-JP
                 ui.label("Kannada: ನಮಸ್ಕಾರ ಜಗತ್ತು!"); // kn-IN
-                ui.label("Kazakh: Сәлем Әлем!"); // kk-KZ
                 ui.label("Khmer: សួស្តី​ពិភពលោក!"); // km-KH
-                ui.label("Korean: 안녕하세요 세계!"); // ko-KR
-                ui.label("Kurdish (Kurmanji): Silav cîhan!"); // ku-TR
-                ui.label("Kyrgyz: Салам дүйнө!"); // ky-KG
                 ui.label("Lao: ສະບາຍດີໂລກ!"); // lo-LA
-                ui.label("Latin: Salve Mundus!"); // la
-                ui.label("Latvian: Sveika pasaule!"); // lv-LV
-                ui.label("Lithuanian: Labas pasauli!"); // lt-LT
+                ui.label("Myanmar (Burmese): မင်္ဂလာပါကမ္ဘာလောက!"); // my-MM
+                ui.label("Marathi: नमस्कार जग!"); // mr-IN
+                ui.label("Mongolian: Сайн уу дэлхий!"); // mn-MN                
+                ui.label("Kazakh: Сәлем Әлем!"); // kk-KZ                
+
                 ui.label("Luxembourgish: Moien Welt!"); // lb-LU
                 ui.label("Macedonian: Здраво свету!"); // mk-MK
                 ui.label("Malagasy: Salama izao tontolo izao!"); // mg-MG
                 ui.label("Malay: Hai dunia!"); // ms-MY
                 ui.label("Malayalam: ഹലോ ലോകം!"); // ml-IN
                 ui.label("Maltese: Bongu dinja!"); // mt-MT
-                ui.label("Maori: Kia ora e te ao!"); // mi-NZ
-                ui.label("Marathi: नमस्कार जग!"); // mr-IN
-                ui.label("Mongolian: Сайн уу дэлхий!"); // mn-MN
-                ui.label("Myanmar (Burmese): မင်္ဂလာပါကမ္ဘာလောက!"); // my-MM
-                ui.label("Nepali: नमस्कार संसार!"); // ne-NP
+                ui.label("Maori: Kia ora e te ao!"); // mi-N
                 ui.label("Norwegian: Hei verden!"); // no-NO
-                ui.label("Pashto: سلام نړی!"); // ps-AF
-                ui.label("Persian: سلام دنیا!"); // fa-IR
                 ui.label("Polish: Witaj świecie!"); // pl-PL
                 ui.label("Portuguese: Olá Mundo!"); // pt-PT
                 ui.label("Punjabi: ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਦੁਨਿਆ!"); // pa-IN
@@ -274,6 +272,55 @@ impl eframe::App for CT {
                 ui.label("Yiddish: שלום עולם!"); // yi
                 ui.label("Yoruba: Bawo ni aye!"); // yo-NG
                 ui.label("Zulu: Sawubona Mhlaba!"); // zu-ZA
+
+                ui.label("Chinese: 你好，世界！"); // zh-CN (covers zh-TW, zh-HK, zh-SG, zh-MO)
+                ui.label("English: Hello World!"); // en-US
+                ui.label("Thai: สวัสดีชาวโลก!"); // th-TH
+                ui.label("Amharic: ሰላም አለም!"); // am-ET
+                ui.label("Arabic: مرحبًا بالعالم!"); // ar-SA
+                ui.label("Armenian: Բարև աշխարհ!"); // hy-AM
+                ui.label("Azerbaijani: Salam Dünya!"); // az-AZ
+                ui.label("Basque: Kaixo Mundua!"); // eu-ES
+                ui.label("Belarusian: Прывітанне Сусвет!"); // be-BY
+
+                ui.label("Bosnian: Zdravo svijete!"); // bs-BA
+                ui.label("Bulgarian: Здравей свят!"); // bg-BG
+                ui.label("Catalan: Hola Món!"); // ca-ES
+                ui.label("Chinese: 你好，世界！"); // zh-CN (covers zh-TW, zh-HK, zh-SG, zh-MO)
+                ui.label("Croatian: Zdravo svijete!"); // hr-HR
+                ui.label("Czech: Ahoj světe!"); // cs-CZ
+                ui.label("Danish: Hej Verden!"); // da-DK
+                ui.label("Dutch: Hallo Wereld!"); // nl-NL
+                ui.label("Greek: Γεια σου κόσμε!"); // el-GR
+
+                ui.label("Esperanto: Saluton Mondo!"); // eo
+                ui.label("Estonian: Tere maailm!"); // et-EE
+                ui.label("Filipino: Kamusta Mundo!"); // tl-PH
+                ui.label("Finnish: Hei maailma!"); // fi-FI
+                ui.label("French: Bonjour le monde !"); // fr-FR
+                ui.label("Frisian: Goeie dei wrâld!"); // fy-NL
+                ui.label("Galician: Ola Mundo!"); // gl-ES
+
+                ui.label("German: Hallo Welt!"); // de-DE
+
+                ui.label("Haitian Creole: Bonjou mond!"); // ht-HT
+                ui.label("Hausa: Sannu Duniya!"); // ha-NG
+                ui.label("Hawaiian: Aloha honua!"); // haw-US
+                ui.label("Hindi: नमस्ते दुनिया!"); // hi-IN
+                ui.label("Hungarian: Helló világ!"); // hu-HU
+                ui.label("Igbo: Ndewo Ụwa!"); // ig-NG
+                ui.label("Irish: Dia duit an domhan!"); // ga-IE
+                ui.label("Italian: Ciao mondo!"); // it-IT
+                ui.label("Japanese: こんにちは世界！"); // ja-JP
+                ui.label("Korean: 안녕하세요 세계!"); // ko-KR
+                ui.label("Kurdish (Kurmanji): Silav cîhan!"); // ku-TR
+                ui.label("Kyrgyz: Салам дүйнө!"); // ky-KG
+                ui.label("Latin: Salve Mundus!"); // la
+                ui.label("Latvian: Sveika pasaule!"); // lv-LV
+                ui.label("Lithuanian: Labas pasauli!"); // lt-LT
+                ui.label("Nepali: नमस्कार संसार!"); // ne-NP
+                ui.label("Pashto: سلام نړی!"); // ps-AF
+                ui.label("Persian: سلام دنیا!"); // fa-IR
             });
         } else if self.panel_central == true && self.panel_setting == false {
             egui::CentralPanel::default().show(ctx, |ui| {
