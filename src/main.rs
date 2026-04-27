@@ -25,13 +25,19 @@ struct Localizations;
 fn main() -> Result<(), eframe::Error> {
     let config = get_config();
 
+    println!("{:?}", config.db_host);
+
+    let codes: Vec<&str> = env!("codes").split(',').collect();
+    //    let languages: Vec<&str> = env!("languages");
+
+    //    println!("{:?}", languages);
+
     let loader: FluentLanguageLoader = fluent_language_loader!();
     let requested_languages = DesktopLanguageRequester::requested_languages();
     let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
-    println!("{:?}", _result);
 
     let x = fl!(loader, "open");
-    println!("{:?}", x);
+    //println!("{:?}", x);
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
         (rgba, 64, 64)
@@ -341,13 +347,12 @@ impl eframe::App for CT {
                 ui.add_space(20.0);
                 ui.heading("Select a Language");
 
-                ui.add_space(10.0); // Add some spacing
+                ui.add_space(10.0);
 
                 // The ComboBox widget
-                ComboBox::new("my_combobox", "Select an option") // Unique ID and label
-                    .selected_text(&self.selected_language) // Display the currently selected text
+                ComboBox::new("language", "Select a language")
+                    .selected_text(&self.selected_language)
                     .show_ui(ui, |ui| {
-                        // Iterate over your options and create a selectable item for each
                         for i in &self.languages {
                             if ui.selectable_label(false, i).clicked() {
                                 self.selected_language = i.clone();
