@@ -92,65 +92,93 @@ impl CT {
 
         fonts.font_data.insert(
             "noto_sans".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-regular.ttf")),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans.ttf")),
         );
 
         fonts.font_data.insert(
             "noto_sans_cjk".to_owned(),
-            egui::FontData::from_static(include_bytes!(
-                "../assets/fonts/noto-sans-cjk-regular.otf"
-            )),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-cjk.otf")),
         );
 
         fonts.font_data.insert(
-            "noto_sans_thai".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-thai.ttf")),
+            "thai".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/thai.ttf")),
         );
 
         fonts.font_data.insert(
-            "noto_sans_ethiopic".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-ethiopic.ttf")),
+            "ethiopic".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/ethiopic.ttf")),
         );
 
         fonts.font_data.insert(
-            "noto_sans_arabic".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-arabic.ttf")),
+            "arabic".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/arabic.ttf")),
         );
 
         fonts.font_data.insert(
-            "noto_sans_armenian".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-armenian.ttf")),
+            "armenian".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/armenian.ttf")),
         );
 
         fonts.font_data.insert(
-            "noto_serif_bengali".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-bengali.ttf")),
+            "bengali".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/bengali.ttf")),
         );
         fonts.font_data.insert(
-            "noto_serif_georgian".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-georgian.ttf")),
+            "georgian".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/georgian.ttf")),
         );
         fonts.font_data.insert(
-            "noto_serif_gujarati".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-gujarati.ttf")),
+            "gujarati".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/gujarati.ttf")),
         );
         fonts.font_data.insert(
-            "noto_serif_kannada".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-kannada.ttf")),
+            "kannada".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/kannada.ttf")),
         );
         fonts.font_data.insert(
-            "noto_serif_khmer".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-khmer.ttf")),
-        );
-
-        fonts.font_data.insert(
-            "noto_serif_lao".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-lao.ttf")),
+            "khmer".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/khmer.ttf")),
         );
 
         fonts.font_data.insert(
-            "noto_serif_myammar".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-serif-myammar.ttf")),
+            "lao".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/lao.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "myammar".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/myammar.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "malayalam".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/malayalam.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "gurmukhi".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/gurmukhi.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "sinhala".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/sinhala.tff")),
+        );
+
+        fonts.font_data.insert(
+            "tamil".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/tamil.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "telugu".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/telugu.ttf")),
+        );
+
+        fonts.font_data.insert(
+            "hebrew".to_owned(),
+            egui::FontData::from_static(include_bytes!("../assets/fonts/hebrew.ttf")),
         );
 
         fonts
@@ -167,65 +195,101 @@ impl CT {
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(2, "noto_sans_thai".to_owned());
+            .insert(2, "thai".to_owned());
 
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(3, "noto_sans_ethiopic".to_owned());
+            .insert(3, "ethiopic".to_owned());
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(4, "noto_sans_arabic".to_owned());
+            .insert(4, "arabic".to_owned());
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(5, "noto_sans_armenian".to_owned());
+            .insert(5, "armenian".to_owned());
 
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(6, "noto_serif_bengali".to_owned());
+            .insert(6, "bengali".to_owned());
 
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(7, "noto_serif_georgian".to_owned());
+            .insert(7, "georgian".to_owned());
 
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(8, "noto_serif_gujarati".to_owned());
+            .insert(8, "gujarati".to_owned());
 
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(9, "noto_serif_kannada".to_owned());
+            .insert(9, "kannada".to_owned());
 
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(10, "noto_serif_khmer".to_owned());
+            .insert(10, "khmer".to_owned());
 
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(11, "noto_serif_lao".to_owned());
+            .insert(11, "lao".to_owned());
 
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
-            .insert(12, "noto_serif_myammar".to_owned());
+            .insert(12, "myammar".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(13, "malayalam".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(14, "sinhala".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(15, "tamil".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(16, "telugu".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(17, "hebrew".to_owned());
+
+        fonts
+            .families
+            .entry(egui::FontFamily::Proportional)
+            .or_default()
+            .insert(17, "gurmukhi".to_owned());
 
         fonts
             .families
