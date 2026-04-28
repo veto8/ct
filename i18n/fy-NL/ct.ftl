@@ -1,0 +1,14 @@
+password = Wachtwurd 
+open = Iepen 
+save = Rêde 
+copy = Kopy 
+paste = Paste 
+cut = Snije 
+search = Sykje 
+close = Slute 
+enter_text = Fier tekst yn 
+status = Status 
+show_passwod = Wachtwurd sjen litte 
+hide_password = Ferbergje wachtwurd 
+! about = About 
+about_us = Oer Us 

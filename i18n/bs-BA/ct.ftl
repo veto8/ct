@@ -1,0 +1,14 @@
+password = Lozinka 
+open = Otvori 
+save = Sačuvaj 
+copy = Kopiraj 
+paste = Zalijepi 
+cut = Cut 
+search = Traži 
+close = Zatvori 
+enter_text = Unesite tekst 
+status = Status 
+show_passwod = Prikaži lozinku 
+hide_password = Sakrij lozinku 
+! about = About 
+about_us = O nama 

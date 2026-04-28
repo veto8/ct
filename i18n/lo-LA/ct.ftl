@@ -1,0 +1,14 @@
+password = ລະຫັດຜ່ານ 
+open = ເປີດ 
+save = ບັນທຶກ 
+copy = ສຳເນົາ 
+paste = ວາງ 
+cut = ຕັດ 
+search = ຊອກຫາ 
+close = ປິດ 
+enter_text = ໃສ່ຂໍ້ຄວາມ 
+status = ສະຖານະ 
+show_passwod = ສະແດງລະຫັດຜ່ານ 
+hide_password = ເຊື່ອງລະຫັດຜ່ານ 
+! about = About 
+about_us = ກ່ຽວກັບພວກເຮົາ 

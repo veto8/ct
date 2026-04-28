@@ -1,0 +1,14 @@
+password = Salasana 
+open = Avata 
+save = Tallentaa 
+copy = Kopioida 
+paste = Liitä 
+cut = Leikata 
+search = Haku 
+close = Lähellä 
+enter_text = Kirjoita teksti 
+status = Status 
+show_passwod = Näytä salasana 
+hide_password = Piilota salasana 
+! about = About 
+about_us = Tietoja meistä 

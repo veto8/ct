@@ -1,0 +1,14 @@
+password = Mot de passe 
+open = Ouvrir 
+save = Sauvegarder 
+copy = Copie 
+paste = Coller 
+cut = Couper 
+search = Recherche 
+close = Fermer 
+enter_text = Saisir du texte 
+status = Statut 
+show_passwod = Afficher le mot de passe 
+hide_password = Masquer le mot de passe 
+! about = About 
+about_us = À propos de nous 

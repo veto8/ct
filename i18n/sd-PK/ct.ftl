@@ -1,0 +1,14 @@
+password = پاسورڊ 
+open = کليل 
+save = بچايو 
+copy = ڪاپي 
+paste = پيسٽ 
+cut = ڪٽ 
+search = ڳولا 
+close = بند 
+enter_text = ٽيڪسٽ داخل ڪريو 
+status = حيثيت 
+show_passwod = پاسورڊ ڏيکاريو 
+hide_password = پاسورڊ لڪايو 
+! about = About 
+about_us = اسان جي باري ۾ 

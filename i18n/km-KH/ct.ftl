@@ -1,0 +1,14 @@
+password = ពាក្យសម្ងាត់ 
+open = បើក 
+save = រក្សាទុក 
+copy = ចម្លង 
+paste = បិទភ្ជាប់ 
+cut = កាត់ 
+search = ស្វែងរក 
+close = បិទ 
+enter_text = បញ្ចូលអត្ថបទ 
+status = ស្ថានភាព 
+show_passwod = បង្ហាញពាក្យសម្ងាត់ 
+hide_password = លាក់ពាក្យសម្ងាត់ 
+! about = About 
+about_us = អំពីពួកយើង 

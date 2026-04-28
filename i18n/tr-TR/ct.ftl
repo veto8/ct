@@ -1,0 +1,14 @@
+password = Şifre 
+open = Açık 
+save = Kaydetmek 
+copy = Kopyala 
+paste = Yapıştır 
+cut = Kesmek 
+search = Aramak 
+close = Kapalı 
+enter_text = Metni girin 
+status = Durum 
+show_passwod = Şifreyi göster 
+hide_password = Şifreyi gizle 
+! about = About 
+about_us = Hakkımızda 

@@ -1,0 +1,14 @@
+password = Лозинка 
+open = Отвори 
+save = Сачувај 
+copy = Копирај 
+paste = Залепите 
+cut = Цут 
+search = Тражи 
+close = Затвори 
+enter_text = Унесите текст 
+status = Статус 
+show_passwod = Прикажи лозинку 
+hide_password = Сакриј лозинку 
+! about = About 
+about_us = О нама 

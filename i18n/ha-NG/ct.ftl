@@ -1,0 +1,14 @@
+password = Kalmar wucewa 
+open = Bude 
+save = Ajiye 
+copy = Kwafi 
+paste = Manna 
+cut = Yanke 
+search = Bincika 
+close = Kusa 
+enter_text = Shigar da rubutu 
+status = Matsayi 
+show_passwod = Nuna kalmar sirri 
+hide_password = Ɓoye kalmar sirri 
+! about = About 
+about_us = Game da Mu 

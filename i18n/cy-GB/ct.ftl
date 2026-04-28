@@ -1,0 +1,14 @@
+password = Cyfrinair 
+open = Agor 
+save = Arbed 
+copy = Copi 
+paste = Gludo 
+cut = Torri 
+search = Chwiliwch 
+close = Cau 
+enter_text = Rhowch destun 
+status = Statws 
+show_passwod = Dangos cyfrinair 
+hide_password = Cuddio cyfrinair 
+! about = About 
+about_us = Amdanom Ni 

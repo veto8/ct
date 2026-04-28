@@ -1,0 +1,14 @@
+password = Kata laluan 
+open = Buka 
+save = Jimat 
+copy = salin 
+paste = tampal 
+cut = potong 
+search = Cari 
+close = tutup 
+enter_text = Masukkan teks 
+status = Status 
+show_passwod = Tunjukkan kata laluan 
+hide_password = Sembunyikan kata laluan 
+! about = About 
+about_us = Tentang Kami 

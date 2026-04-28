@@ -1,0 +1,14 @@
+password = Okwuntughe 
+open = Mepee 
+save = Chekwa 
+copy = Detuo 
+paste = Tapawa 
+cut = Bee 
+search = Chọọ 
+close = Mechie 
+enter_text = Tinye ederede 
+status = Ọnọdụ 
+show_passwod = Gosi okwuntughe 
+hide_password = Zoo okwuntughe 
+! about = About 
+about_us = Gbasara anyị 

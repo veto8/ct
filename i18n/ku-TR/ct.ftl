@@ -1,0 +1,14 @@
+password = Şîfre 
+open = Vekirî 
+save = Rizgarkirin 
+copy = Kopî 
+paste = Paste 
+cut = Birrîn 
+search = Gerr 
+close = Nêzîkî 
+enter_text = Nivîsarê binivîse 
+status = Cî 
+show_passwod = Şîfreyê nîşan bide 
+hide_password = Şîfreyê veşêre 
+! about = About 
+about_us = Çûna nava 

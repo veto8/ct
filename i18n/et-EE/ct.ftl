@@ -1,0 +1,14 @@
+password = Parool 
+open = Avatud 
+save = Salvesta 
+copy = Kopeeri 
+paste = Kleebi 
+cut = Lõika 
+search = Otsi 
+close = Sule 
+enter_text = Sisestage tekst 
+status = Olek 
+show_passwod = Näita parooli 
+hide_password = Peida parool 
+! about = About 
+about_us = Meie kohta 

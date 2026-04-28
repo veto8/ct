@@ -1,0 +1,14 @@
+password = Sandi 
+open = Buka 
+save = Simpen 
+copy = nyalin 
+paste = témpél 
+cut = Motong 
+search = Pilarian 
+close = Tutup 
+enter_text = Lebetkeun téks 
+status = Status 
+show_passwod = Témbongkeun sandi 
+hide_password = Sumputkeun kecap akses 
+! about = About 
+about_us = Tentang Kami 

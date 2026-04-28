@@ -1,0 +1,14 @@
+password = Құпия сөз 
+open = Ашық 
+save = Сақтау 
+copy = Көшіру 
+paste = Қою 
+cut = Кесу 
+search = Іздеу 
+close = Жабу 
+enter_text = Мәтінді енгізіңіз 
+status = Күй 
+show_passwod = Құпия сөзді көрсету 
+hide_password = Құпия сөзді жасыру 
+! about = About 
+about_us = Біз туралы 

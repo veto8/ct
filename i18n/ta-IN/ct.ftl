@@ -1,0 +1,14 @@
+password = கடவுச்சொல் 
+open = திற 
+save = சேமிக்கவும் 
+copy = நகலெடுக்கவும் 
+paste = ஒட்டவும் 
+cut = வெட்டு 
+search = தேடு 
+close = மூடு 
+enter_text = உரையை உள்ளிடவும் 
+status = நிலை 
+show_passwod = கடவுச்சொல்லைக் காட்டு 
+hide_password = கடவுச்சொல்லை மறை 
+! about = About 
+about_us = எங்களைப் பற்றி 

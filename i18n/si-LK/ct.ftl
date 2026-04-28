@@ -1,0 +1,14 @@
+password = මුරපදය 
+open = විවෘත කරන්න 
+save = සුරකින්න 
+copy = පිටපත් කරන්න 
+paste = අලවන්න 
+cut = කපනවා 
+search = සොයන්න 
+close = වසන්න 
+enter_text = පෙළ ඇතුලත් කරන්න 
+status = තත්ත්වය 
+show_passwod = මුරපදය පෙන්වන්න 
+hide_password = මුරපදය සඟවන්න 
+! about = About 
+about_us = අපි ගැන 

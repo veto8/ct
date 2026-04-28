@@ -1,0 +1,14 @@
+password = Нууц үг 
+open = Нээлттэй 
+save = Хадгалах 
+copy = Хуулбарлах 
+paste = Буулгах 
+cut = Таслах 
+search = Хайх 
+close = Хаах 
+enter_text = Текст оруулна уу 
+status = Статус 
+show_passwod = Нууц үг харуулах 
+hide_password = Нууц үгээ нуу 
+! about = About 
+about_us = Бидний тухай 

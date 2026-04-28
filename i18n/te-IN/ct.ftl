@@ -1,0 +1,14 @@
+password = పాస్వర్డ్ 
+open = తెరవండి 
+save = సేవ్ చేయండి 
+copy = కాపీ చేయండి 
+paste = అతికించండి 
+cut = కట్ 
+search = శోధించండి 
+close = మూసివేయి 
+enter_text = వచనాన్ని నమోదు చేయండి 
+status = స్థితి 
+show_passwod = పాస్వర్డ్ చూపించు 
+hide_password = పాస్వర్డ్ను దాచండి 
+! about = About 
+about_us = మా గురించి 

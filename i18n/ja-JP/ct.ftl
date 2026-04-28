@@ -1,0 +1,14 @@
+password = パスワード 
+open = 開ける 
+save = 保存 
+copy = コピー 
+paste = ペースト 
+cut = カット 
+search = 検索 
+close = 近い 
+enter_text = テキストを入力してください 
+status = 状態 
+show_passwod = パスワードを表示 
+hide_password = パスワードを隠す 
+! about = About 
+about_us = 私たちについて 

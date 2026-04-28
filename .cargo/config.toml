@@ -1,3 +1,14 @@
 [target.x86_64-apple-darwin]
 linker = "ld64.lld"
 rustflags = ["-C", "link-arg=-fuse-ld=/opt/homebrew/opt/llvm/bin/ld64.lld"]
+
+
+[env]
+codes = "en,th,af,sq,am,ar,hy,az,eu,be,bn,bs,bg,ca,ny,co,hr,cs,da,nl,eo,et,tl,fi,fr,fy,gl,ka,de,el,gu,ht,ha,haw,iw,hi,hu,is,ig,ga,it,ja,jw,kn,kk,km,ko,ku,ky,lo,la,lv,lt,lb,mk,mg,ms,ml,mt,mi,mr,mn,my,ne,no,or,ps,fa,pl,pt,pa,ro,ru,sm,gd,sr,st,sn,sd,si,sk,sl,so,es,su,sw,sv,tg,ta,te,tr,uk,ur,uz,vi,cy,xh,yi,yo,zu"
+
+ftl="en-US,th-TH,af-ZA,sq-AL,am-ET,ar-SA,hy-AM,az-AZ,eu-ES,be-BY,bn-BD,bs-BA,bg-BG,ca-ES,ny-MW,co-FR,hr-HR,cs-CZ,da-DK,nl-NL,eo,et-EE,tl-PH,fi-FI,fr-FR,fy-NL,gl-ES,ka-GE,de-DE,el-GR,gu-IN,ht-HT,ha-NG,haw-US,hi-IN,hmn,hu-HU,ig-NG,ga-IE,it-IT,ja-JP,kn-IN,kk-KZ,km-KH,ko-KR,ku-TR,ky-KG,lo-LA,la,lv-LV,lt-LT,lb-LU,mk-MK,mg-MG,ms-MY,ml-IN,mt-MT,mi-NZ,mr-IN,mn-MN,my-MM,ne-NP,no-NO,ps-AF,fa-IR,pl-PL,pt-PT,pa-IN,ro-RO,ru-RU,sm-WS,gd-GB,sr-RS,st-ZA,sn-ZW,sd-PK,si-LK,sk-SK,sl-SI,so-SO,es-ES,su-ID,sw-TZ,sv-SE,tg-TJ,ta-IN,te-IN,tr-TR,uk-UA,ur-PK,uz-UZ,vi-VN,cy-GB,xh-ZA,yi,yo-NG,zu-ZA"
+
+
+
+
+

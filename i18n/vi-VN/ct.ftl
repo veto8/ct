@@ -1,0 +1,14 @@
+password = Mật khẩu 
+open = Mở 
+save = Cứu 
+copy = Sao chép 
+paste = Dán 
+cut = Cắt 
+search = Tìm kiếm 
+close = Đóng 
+enter_text = Nhập văn bản 
+status = Trạng thái 
+show_passwod = Hiển thị mật khẩu 
+hide_password = Ẩn mật khẩu 
+! about = About 
+about_us = Về chúng tôi 

@@ -1,0 +1,14 @@
+password = Password 
+open = Apertum 
+save = Servare 
+copy = Copy 
+paste = Crustulum 
+cut = Cut 
+search = Investigatio 
+close = Close 
+enter_text = Intra text 
+status = Status 
+show_passwod = Ostende password 
+hide_password = Celare password 
+! about = About 
+about_us = De Us 

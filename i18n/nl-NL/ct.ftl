@@ -1,0 +1,14 @@
+password = Wachtwoord 
+open = Open 
+save = Redden 
+copy = Kopiëren 
+paste = Plakken 
+cut = Snee 
+search = Zoekopdracht 
+close = Dichtbij 
+enter_text = Voer tekst in 
+status = Status 
+show_passwod = Wachtwoord tonen 
+hide_password = Wachtwoord verbergen 
+! about = About 
+about_us = Over ons 

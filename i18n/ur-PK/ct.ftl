@@ -1,0 +1,14 @@
+password = پاس ورڈ 
+open = کھولیں۔ 
+save = محفوظ کریں۔ 
+copy = کاپی 
+paste = چسپاں کریں۔ 
+cut = کاٹنا 
+search = تلاش کریں۔ 
+close = بند 
+enter_text = متن درج کریں۔ 
+status = حیثیت 
+show_passwod = پاس ورڈ دکھائیں۔ 
+hide_password = پاس ورڈ چھپائیں۔ 
+! about = About 
+about_us = ہمارے بارے میں 

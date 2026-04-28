@@ -1,0 +1,14 @@
+password = પાસવર્ડ 
+open = ખોલો 
+save = સાચવો 
+copy = નકલ કરો 
+paste = પેસ્ટ કરો 
+cut = કાપો 
+search = શોધો 
+close = બંધ કરો 
+enter_text = ટેક્સ્ટ દાખલ કરો 
+status = સ્થિતિ 
+show_passwod = પાસવર્ડ બતાવો 
+hide_password = પાસવર્ડ છુપાવો 
+! about = About 
+about_us = અમારા વિશે 

@@ -1,0 +1,14 @@
+password = Modpas 
+open = Louvri 
+save = Sove 
+copy = Kopi 
+paste = Kole 
+cut = Koupe 
+search = Rechèch 
+close = Fèmen 
+enter_text = Antre tèks 
+status = Estati 
+show_passwod = Montre modpas 
+hide_password = Kache modpas 
+! about = About 
+about_us = Sou nou 

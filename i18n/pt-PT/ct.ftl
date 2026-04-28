@@ -1,0 +1,14 @@
+password = Senha 
+open = Abrir 
+save = Salvar 
+copy = Cópia 
+paste = Colar 
+cut = Corte 
+search = Procurar 
+close = Fechar 
+enter_text = Insira o texto 
+status = Status 
+show_passwod = Mostrar senha 
+hide_password = Ocultar senha 
+! about = About 
+about_us = Sobre nós 

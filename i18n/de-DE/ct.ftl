@@ -1,2 +1,14 @@
-hello-world = Hallo, Welt!
-password = Passwort
+password = Passwort 
+open = Offen 
+save = Speichern 
+copy = Kopie 
+paste = Paste 
+cut = Schneiden 
+search = Suchen 
+close = Schließen 
+enter_text = Geben Sie Text ein 
+status = Status 
+show_passwod = Passwort anzeigen 
+hide_password = Passwort verbergen 
+! about = About 
+about_us = Über uns 

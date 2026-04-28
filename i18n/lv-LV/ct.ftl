@@ -1,0 +1,14 @@
+password = Parole 
+open = Atvērt 
+save = Saglabāt 
+copy = Kopēt 
+paste = Ielīmēt 
+cut = Izgriezt 
+search = Meklēt 
+close = Aizvērt 
+enter_text = Ievadiet tekstu 
+status = Statuss 
+show_passwod = Rādīt paroli 
+hide_password = Slēpt paroli 
+! about = About 
+about_us = Par mums 

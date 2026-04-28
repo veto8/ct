@@ -1,0 +1,14 @@
+password = Σύνθημα 
+open = Ανοιχτό 
+save = Εκτός 
+copy = Αντίγραφο 
+paste = Πάστα 
+cut = Τομή 
+search = Ερευνα 
+close = Κοντά 
+enter_text = Εισαγάγετε κείμενο 
+status = Κατάσταση 
+show_passwod = Εμφάνιση κωδικού πρόσβασης 
+hide_password = Απόκρυψη κωδικού πρόσβασης 
+! about = About 
+about_us = Σχετικά με εμάς 

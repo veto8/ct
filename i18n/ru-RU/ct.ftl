@@ -1,0 +1,14 @@
+password = Пароль 
+open = Открыть 
+save = Сохранять 
+copy = Копировать 
+paste = Вставить 
+cut = Резать 
+search = Поиск 
+close = Закрывать 
+enter_text = Введите текст 
+status = Статус 
+show_passwod = Показать пароль 
+hide_password = Скрыть пароль 
+! about = About 
+about_us = О нас 

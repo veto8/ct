@@ -1,0 +1,14 @@
+password = 비밀번호 
+open = 열려 있는 
+save = 구하다 
+copy = 복사 
+paste = 반죽 
+cut = 자르다 
+search = 찾다 
+close = 닫다 
+enter_text = 텍스트를 입력하세요 
+status = 상태 
+show_passwod = 비밀번호 표시 
+hide_password = 비밀번호 숨기기 
+! about = About 
+about_us = 회사 소개 

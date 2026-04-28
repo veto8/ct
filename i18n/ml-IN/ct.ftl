@@ -1,0 +1,14 @@
+password = രഹസ്യവാക്ക് 
+open = തുറക്കുക 
+save = സംരക്ഷിക്കുക 
+copy = പകർത്തുക 
+paste = ഒട്ടിക്കുക 
+cut = മുറിക്കുക 
+search = തിരയുക 
+close = അടയ്ക്കുക 
+enter_text = ടെക്സ്റ്റ് നൽകുക 
+status = നില 
+show_passwod = പാസ്‌വേഡ് കാണിക്കുക 
+hide_password = രഹസ്യവാക്ക് മറയ്ക്കുക 
+! about = About 
+about_us = ഞങ്ങളേക്കുറിച്ച് 

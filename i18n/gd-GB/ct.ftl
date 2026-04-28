@@ -1,0 +1,14 @@
+password = Facal-faire 
+open = Fosgailte 
+save = Sàbhail 
+copy = Dèan lethbhreac 
+paste = Paste 
+cut = Gearr 
+search = Rannsaich 
+close = Dùin 
+enter_text = Cuir a-steach teacsa 
+status = Inbhe 
+show_passwod = Seall am facal-faire 
+hide_password = Falaich am facal-faire 
+! about = About 
+about_us = Mu ar deidhinn 

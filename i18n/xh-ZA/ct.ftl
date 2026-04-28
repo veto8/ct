@@ -1,0 +1,14 @@
+password = Inombolo yokuvula 
+open = Vula 
+save = Gcina 
+copy = Khuphela 
+paste = Ncamathelisa 
+cut = Sika 
+search = Khangela 
+close = Vala 
+enter_text = Faka umbhalo 
+status = Ubume 
+show_passwod = Bonisa igama lokugqithisa 
+hide_password = Fihla igama lokugqithisa 
+! about = About 
+about_us = Ngathi 

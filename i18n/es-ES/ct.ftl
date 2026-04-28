@@ -1,0 +1,14 @@
+password = Contraseña 
+open = Abierto 
+save = Ahorrar 
+copy = Copiar 
+paste = Pasta 
+cut = Cortar 
+search = Buscar 
+close = Cerca 
+enter_text = Introducir texto 
+status = Estado 
+show_passwod = Mostrar contraseña 
+hide_password = Ocultar contraseña 
+! about = About 
+about_us = Sobre nosotros 

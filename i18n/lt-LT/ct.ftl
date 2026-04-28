@@ -1,0 +1,14 @@
+password = Slaptažodis 
+open = Atidaryti 
+save = Išsaugoti 
+copy = Kopijuoti 
+paste = Įklijuoti 
+cut = Iškirpti 
+search = Ieškoti 
+close = Uždaryti 
+enter_text = Įveskite tekstą 
+status = Būsena 
+show_passwod = Rodyti slaptažodį 
+hide_password = Slėpti slaptažodį 
+! about = About 
+about_us = Apie mus 

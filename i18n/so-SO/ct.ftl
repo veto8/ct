@@ -1,0 +1,14 @@
+password = Furaha 
+open = Furan 
+save = Badbaadin 
+copy = Nuqul 
+paste = Ku dheji 
+cut = jar 
+search = Raadi 
+close = Xir 
+enter_text = Geli qoraalka 
+status = Xaalada 
+show_passwod = Muuji erayga sirta ah 
+hide_password = Qari erayga sirta ah 
+! about = About 
+about_us = Annaga 
