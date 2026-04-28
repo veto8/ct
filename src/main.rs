@@ -326,6 +326,7 @@ impl Default for CT {
         let requested_languages = DesktopLanguageRequester::requested_languages();
         let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
         let ftl: Vec<String> = env!("ftl").split(',').map(|s| s.to_string()).collect();
+
         CT {
             loader: loader,
             text: "".to_string(),
@@ -351,6 +352,12 @@ impl Default for CT {
 
 impl eframe::App for CT {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        let new_code = self.selected_language.clone();
+        let new_lang_id: LanguageIdentifier = new_code.parse().unwrap();
+        let mut new_languages: Vec<LanguageIdentifier> = Vec::new();
+        new_languages.push(new_lang_id);
+        let _result = i18n_embed::select(&self.loader, &Localizations, &new_languages);
+
         if self.panel_central == false && self.panel_setting == true {
             egui::CentralPanel::default().show(ctx, |ui| {
                 ui.add_space(20.0);
