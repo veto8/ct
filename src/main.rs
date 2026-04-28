@@ -27,17 +27,18 @@ fn main() -> Result<(), eframe::Error> {
 
     println!("{:?}", config.db_host);
 
-    let codes: Vec<&str> = env!("codes").split(',').collect();
+    //let ftl: Vec<String = env!("ftl").split(',').map(|s| s.to_string()).collect();
     //    let languages: Vec<&str> = env!("languages");
 
     //    println!("{:?}", languages);
 
     let loader: FluentLanguageLoader = fluent_language_loader!();
     let requested_languages = DesktopLanguageRequester::requested_languages();
-    let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
+    //let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
 
     let x = fl!(loader, "open");
-    //println!("{:?}", x);
+    println!("{:?}", x);
+    println!("{:?}", requested_languages);
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
         (rgba, 64, 64)
@@ -312,7 +313,7 @@ impl Default for CT {
         let loader: FluentLanguageLoader = fluent_language_loader!();
         let requested_languages = DesktopLanguageRequester::requested_languages();
         let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
-
+        let ftl: Vec<String> = env!("ftl").split(',').map(|s| s.to_string()).collect();
         CT {
             loader: loader,
             text: "".to_string(),
@@ -330,12 +331,8 @@ impl Default for CT {
             popup_position: Pos2 { x: 0.0, y: 0.0 },
             panel_central: true,
             panel_setting: false,
-            selected_language: "English".to_string(),
-            languages: vec![
-                "German".to_string(),
-                "English".to_string(),
-                "Thai".to_string(),
-            ],
+            selected_language: "en-US".to_string(),
+            languages: ftl,
         }
     }
 }
@@ -345,9 +342,9 @@ impl eframe::App for CT {
         if self.panel_central == false && self.panel_setting == true {
             egui::CentralPanel::default().show(ctx, |ui| {
                 ui.add_space(20.0);
-                ui.heading("Select a Language");
+                //ui.heading("Select a Language");
 
-                ui.add_space(10.0);
+                //ui.add_space(10.0);
 
                 // The ComboBox widget
                 ComboBox::new("language", "Select a language")
@@ -364,6 +361,7 @@ impl eframe::App for CT {
 
                 ui.label(format!("You selected: {}", self.selected_language));
 
+                /*
                 ui.label("Malayalam: ഹലോ ലോകം!"); // ml-IN
                 ui.label("Punjabi: ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਦੁਨਿਆ!"); // pa-IN
                 ui.label("Sinhala: ආයුබෝවන් ලෝකය!"); // si-LK
@@ -431,8 +429,8 @@ impl eframe::App for CT {
                 ui.label("Lao: ສະບາຍດີໂລກ!"); // lo-LA
                 ui.label("Myanmar (Burmese): မင်္ဂလာပါကမ္ဘာလောက!"); // my-MM
                 ui.label("Marathi: नमस्कार जग!"); // mr-IN
-                ui.label("Mongolian: Сайн уу дэлхий!"); // mn-MN                
-                ui.label("Kazakh: Сәлем Әлем!"); // kk-KZ                
+                ui.label("Mongolian: Сайн уу дэлхий!"); // mn-MN
+                ui.label("Kazakh: Сәлем Әлем!"); // kk-KZ
 
                 ui.label("Luxembourgish: Moien Welt!"); // lb-LU
                 ui.label("Macedonian: Здраво свету!"); // mk-MK
@@ -465,7 +463,8 @@ impl eframe::App for CT {
                 ui.label("Uzbek: Salom dunyo!"); // uz-UZ
                 ui.label("Vietnamese: Xin chào thế giới!"); // vi-VN
                 ui.label("Welsh: Helo Byd!"); // cy-GB
-                ui.label("Xhosa: Molo Lizwe!"); // xh-ZA                
+                ui.label("Xhosa: Molo Lizwe!"); // xh-ZA
+                */
             });
         } else if self.panel_central == true && self.panel_setting == false {
             egui::CentralPanel::default().show(ctx, |ui| {
@@ -685,33 +684,39 @@ impl eframe::App for CT {
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
                 ui.menu_button("File", |ui| {
-                    if ui.button("Open").clicked() {
+                    if ui.button(fl!(self.loader, "open")).clicked() {
                         self.panel_central = true;
+                        self.panel_setting = false;
                         ui.close_menu();
                     }
                     if ui.button("Save").clicked() {
                         self.panel_central = true;
+                        self.panel_setting = false;
                         ui.close_menu();
                     }
                 });
                 ui.menu_button("Edit", |ui| {
                     if ui.button("Copy").clicked() {
                         self.panel_central = true;
+                        self.panel_setting = false;
                         ui.close_menu();
                     }
                     if ui.button("Paste").clicked() {
                         self.panel_central = true;
+                        self.panel_setting = false;
                         ui.close_menu();
                     }
                     if ui.button("Cut").clicked() {
                         self.panel_central = true;
+                        self.panel_setting = false;
                         ui.close_menu();
                     }
                 });
                 ui.menu_button("Settings", |ui| {
                     if ui.button("Languages").clicked() {
-                        self.panel_setting = true;
                         self.panel_central = false;
+                        self.panel_setting = true;
+
                         ui.close_menu();
                     }
                 });
