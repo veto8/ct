@@ -9,11 +9,14 @@ use ct_nox::encrypt::encrypt;
 use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::{ComboBox, IconData, Pos2, Vec2};
+
 use i18n_embed::{
     DesktopLanguageRequester,
     fluent::{FluentLanguageLoader, fluent_language_loader},
 };
+use i18n_embed::{LanguageLoader, unic_langid};
 use i18n_embed_fl::fl;
+use unic_langid::LanguageIdentifier; // Make sure this is imported
 // use libs::config::get_config;
 use egui::{Context, FontDefinitions};
 use rust_embed::RustEmbed;
@@ -25,7 +28,7 @@ struct Localizations;
 fn main() -> Result<(), eframe::Error> {
     let config = get_config();
 
-    println!("{:?}", config.db_host);
+    //    println!("{:?}", config.db_host);
 
     //let ftl: Vec<String = env!("ftl").split(',').map(|s| s.to_string()).collect();
     //    let languages: Vec<&str> = env!("languages");
@@ -34,10 +37,19 @@ fn main() -> Result<(), eframe::Error> {
 
     let loader: FluentLanguageLoader = fluent_language_loader!();
     let requested_languages = DesktopLanguageRequester::requested_languages();
-    //let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
-
+    let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
     let x = fl!(loader, "open");
     println!("{:?}", x);
+
+    let new_code = "fr-FR";
+    let new_lang_id: LanguageIdentifier = new_code.parse().unwrap();
+    let mut new_languages: Vec<LanguageIdentifier> = Vec::new();
+    new_languages.push(new_lang_id);
+    let _force_select_result = i18n_embed::select(&loader, &Localizations, &new_languages);
+
+    let xx = fl!(loader, "open");
+    println!("{:?}", xx);
+
     println!("{:?}", requested_languages);
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
