@@ -16,11 +16,12 @@ use i18n_embed::{
 };
 use i18n_embed::{LanguageLoader, unic_langid};
 use i18n_embed_fl::fl;
-use unic_langid::LanguageIdentifier; // Make sure this is imported
+use unic_langid::LanguageIdentifier;
 // use libs::config::get_config;
 use egui::{Context, FontDefinitions};
 use rust_embed::RustEmbed;
-use std::ops::Range; // Make sure to import this
+use std::collections::BTreeMap;
+use std::ops::Range;
 #[derive(RustEmbed)]
 #[folder = "i18n"] // path to the compiled localization resources
 struct Localizations;
@@ -101,6 +102,7 @@ struct CT {
     panel_setting: bool,
     selected_language: String,
     languages: Vec<String>,
+    language_map: BTreeMap<String, String>,
 }
 
 //    fn new(_cc: &eframe::CreationContext<'_>) -> Self {
@@ -327,6 +329,116 @@ impl Default for CT {
         let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
         let ftl: Vec<String> = env!("ftl").split(',').map(|s| s.to_string()).collect();
 
+        let mut language_map: BTreeMap<String, String> = BTreeMap::new();
+
+        // Populate with the transformed data:
+        language_map.insert("English English".to_string(), "en-US".to_string());
+        language_map.insert("Thai ไทย".to_string(), "th-TH".to_string());
+        language_map.insert("Afrikaans Afrikaans".to_string(), "af-ZA".to_string());
+        language_map.insert("Albanian Shqip".to_string(), "sq-AL".to_string());
+        language_map.insert("Amharic አማርኛ".to_string(), "am-ET".to_string());
+        language_map.insert("Arabic العربية".to_string(), "ar-SA".to_string());
+        language_map.insert("Armenian Հայերեն".to_string(), "hy-AM".to_string());
+        language_map.insert(
+            "Azerbaijani Azərbaycan dili".to_string(),
+            "az-AZ".to_string(),
+        );
+        language_map.insert("Basque Euskara".to_string(), "eu-ES".to_string());
+        language_map.insert("Belarusian Беларуская".to_string(), "be-BY".to_string());
+        language_map.insert("Bengali বাংলা".to_string(), "bn-BD".to_string());
+        language_map.insert("Bosnian Bosanski".to_string(), "bs-BA".to_string());
+        language_map.insert("Bulgarian Български".to_string(), "bg-BG".to_string());
+        language_map.insert("Catalan Català".to_string(), "ca-ES".to_string());
+        language_map.insert("Chichewa Chinyanja".to_string(), "ny-MW".to_string()); // Also Nyanja
+        language_map.insert("Corsican Corsu".to_string(), "co-FR".to_string());
+        language_map.insert("Croatian Hrvatski".to_string(), "hr-HR".to_string());
+        language_map.insert("Czech Čeština".to_string(), "cs-CZ".to_string());
+        language_map.insert("Danish Dansk".to_string(), "da-DK".to_string());
+        language_map.insert("Dutch Nederlands".to_string(), "nl-NL".to_string());
+        language_map.insert("Esperanto Esperanto".to_string(), "eo".to_string());
+        language_map.insert("Estonian Eesti keel".to_string(), "et-EE".to_string());
+        language_map.insert("Filipino Tagalog".to_string(), "tl-PH".to_string());
+        language_map.insert("Finnish Suomi".to_string(), "fi-FI".to_string());
+        language_map.insert("French Français".to_string(), "fr-FR".to_string());
+        language_map.insert("Frisian Frysk".to_string(), "fy-NL".to_string());
+        language_map.insert("Galician Galego".to_string(), "gl-ES".to_string());
+        language_map.insert("Georgian ქართული".to_string(), "ka-GE".to_string());
+        language_map.insert("German Deutsch".to_string(), "de-DE".to_string());
+        language_map.insert("Greek Ελληνικά".to_string(), "el-GR".to_string());
+        language_map.insert("Gujarati ગુજરાતી".to_string(), "gu-IN".to_string());
+        language_map.insert(
+            "Haitian Creole Kreyòl ayisyen".to_string(),
+            "ht-HT".to_string(),
+        );
+        language_map.insert("Hausa Hausa".to_string(), "ha-NG".to_string());
+        language_map.insert("Hawaiian ʻŌlelo Hawaiʻi".to_string(), "haw-US".to_string());
+        language_map.insert("Hindi हिन्दी".to_string(), "hi-IN".to_string());
+        language_map.insert("Hmong Hmong".to_string(), "hmn".to_string()); // Generic, as region isn't specified
+        language_map.insert("Hungarian Magyar".to_string(), "hu-HU".to_string());
+        language_map.insert("Igbo Igbo".to_string(), "ig-NG".to_string());
+        language_map.insert("Irish Gaeilge".to_string(), "ga-IE".to_string());
+        language_map.insert("Italian Italiano".to_string(), "it-IT".to_string());
+        language_map.insert("Japanese 日本語".to_string(), "ja-JP".to_string());
+        language_map.insert("Kannada ಕನ್ನಡ".to_string(), "kn-IN".to_string());
+        language_map.insert("Kazakh Қазақ тілі".to_string(), "kk-KZ".to_string());
+        language_map.insert("Khmer Khmer".to_string(), "km-KH".to_string());
+        language_map.insert("Korean 한국어".to_string(), "ko-KR".to_string());
+        language_map.insert("Kurdish Kurdî".to_string(), "ku-TR".to_string()); // Often Kurdish Sorani or Kurmanji
+        language_map.insert("Kyrgyz Кыргызча".to_string(), "ky-KG".to_string());
+        language_map.insert("Lao ລາວ".to_string(), "lo-LA".to_string());
+        language_map.insert("Latin Latina".to_string(), "la".to_string()); // Generic Latin
+        language_map.insert("Latvian Latviešu valoda".to_string(), "lv-LV".to_string());
+        language_map.insert("Lithuanian Lietuvių kalba".to_string(), "lt-LT".to_string());
+        language_map.insert(
+            "Luxembourgish Lëtzebuergesch".to_string(),
+            "lb-LU".to_string(),
+        );
+        language_map.insert("Macedonian Македонски".to_string(), "mk-MK".to_string());
+        language_map.insert("Malagasy Malagasy".to_string(), "mg-MG".to_string());
+        language_map.insert("Malay Bahasa Melayu".to_string(), "ms-MY".to_string());
+        language_map.insert("Malayalam മലയാളം".to_string(), "ml-IN".to_string());
+        language_map.insert("Maltese Malti".to_string(), "mt-MT".to_string());
+        language_map.insert("Maori Te Reo Māori".to_string(), "mi-NZ".to_string());
+        language_map.insert("Marathi मराठी".to_string(), "mr-IN".to_string());
+        language_map.insert("Mongolian Монгол".to_string(), "mn-MN".to_string());
+        language_map.insert("Myanmar မြန်မာ".to_string(), "my-MM".to_string());
+        language_map.insert("Nepali नेपाली".to_string(), "ne-NP".to_string());
+        language_map.insert("Norwegian Norsk".to_string(), "no-NO".to_string());
+        language_map.insert("Pashto پښتو".to_string(), "ps-AF".to_string());
+        language_map.insert("Persian فارسی".to_string(), "fa-IR".to_string());
+        language_map.insert("Polish Polski".to_string(), "pl-PL".to_string());
+        language_map.insert("Portuguese Português".to_string(), "pt-PT".to_string());
+        language_map.insert("Punjabi ਪੰਜਾਬੀ".to_string(), "pa-IN".to_string());
+        language_map.insert("Romanian Română".to_string(), "ro-RO".to_string());
+        language_map.insert("Russian Русский".to_string(), "ru-RU".to_string());
+        language_map.insert("Samoan Gagana fa'a Sāmoa".to_string(), "sm-WS".to_string());
+        language_map.insert("Scottish Gaelic Gàidhlig".to_string(), "gd-GB".to_string());
+        language_map.insert("Serbian Srpski".to_string(), "sr-RS".to_string());
+        language_map.insert("Sesotho Sesotho".to_string(), "st-ZA".to_string());
+        language_map.insert("Shona Chishona".to_string(), "sn-ZW".to_string());
+        language_map.insert("Sindhi سنڌي".to_string(), "sd-PK".to_string());
+        language_map.insert("Sinhala සිංහල".to_string(), "si-LK".to_string());
+        language_map.insert("Slovak Slovenčina".to_string(), "sk-SK".to_string());
+        language_map.insert("Slovenian Slovenščina".to_string(), "sl-SI".to_string());
+        language_map.insert("Somali Soomaali".to_string(), "so-SO".to_string());
+        language_map.insert("Spanish Español".to_string(), "es-ES".to_string());
+        language_map.insert("Sundanese Basa Sunda".to_string(), "su-ID".to_string());
+        language_map.insert("Swahili Kiswahili".to_string(), "sw-TZ".to_string());
+        language_map.insert("Swedish Svenska".to_string(), "sv-SE".to_string());
+        language_map.insert("Tajik Тоҷикӣ".to_string(), "tg-TJ".to_string());
+        language_map.insert("Tamil தமிழ்".to_string(), "ta-IN".to_string());
+        language_map.insert("Telugu తెలుగు".to_string(), "te-IN".to_string());
+        language_map.insert("Turkish Türkçe".to_string(), "tr-TR".to_string());
+        language_map.insert("Ukrainian Українська".to_string(), "uk-UA".to_string());
+        language_map.insert("Urdu اردو".to_string(), "ur-PK".to_string());
+        language_map.insert("Uzbek Oʻzbek tili".to_string(), "uz-UZ".to_string());
+        language_map.insert("Vietnamese Tiếng Việt".to_string(), "vi-VN".to_string());
+        language_map.insert("Welsh Cymraeg".to_string(), "cy-GB".to_string());
+        language_map.insert("Xhosa isiXhosa".to_string(), "xh-ZA".to_string());
+        language_map.insert("Yiddish ייִדיש".to_string(), "yi".to_string()); // Generic Yiddish
+        language_map.insert("Yoruba Yorùbá".to_string(), "yo-NG".to_string());
+        language_map.insert("Zulu isiZulu".to_string(), "zu-ZA".to_string());
+
         CT {
             loader: loader,
             text: "".to_string(),
@@ -346,6 +458,7 @@ impl Default for CT {
             panel_setting: false,
             selected_language: "en-US".to_string(),
             languages: ftl,
+            language_map: language_map,
         }
     }
 }
@@ -369,9 +482,14 @@ impl eframe::App for CT {
                 ComboBox::new("language", "Select a language")
                     .selected_text(&self.selected_language)
                     .show_ui(ui, |ui| {
-                        for i in &self.languages {
+                        //for i in &self.languages {
+                        //    if ui.selectable_label(false, i).clicked() {
+                        //        self.selected_language = i.clone();
+                        //    }
+                        //}
+                        for (i, name) in &self.language_map {
                             if ui.selectable_label(false, i).clicked() {
-                                self.selected_language = i.clone();
+                                self.selected_language = self.language_map[&i.clone()].clone();
                             }
                         }
                     });
@@ -379,111 +497,6 @@ impl eframe::App for CT {
                 ui.add_space(20.0); // More spacing
 
                 ui.label(format!("You selected: {}", self.selected_language));
-
-                /*
-                ui.label("Malayalam: ഹലോ ലോകം!"); // ml-IN
-                ui.label("Punjabi: ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਦੁਨਿਆ!"); // pa-IN
-                ui.label("Sinhala: ආයුබෝවන් ලෝකය!"); // si-LK
-
-                ui.label("Tamil: வணக்கம் உலகம்!"); // ta-IN
-                ui.label("Telugu: నమస్కారం ప్రపంచం!"); // te-IN
-
-                ui.label("Yiddish: שלום עולם!"); // yi
-                ui.label("Yoruba: Bawo ni aye!"); // yo-NG
-                ui.label("Zulu: Sawubona Mhlaba!"); // zu-ZA
-
-                ui.label("Chinese: 你好，世界！"); // zh-CN (covers zh-TW, zh-HK, zh-SG, zh-MO)
-                ui.label("English: Hello World!"); // en-US
-                ui.label("Thai: สวัสดีชาวโลก!"); // th-TH
-                ui.label("Amharic: ሰላም አለም!"); // am-ET
-                ui.label("Arabic: مرحبًا بالعالم!"); // ar-SA
-                ui.label("Armenian: Բարև աշխարհ!"); // hy-AM
-                ui.label("Azerbaijani: Salam Dünya!"); // az-AZ
-                ui.label("Basque: Kaixo Mundua!"); // eu-ES
-                ui.label("Belarusian: Прывітанне Сусвет!"); // be-BY
-
-                ui.label("Bosnian: Zdravo svijete!"); // bs-BA
-                ui.label("Bulgarian: Здравей свят!"); // bg-BG
-                ui.label("Catalan: Hola Món!"); // ca-ES
-                ui.label("Chinese: 你好，世界！"); // zh-CN (covers zh-TW, zh-HK, zh-SG, zh-MO)
-                ui.label("Croatian: Zdravo svijete!"); // hr-HR
-                ui.label("Czech: Ahoj světe!"); // cs-CZ
-                ui.label("Danish: Hej Verden!"); // da-DK
-                ui.label("Dutch: Hallo Wereld!"); // nl-NL
-                ui.label("Greek: Γεια σου κόσμε!"); // el-GR
-
-                ui.label("Esperanto: Saluton Mondo!"); // eo
-                ui.label("Estonian: Tere maailm!"); // et-EE
-                ui.label("Filipino: Kamusta Mundo!"); // tl-PH
-                ui.label("Finnish: Hei maailma!"); // fi-FI
-                ui.label("French: Bonjour le monde !"); // fr-FR
-                ui.label("Frisian: Goeie dei wrâld!"); // fy-NL
-                ui.label("Galician: Ola Mundo!"); // gl-ES
-
-                ui.label("German: Hallo Welt!"); // de-DE
-
-                ui.label("Haitian Creole: Bonjou mond!"); // ht-HT
-                ui.label("Hausa: Sannu Duniya!"); // ha-NG
-                ui.label("Hawaiian: Aloha honua!"); // haw-US
-                ui.label("Hindi: नमस्ते दुनिया!"); // hi-IN
-                ui.label("Hungarian: Helló világ!"); // hu-HU
-                ui.label("Igbo: Ndewo Ụwa!"); // ig-NG
-                ui.label("Irish: Dia duit an domhan!"); // ga-IE
-                ui.label("Italian: Ciao mondo!"); // it-IT
-                ui.label("Japanese: こんにちは世界！"); // ja-JP
-                ui.label("Korean: 안녕하세요 세계!"); // ko-KR
-                ui.label("Kurdish (Kurmanji): Silav cîhan!"); // ku-TR
-                ui.label("Kyrgyz: Салам дүйнө!"); // ky-KG
-                ui.label("Latin: Salve Mundus!"); // la
-                ui.label("Latvian: Sveika pasaule!"); // lv-LV
-                ui.label("Lithuanian: Labas pasauli!"); // lt-LT
-                ui.label("Nepali: नमस्कार संसार!"); // ne-NP
-                ui.label("Pashto: سلام نړی!"); // ps-AF
-                ui.label("Persian: سلام دنیا!"); // fa-IR
-                ui.label("Bengali: ওহে বিশ্ব!"); // bn-BD
-                ui.label("Georgian: გამარჯობა სამყარო!"); // ka-GE
-                ui.label("Gujarati: નમસ્કાર વિશ્વ!"); // gu-IN
-                ui.label("Kannada: ನಮಸ್ಕಾರ ಜಗತ್ತು!"); // kn-IN
-                ui.label("Khmer: សួស្តី​ពិភពលោក!"); // km-KH
-                ui.label("Lao: ສະບາຍດີໂລກ!"); // lo-LA
-                ui.label("Myanmar (Burmese): မင်္ဂလာပါကမ္ဘာလောက!"); // my-MM
-                ui.label("Marathi: नमस्कार जग!"); // mr-IN
-                ui.label("Mongolian: Сайн уу дэлхий!"); // mn-MN
-                ui.label("Kazakh: Сәлем Әлем!"); // kk-KZ
-
-                ui.label("Luxembourgish: Moien Welt!"); // lb-LU
-                ui.label("Macedonian: Здраво свету!"); // mk-MK
-                ui.label("Malagasy: Salama izao tontolo izao!"); // mg-MG
-                ui.label("Malay: Hai dunia!"); // ms-MY
-                ui.label("Maltese: Bongu dinja!"); // mt-MT
-                ui.label("Maori: Kia ora e te ao!"); // mi-N
-                ui.label("Norwegian: Hei verden!"); // no-NO
-                ui.label("Polish: Witaj świecie!"); // pl-PL
-                ui.label("Portuguese: Olá Mundo!"); // pt-PT
-                ui.label("Romanian: Salut Lume!"); // ro-RO
-                ui.label("Russian: Привет мир!"); // ru-RU
-                ui.label("Samoan: Talofa le lalolagi!"); // sm-WS
-                ui.label("Scottish Gaelic: Halò a shaoghal!"); // gd-GB
-                ui.label("Serbian: Здраво свете!"); // sr-RS
-                ui.label("Sesotho: Lumela Lefatše!"); // st-ZA
-                ui.label("Shona: Mhoro!"); // sn-ZW
-                ui.label("Sindhi: سلام دنيا!"); // sd-PK
-                ui.label("Slovak: Ahoj svet!"); // sk-SK
-                ui.label("Slovenian: Pozdravljen svet!"); // sl-SI
-                ui.label("Somali: Salaam dunia!"); // so-SO
-                ui.label("Spanish: ¡Hola Mundo!"); // es-ES
-                ui.label("Sundanese: Sampurasun!"); // su-ID
-                ui.label("Swahili: Habari dunia!"); // sw-TZ
-                ui.label("Swedish: Hej Världen!"); // sv-SE
-                ui.label("Tajik: Салом дунё!"); // tg-TJ
-                ui.label("Turkish: Merhaba Dünya!"); // tr-TR
-                ui.label("Ukrainian: Привіт Світ!"); // uk-UA
-                ui.label("Urdu: السلام علیکم دنیا!"); // ur-PK
-                ui.label("Uzbek: Salom dunyo!"); // uz-UZ
-                ui.label("Vietnamese: Xin chào thế giới!"); // vi-VN
-                ui.label("Welsh: Helo Byd!"); // cy-GB
-                ui.label("Xhosa: Molo Lizwe!"); // xh-ZA
-                */
             });
         } else if self.panel_central == true && self.panel_setting == false {
             egui::CentralPanel::default().show(ctx, |ui| {
