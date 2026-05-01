@@ -17,7 +17,7 @@ use i18n_embed_fl::fl;
 use rust_embed::RustEmbed;
 use std::collections::BTreeMap;
 use std::ops::Range;
-use std::path::Path;
+//use std::path::Path;
 use unic_langid::LanguageIdentifier;
 
 #[derive(RustEmbed)]
@@ -107,15 +107,16 @@ impl CT {
     pub fn configure_egui_fonts(ctx: &Context) {
         let mut fonts = FontDefinitions::default();
 
-        let base_dir = Path::new("assets");
-        let font_dir = base_dir.join("fonts");
-        let font_file_path = font_dir.join("noto-sans.ttf");
+        //let base_dir = Path::new("assets");
+        //let font_dir = base_dir.join("fonts");
+        //let font_file_path = font_dir.join("noto-sans.ttf");
 
         fonts.font_data.insert(
             "noto_sans".to_owned(),
             egui::FontData::from_static(include_bytes!("assets/fonts/noto-sans.ttf")),
         );
 
+        /*
         fonts.font_data.insert(
             "noto_sans_cjk".to_owned(),
             egui::FontData::from_static(include_bytes!("assets/fonts/noto-sans-cjk.otf")),
@@ -202,11 +203,13 @@ impl CT {
             egui::FontData::from_static(include_bytes!("assets/fonts/hebrew.ttf")),
         );
 
+        */
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
             .insert(0, "noto_sans".to_owned());
+        /*
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
@@ -311,7 +314,7 @@ impl CT {
             .entry(egui::FontFamily::Proportional)
             .or_default()
             .insert(17, "gurmukhi".to_owned());
-
+        */
         fonts
             .families
             .entry(egui::FontFamily::Monospace)
