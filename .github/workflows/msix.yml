@@ -28,8 +28,8 @@ jobs:
         
       - name: Build
         run: |
-          cargo build --release
-           
+          # cargo build --release
+          rustc --version
       - name: Release
         if: github.repository_owner == 'myridiax'                  
         uses: svenstaro/upload-release-action@v2
