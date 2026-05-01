@@ -1,7 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
 extern crate ct_nox;
-use ct::config::get_config;
+use ct::config::{get_config, save_config};
 use ct::icon::get_icon;
 use ct_nox::ct_nox::{read_file, write_file};
 use ct_nox::decrypt::decrypt;
@@ -27,31 +27,8 @@ use std::ops::Range;
 struct Localizations;
 
 fn main() -> Result<(), eframe::Error> {
-    let config = get_config();
+    //println!("{:?}", config.language);
 
-    //    println!("{:?}", config.db_host);
-
-    //let ftl: Vec<String = env!("ftl").split(',').map(|s| s.to_string()).collect();
-    //    let languages: Vec<&str> = env!("languages");
-
-    //    println!("{:?}", languages);
-
-    let loader: FluentLanguageLoader = fluent_language_loader!();
-    let requested_languages = DesktopLanguageRequester::requested_languages();
-    let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
-    let x = fl!(loader, "open");
-    println!("{:?}", x);
-
-    let new_code = "fr-FR";
-    let new_lang_id: LanguageIdentifier = new_code.parse().unwrap();
-    let mut new_languages: Vec<LanguageIdentifier> = Vec::new();
-    new_languages.push(new_lang_id);
-    let _force_select_result = i18n_embed::select(&loader, &Localizations, &new_languages);
-
-    let xx = fl!(loader, "open");
-    println!("{:?}", xx);
-
-    println!("{:?}", requested_languages);
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
         (rgba, 64, 64)
@@ -324,6 +301,7 @@ impl CT {
 
 impl Default for CT {
     fn default() -> Self {
+        let config = get_config();
         let loader: FluentLanguageLoader = fluent_language_loader!();
         let requested_languages = DesktopLanguageRequester::requested_languages();
         let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
@@ -456,7 +434,7 @@ impl Default for CT {
             popup_position: Pos2 { x: 0.0, y: 0.0 },
             panel_central: true,
             panel_setting: false,
-            selected_language: "en-US".to_string(),
+            selected_language: config.language,
             languages: ftl,
             language_map: language_map,
         }
@@ -474,27 +452,18 @@ impl eframe::App for CT {
         if self.panel_central == false && self.panel_setting == true {
             egui::CentralPanel::default().show(ctx, |ui| {
                 ui.add_space(20.0);
-                //ui.heading("Select a Language");
-
-                //ui.add_space(10.0);
-
-                // The ComboBox widget
                 ComboBox::new("language", "Select a language")
                     .selected_text(&self.selected_language)
                     .show_ui(ui, |ui| {
-                        //for i in &self.languages {
-                        //    if ui.selectable_label(false, i).clicked() {
-                        //        self.selected_language = i.clone();
-                        //    }
-                        //}
                         for (i, name) in &self.language_map {
                             if ui.selectable_label(false, i).clicked() {
                                 self.selected_language = self.language_map[&i.clone()].clone();
+                                save_config(&self.selected_language);
                             }
                         }
                     });
 
-                ui.add_space(20.0); // More spacing
+                ui.add_space(20.0);
 
                 ui.label(format!("You selected: {}", self.selected_language));
             });
