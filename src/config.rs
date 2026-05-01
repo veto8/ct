@@ -1,8 +1,27 @@
 use homedir::my_home;
+use i18n_embed::{
+    DesktopLanguageRequester,
+    fluent::{FluentLanguageLoader, fluent_language_loader},
+};
 use serde::{Deserialize, Serialize};
+use std::error::Error;
 use std::fs;
 use std::io;
+use std::num::ParseIntError;
 use std::path::Path;
+
+pub fn save_config(language: &str) -> bool {
+    let mut r = true;
+    let mut config = get_config();
+    config.language = language.to_string();
+    let toml = toml::to_string(&config).unwrap();
+    let home = my_home().unwrap().unwrap();
+    let _config_dir = &format!("{0}/.ct/", home.display());
+    let _config_path = &format!("{0}/.ct/config.toml", home.display());
+    let config_path = Path::new(_config_path);
+    fs::write(config_path, toml).unwrap();
+    return r;
+}
 
 pub fn get_config() -> AppConfig {
     let config = match load_or_initialize() {
@@ -19,13 +38,7 @@ pub fn get_config() -> AppConfig {
             }
 
             AppConfig {
-                db_name: "dbsql1".to_string(),
-                db_user: "dbsql1".to_string(),
-                db_pass: "passpass".to_string(),
-                db_host: "localhost".to_string(),
-                db_port: "3306".to_string(),
-                wait_min: 2000,
-                wait_max: 7000,
+                language: "en-US".to_string(),
             }
         }
     };
@@ -53,31 +66,23 @@ impl From<toml::de::Error> for ConfigError {
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct AppConfig {
-    pub db_name: String,
-    pub db_user: String,
-    pub db_pass: String,
-    pub db_host: String,
-    pub db_port: String,
-    pub wait_min: u64,
-    pub wait_max: u64,
+    pub language: String,
 }
 
 impl Default for AppConfig {
     fn default() -> Self {
-        Self {
-            db_name: "dbsql1".to_string(),
-            db_user: "dbsql1".to_string(),
-            db_pass: "passpass".to_string(),
-            db_host: "localhost".to_string(),
-            db_port: "3306".to_string(),
-            wait_min: 2000,
-            wait_max: 7000,
+        //let requested_languages = DesktopLanguageRequester::requested_languages();
+        let mut lang = "en-US".to_string();
+        let _lang = get_lang();
+        if _lang.is_ok() {
+            lang = _lang.unwrap();
         }
+        Self { language: lang }
     }
 }
 
 fn load_or_initialize() -> Result<AppConfig, ConfigError> {
-    //  https://dev.to/zofia/why-do-we-need-configuration-creating-and-handling-configuration-files-in-rust-4a46?ysclid=m00bsa1iuz12379992
+    //  https://dev.to/zofia/why-do-we-need-configuration-creating-and-handling-configuration-files-in-rust-4a46?ysclid=momg1uxytu755103190
     let home = my_home().unwrap().unwrap();
     let _config_dir = &format!("{0}/.ct/", home.display());
     let _config_path = &format!("{0}/.ct/config.toml", home.display());
@@ -100,4 +105,19 @@ fn load_or_initialize() -> Result<AppConfig, ConfigError> {
 
     //    println!(":{:?}", config.host);
     Ok(config)
+}
+
+fn get_lang() -> Result<String, Box<dyn Error>> {
+    let mut r = "en-US".to_string();
+
+    let requested_languages = DesktopLanguageRequester::requested_languages();
+    let ftl: Vec<String> = env!("ftl").split(',').map(|s| s.to_string()).collect();
+    let lang = requested_languages[0].language.to_string();
+    let reg = requested_languages[0].region.unwrap().to_string();
+    let f = format!("{}-{}", lang, reg);
+    if ftl.contains(&f) {
+        r = f;
+    }
+
+    return Ok(r);
 }

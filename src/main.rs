@@ -1,7 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
 extern crate ct_nox;
-use ct::config::get_config;
+use ct::config::{get_config, save_config};
 use ct::icon::get_icon;
 use ct_nox::ct_nox::{read_file, write_file};
 use ct_nox::decrypt::decrypt;
@@ -10,47 +10,25 @@ use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::{ComboBox, IconData, Pos2, Vec2};
 
+use egui::{Context, FontDefinitions};
 use i18n_embed::{
     DesktopLanguageRequester,
     fluent::{FluentLanguageLoader, fluent_language_loader},
 };
 use i18n_embed::{LanguageLoader, unic_langid};
 use i18n_embed_fl::fl;
-use unic_langid::LanguageIdentifier; // Make sure this is imported
-// use libs::config::get_config;
-use egui::{Context, FontDefinitions};
 use rust_embed::RustEmbed;
-use std::ops::Range; // Make sure to import this
+use std::collections::BTreeMap;
+use std::ops::Range;
+use unic_langid::LanguageIdentifier;
+
 #[derive(RustEmbed)]
-#[folder = "i18n"] // path to the compiled localization resources
+#[folder = "i18n"]
 struct Localizations;
 
 fn main() -> Result<(), eframe::Error> {
-    let config = get_config();
+    //println!("{:?}", config.language);
 
-    //    println!("{:?}", config.db_host);
-
-    //let ftl: Vec<String = env!("ftl").split(',').map(|s| s.to_string()).collect();
-    //    let languages: Vec<&str> = env!("languages");
-
-    //    println!("{:?}", languages);
-
-    let loader: FluentLanguageLoader = fluent_language_loader!();
-    let requested_languages = DesktopLanguageRequester::requested_languages();
-    let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
-    let x = fl!(loader, "open");
-    println!("{:?}", x);
-
-    let new_code = "fr-FR";
-    let new_lang_id: LanguageIdentifier = new_code.parse().unwrap();
-    let mut new_languages: Vec<LanguageIdentifier> = Vec::new();
-    new_languages.push(new_lang_id);
-    let _force_select_result = i18n_embed::select(&loader, &Localizations, &new_languages);
-
-    let xx = fl!(loader, "open");
-    println!("{:?}", xx);
-
-    println!("{:?}", requested_languages);
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
         (rgba, 64, 64)
@@ -75,7 +53,7 @@ fn main() -> Result<(), eframe::Error> {
         options,
         Box::new(|cc| {
             cc.egui_ctx.set_pixels_per_point(2.2);
-            CT::configure_egui_fonts(&cc.egui_ctx); // ← Add this line
+            CT::configure_egui_fonts(&cc.egui_ctx);
 
             Box::new(CT::default())
         }),
@@ -89,9 +67,8 @@ struct CT {
     status_text: String,
     cursor1: usize,
     cursor2: usize,
-    password: String,
-    search: String,
-    hide_password: bool,
+    _password: String,
+
     search_bar: bool,
     show_popup: bool,
     popup_position: Pos2,
@@ -101,6 +78,30 @@ struct CT {
     panel_setting: bool,
     selected_language: String,
     languages: Vec<String>,
+    language_map: BTreeMap<String, String>,
+    open: String,
+    _hide_password: bool,
+    _search: String,
+    search: String,
+    save: String,
+    copy: String,
+    paste: String,
+    cut: String,
+    close: String,
+    enter_text: String,
+    status: String,
+    about_us: String,
+    exit: String,
+    file: String,
+    edit: String,
+    settings: String,
+    help: String,
+    language: String,
+    select_a_language: String,
+    show_password: String,
+    hide_password: String,
+    password: String,
+    lang_name: String,
 }
 
 //    fn new(_cc: &eframe::CreationContext<'_>) -> Self {
@@ -322,29 +323,190 @@ impl CT {
 
 impl Default for CT {
     fn default() -> Self {
+        let config = get_config();
         let loader: FluentLanguageLoader = fluent_language_loader!();
-        let requested_languages = DesktopLanguageRequester::requested_languages();
-        let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
+
+        //let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
+
+        let new_code = &config.language;
+        let new_lang_id: LanguageIdentifier = new_code.parse().unwrap();
+        let mut new_languages: Vec<LanguageIdentifier> = Vec::new();
+        new_languages.push(new_lang_id);
+        let _result = i18n_embed::select(&loader, &Localizations, &new_languages);
         let ftl: Vec<String> = env!("ftl").split(',').map(|s| s.to_string()).collect();
+        let mut language_map: BTreeMap<String, String> = BTreeMap::new();
+
+        // Populate with the transformed data:
+        language_map.insert("English English".to_string(), "en-US".to_string());
+        language_map.insert("Thai ไทย".to_string(), "th-TH".to_string());
+        language_map.insert("Afrikaans Afrikaans".to_string(), "af-ZA".to_string());
+        language_map.insert("Albanian Shqip".to_string(), "sq-AL".to_string());
+        language_map.insert("Amharic አማርኛ".to_string(), "am-ET".to_string());
+        language_map.insert("Arabic العربية".to_string(), "ar-SA".to_string());
+        language_map.insert("Armenian Հայերեն".to_string(), "hy-AM".to_string());
+        language_map.insert(
+            "Azerbaijani Azərbaycan dili".to_string(),
+            "az-AZ".to_string(),
+        );
+        language_map.insert("Basque Euskara".to_string(), "eu-ES".to_string());
+        language_map.insert("Belarusian Беларуская".to_string(), "be-BY".to_string());
+        language_map.insert("Bengali বাংলা".to_string(), "bn-BD".to_string());
+        language_map.insert("Bosnian Bosanski".to_string(), "bs-BA".to_string());
+        language_map.insert("Bulgarian Български".to_string(), "bg-BG".to_string());
+        language_map.insert("Catalan Català".to_string(), "ca-ES".to_string());
+        language_map.insert("Chichewa Chinyanja".to_string(), "ny-MW".to_string()); // Also Nyanja
+        language_map.insert("Corsican Corsu".to_string(), "co-FR".to_string());
+        language_map.insert("Croatian Hrvatski".to_string(), "hr-HR".to_string());
+        language_map.insert("Czech Čeština".to_string(), "cs-CZ".to_string());
+        language_map.insert("Danish Dansk".to_string(), "da-DK".to_string());
+        language_map.insert("Dutch Nederlands".to_string(), "nl-NL".to_string());
+        language_map.insert("Esperanto Esperanto".to_string(), "eo".to_string());
+        language_map.insert("Estonian Eesti keel".to_string(), "et-EE".to_string());
+        language_map.insert("Filipino Tagalog".to_string(), "tl-PH".to_string());
+        language_map.insert("Finnish Suomi".to_string(), "fi-FI".to_string());
+        language_map.insert("French Français".to_string(), "fr-FR".to_string());
+        language_map.insert("Frisian Frysk".to_string(), "fy-NL".to_string());
+        language_map.insert("Galician Galego".to_string(), "gl-ES".to_string());
+        language_map.insert("Georgian ქართული".to_string(), "ka-GE".to_string());
+        language_map.insert("German Deutsch".to_string(), "de-DE".to_string());
+        language_map.insert("Greek Ελληνικά".to_string(), "el-GR".to_string());
+        language_map.insert("Gujarati ગુજરાતી".to_string(), "gu-IN".to_string());
+        language_map.insert(
+            "Haitian Creole Kreyòl ayisyen".to_string(),
+            "ht-HT".to_string(),
+        );
+        language_map.insert("Hausa Hausa".to_string(), "ha-NG".to_string());
+        language_map.insert("Hawaiian ʻŌlelo Hawaiʻi".to_string(), "haw-US".to_string());
+        language_map.insert("Hindi हिन्दी".to_string(), "hi-IN".to_string());
+        language_map.insert("Hmong Hmong".to_string(), "hmn".to_string()); // Generic, as region isn't specified
+        language_map.insert("Hungarian Magyar".to_string(), "hu-HU".to_string());
+        language_map.insert("Igbo Igbo".to_string(), "ig-NG".to_string());
+        language_map.insert("Irish Gaeilge".to_string(), "ga-IE".to_string());
+        language_map.insert("Italian Italiano".to_string(), "it-IT".to_string());
+        language_map.insert("Japanese 日本語".to_string(), "ja-JP".to_string());
+        language_map.insert("Kannada ಕನ್ನಡ".to_string(), "kn-IN".to_string());
+        language_map.insert("Kazakh Қазақ тілі".to_string(), "kk-KZ".to_string());
+        language_map.insert("Khmer Khmer".to_string(), "km-KH".to_string());
+        language_map.insert("Korean 한국어".to_string(), "ko-KR".to_string());
+        language_map.insert("Kurdish Kurdî".to_string(), "ku-TR".to_string()); // Often Kurdish Sorani or Kurmanji
+        language_map.insert("Kyrgyz Кыргызча".to_string(), "ky-KG".to_string());
+        language_map.insert("Lao ລາວ".to_string(), "lo-LA".to_string());
+        language_map.insert("Latin Latina".to_string(), "la".to_string()); // Generic Latin
+        language_map.insert("Latvian Latviešu valoda".to_string(), "lv-LV".to_string());
+        language_map.insert("Lithuanian Lietuvių kalba".to_string(), "lt-LT".to_string());
+        language_map.insert(
+            "Luxembourgish Lëtzebuergesch".to_string(),
+            "lb-LU".to_string(),
+        );
+        language_map.insert("Macedonian Македонски".to_string(), "mk-MK".to_string());
+        language_map.insert("Malagasy Malagasy".to_string(), "mg-MG".to_string());
+        language_map.insert("Malay Bahasa Melayu".to_string(), "ms-MY".to_string());
+        language_map.insert("Malayalam മലയാളം".to_string(), "ml-IN".to_string());
+        language_map.insert("Maltese Malti".to_string(), "mt-MT".to_string());
+        language_map.insert("Maori Te Reo Māori".to_string(), "mi-NZ".to_string());
+        language_map.insert("Marathi मराठी".to_string(), "mr-IN".to_string());
+        language_map.insert("Mongolian Монгол".to_string(), "mn-MN".to_string());
+        language_map.insert("Myanmar မြန်မာ".to_string(), "my-MM".to_string());
+        language_map.insert("Nepali नेपाली".to_string(), "ne-NP".to_string());
+        language_map.insert("Norwegian Norsk".to_string(), "no-NO".to_string());
+        language_map.insert("Pashto پښتو".to_string(), "ps-AF".to_string());
+        language_map.insert("Persian فارسی".to_string(), "fa-IR".to_string());
+        language_map.insert("Polish Polski".to_string(), "pl-PL".to_string());
+        language_map.insert("Portuguese Português".to_string(), "pt-PT".to_string());
+        language_map.insert("Punjabi ਪੰਜਾਬੀ".to_string(), "pa-IN".to_string());
+        language_map.insert("Romanian Română".to_string(), "ro-RO".to_string());
+        language_map.insert("Russian Русский".to_string(), "ru-RU".to_string());
+        language_map.insert("Samoan Gagana fa'a Sāmoa".to_string(), "sm-WS".to_string());
+        language_map.insert("Scottish Gaelic Gàidhlig".to_string(), "gd-GB".to_string());
+        language_map.insert("Serbian Srpski".to_string(), "sr-RS".to_string());
+        language_map.insert("Sesotho Sesotho".to_string(), "st-ZA".to_string());
+        language_map.insert("Shona Chishona".to_string(), "sn-ZW".to_string());
+        language_map.insert("Sindhi سنڌي".to_string(), "sd-PK".to_string());
+        language_map.insert("Sinhala සිංහල".to_string(), "si-LK".to_string());
+        language_map.insert("Slovak Slovenčina".to_string(), "sk-SK".to_string());
+        language_map.insert("Slovenian Slovenščina".to_string(), "sl-SI".to_string());
+        language_map.insert("Somali Soomaali".to_string(), "so-SO".to_string());
+        language_map.insert("Spanish Español".to_string(), "es-ES".to_string());
+        language_map.insert("Sundanese Basa Sunda".to_string(), "su-ID".to_string());
+        language_map.insert("Swahili Kiswahili".to_string(), "sw-TZ".to_string());
+        language_map.insert("Swedish Svenska".to_string(), "sv-SE".to_string());
+        language_map.insert("Tajik Тоҷикӣ".to_string(), "tg-TJ".to_string());
+        language_map.insert("Tamil தமிழ்".to_string(), "ta-IN".to_string());
+        language_map.insert("Telugu తెలుగు".to_string(), "te-IN".to_string());
+        language_map.insert("Turkish Türkçe".to_string(), "tr-TR".to_string());
+        language_map.insert("Ukrainian Українська".to_string(), "uk-UA".to_string());
+        language_map.insert("Urdu اردو".to_string(), "ur-PK".to_string());
+        language_map.insert("Uzbek Oʻzbek tili".to_string(), "uz-UZ".to_string());
+        language_map.insert("Vietnamese Tiếng Việt".to_string(), "vi-VN".to_string());
+        language_map.insert("Welsh Cymraeg".to_string(), "cy-GB".to_string());
+        language_map.insert("Xhosa isiXhosa".to_string(), "xh-ZA".to_string());
+        language_map.insert("Yiddish ייִדיש".to_string(), "yi".to_string()); // Generic Yiddish
+        language_map.insert("Yoruba Yorùbá".to_string(), "yo-NG".to_string());
+        language_map.insert("Zulu isiZulu".to_string(), "zu-ZA".to_string());
+
+        let open = fl!(loader, "open");
+        let save = fl!(loader, "save");
+        let copy = fl!(loader, "copy");
+        let paste = fl!(loader, "paste");
+        let cut = fl!(loader, "cut");
+        let search = fl!(loader, "search");
+        let close = fl!(loader, "close");
+        let enter_text = fl!(loader, "enter_text");
+        let status = fl!(loader, "status");
+        let show_password = fl!(loader, "open");
+        let hide_password = fl!(loader, "open");
+        let password = fl!(loader, "password");
+        let about_us = fl!(loader, "about_us");
+        let exit = fl!(loader, "exit");
+        let file = fl!(loader, "file");
+        let edit = fl!(loader, "edit");
+
+        let settings = fl!(loader, "settings");
+        let help = fl!(loader, "help");
+        let language = fl!(loader, "languages");
+        let select_a_language = fl!(loader, "select_a_language");
+
         CT {
             loader: loader,
             text: "".to_string(),
             picked_path: "".to_string(),
             status_text: "".to_string(),
+            lang_name: "".to_string(),
             cursor1: 0,
             cursor2: 0,
-            password: "".to_string(),
-            search: "".to_string(),
+            _password: "".to_string(),
             st: "".to_string(),
             r: 0..0,
-            hide_password: false,
+            _hide_password: false,
             search_bar: false,
+            _search: "".to_string(),
             show_popup: false,
             popup_position: Pos2 { x: 0.0, y: 0.0 },
             panel_central: true,
             panel_setting: false,
-            selected_language: "en-US".to_string(),
+            selected_language: config.language,
             languages: ftl,
+            language_map: language_map,
+            open: open,
+            search: search,
+            save: save,
+            copy: copy,
+            paste: paste,
+            cut: cut,
+            close: close,
+            enter_text: enter_text,
+            status: status,
+            about_us: about_us,
+            exit: exit,
+            file: file,
+            edit: edit,
+            settings: settings,
+            help: help,
+            language: language,
+            select_a_language: select_a_language,
+            show_password: show_password,
+            hide_password: hide_password,
+            password: password,
         }
     }
 }
@@ -354,129 +516,53 @@ impl eframe::App for CT {
         if self.panel_central == false && self.panel_setting == true {
             egui::CentralPanel::default().show(ctx, |ui| {
                 ui.add_space(20.0);
-                //ui.heading("Select a Language");
+                ComboBox::new(
+                    "language",
+                    format!("{}  Select a Language", self.select_a_language),
+                )
+                .selected_text(&self.selected_language)
+                .show_ui(ui, |ui| {
+                    for (i, name) in &self.language_map {
+                        if ui.selectable_label(false, i).clicked() {
+                            self.selected_language = self.language_map[&i.clone()].clone();
+                            self.lang_name = i.to_string();
+                            save_config(&self.selected_language);
 
-                //ui.add_space(10.0);
+                            let new_code = self.selected_language.clone();
+                            let new_lang_id: LanguageIdentifier = new_code.parse().unwrap();
+                            let mut new_languages: Vec<LanguageIdentifier> = Vec::new();
+                            new_languages.push(new_lang_id);
+                            let _result =
+                                i18n_embed::select(&self.loader, &Localizations, &new_languages);
+                            self.open = fl!(&self.loader, "open");
 
-                // The ComboBox widget
-                ComboBox::new("language", "Select a language")
-                    .selected_text(&self.selected_language)
-                    .show_ui(ui, |ui| {
-                        for i in &self.languages {
-                            if ui.selectable_label(false, i).clicked() {
-                                self.selected_language = i.clone();
-                            }
+                            self.password = fl!(&self.loader, "password");
+                            self.save = fl!(&self.loader, "save");
+                            self.copy = fl!(&self.loader, "copy");
+                            self.paste = fl!(&self.loader, "paste");
+                            self.cut = fl!(&self.loader, "cut");
+                            self.search = fl!(&self.loader, "search");
+                            self.close = fl!(&self.loader, "close");
+                            self.enter_text = fl!(&self.loader, "enter_text");
+                            self.status = fl!(&self.loader, "status");
+                            self.show_password = fl!(&self.loader, "open");
+                            self.hide_password = fl!(&self.loader, "open");
+                            self.about_us = fl!(&self.loader, "about_us");
+                            self.exit = fl!(&self.loader, "exit");
+                            self.file = fl!(&self.loader, "file");
+                            self.edit = fl!(&self.loader, "edit");
+                            self.settings = fl!(&self.loader, "settings");
+                            self.help = fl!(&self.loader, "help");
+                            self.language = fl!(&self.loader, "languages");
+                            self.select_a_language = fl!(&self.loader, "select_a_language");
+
+                            println!("{}", fl!(self.loader, "open"));
                         }
-                    });
+                    }
+                });
 
-                ui.add_space(20.0); // More spacing
-
-                ui.label(format!("You selected: {}", self.selected_language));
-
-                /*
-                ui.label("Malayalam: ഹലോ ലോകം!"); // ml-IN
-                ui.label("Punjabi: ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਦੁਨਿਆ!"); // pa-IN
-                ui.label("Sinhala: ආයුබෝවන් ලෝකය!"); // si-LK
-
-                ui.label("Tamil: வணக்கம் உலகம்!"); // ta-IN
-                ui.label("Telugu: నమస్కారం ప్రపంచం!"); // te-IN
-
-                ui.label("Yiddish: שלום עולם!"); // yi
-                ui.label("Yoruba: Bawo ni aye!"); // yo-NG
-                ui.label("Zulu: Sawubona Mhlaba!"); // zu-ZA
-
-                ui.label("Chinese: 你好，世界！"); // zh-CN (covers zh-TW, zh-HK, zh-SG, zh-MO)
-                ui.label("English: Hello World!"); // en-US
-                ui.label("Thai: สวัสดีชาวโลก!"); // th-TH
-                ui.label("Amharic: ሰላም አለም!"); // am-ET
-                ui.label("Arabic: مرحبًا بالعالم!"); // ar-SA
-                ui.label("Armenian: Բարև աշխարհ!"); // hy-AM
-                ui.label("Azerbaijani: Salam Dünya!"); // az-AZ
-                ui.label("Basque: Kaixo Mundua!"); // eu-ES
-                ui.label("Belarusian: Прывітанне Сусвет!"); // be-BY
-
-                ui.label("Bosnian: Zdravo svijete!"); // bs-BA
-                ui.label("Bulgarian: Здравей свят!"); // bg-BG
-                ui.label("Catalan: Hola Món!"); // ca-ES
-                ui.label("Chinese: 你好，世界！"); // zh-CN (covers zh-TW, zh-HK, zh-SG, zh-MO)
-                ui.label("Croatian: Zdravo svijete!"); // hr-HR
-                ui.label("Czech: Ahoj světe!"); // cs-CZ
-                ui.label("Danish: Hej Verden!"); // da-DK
-                ui.label("Dutch: Hallo Wereld!"); // nl-NL
-                ui.label("Greek: Γεια σου κόσμε!"); // el-GR
-
-                ui.label("Esperanto: Saluton Mondo!"); // eo
-                ui.label("Estonian: Tere maailm!"); // et-EE
-                ui.label("Filipino: Kamusta Mundo!"); // tl-PH
-                ui.label("Finnish: Hei maailma!"); // fi-FI
-                ui.label("French: Bonjour le monde !"); // fr-FR
-                ui.label("Frisian: Goeie dei wrâld!"); // fy-NL
-                ui.label("Galician: Ola Mundo!"); // gl-ES
-
-                ui.label("German: Hallo Welt!"); // de-DE
-
-                ui.label("Haitian Creole: Bonjou mond!"); // ht-HT
-                ui.label("Hausa: Sannu Duniya!"); // ha-NG
-                ui.label("Hawaiian: Aloha honua!"); // haw-US
-                ui.label("Hindi: नमस्ते दुनिया!"); // hi-IN
-                ui.label("Hungarian: Helló világ!"); // hu-HU
-                ui.label("Igbo: Ndewo Ụwa!"); // ig-NG
-                ui.label("Irish: Dia duit an domhan!"); // ga-IE
-                ui.label("Italian: Ciao mondo!"); // it-IT
-                ui.label("Japanese: こんにちは世界！"); // ja-JP
-                ui.label("Korean: 안녕하세요 세계!"); // ko-KR
-                ui.label("Kurdish (Kurmanji): Silav cîhan!"); // ku-TR
-                ui.label("Kyrgyz: Салам дүйнө!"); // ky-KG
-                ui.label("Latin: Salve Mundus!"); // la
-                ui.label("Latvian: Sveika pasaule!"); // lv-LV
-                ui.label("Lithuanian: Labas pasauli!"); // lt-LT
-                ui.label("Nepali: नमस्कार संसार!"); // ne-NP
-                ui.label("Pashto: سلام نړی!"); // ps-AF
-                ui.label("Persian: سلام دنیا!"); // fa-IR
-                ui.label("Bengali: ওহে বিশ্ব!"); // bn-BD
-                ui.label("Georgian: გამარჯობა სამყარო!"); // ka-GE
-                ui.label("Gujarati: નમસ્કાર વિશ્વ!"); // gu-IN
-                ui.label("Kannada: ನಮಸ್ಕಾರ ಜಗತ್ತು!"); // kn-IN
-                ui.label("Khmer: សួស្តី​ពិភពលោក!"); // km-KH
-                ui.label("Lao: ສະບາຍດີໂລກ!"); // lo-LA
-                ui.label("Myanmar (Burmese): မင်္ဂလာပါကမ္ဘာလောက!"); // my-MM
-                ui.label("Marathi: नमस्कार जग!"); // mr-IN
-                ui.label("Mongolian: Сайн уу дэлхий!"); // mn-MN
-                ui.label("Kazakh: Сәлем Әлем!"); // kk-KZ
-
-                ui.label("Luxembourgish: Moien Welt!"); // lb-LU
-                ui.label("Macedonian: Здраво свету!"); // mk-MK
-                ui.label("Malagasy: Salama izao tontolo izao!"); // mg-MG
-                ui.label("Malay: Hai dunia!"); // ms-MY
-                ui.label("Maltese: Bongu dinja!"); // mt-MT
-                ui.label("Maori: Kia ora e te ao!"); // mi-N
-                ui.label("Norwegian: Hei verden!"); // no-NO
-                ui.label("Polish: Witaj świecie!"); // pl-PL
-                ui.label("Portuguese: Olá Mundo!"); // pt-PT
-                ui.label("Romanian: Salut Lume!"); // ro-RO
-                ui.label("Russian: Привет мир!"); // ru-RU
-                ui.label("Samoan: Talofa le lalolagi!"); // sm-WS
-                ui.label("Scottish Gaelic: Halò a shaoghal!"); // gd-GB
-                ui.label("Serbian: Здраво свете!"); // sr-RS
-                ui.label("Sesotho: Lumela Lefatše!"); // st-ZA
-                ui.label("Shona: Mhoro!"); // sn-ZW
-                ui.label("Sindhi: سلام دنيا!"); // sd-PK
-                ui.label("Slovak: Ahoj svet!"); // sk-SK
-                ui.label("Slovenian: Pozdravljen svet!"); // sl-SI
-                ui.label("Somali: Salaam dunia!"); // so-SO
-                ui.label("Spanish: ¡Hola Mundo!"); // es-ES
-                ui.label("Sundanese: Sampurasun!"); // su-ID
-                ui.label("Swahili: Habari dunia!"); // sw-TZ
-                ui.label("Swedish: Hej Världen!"); // sv-SE
-                ui.label("Tajik: Салом дунё!"); // tg-TJ
-                ui.label("Turkish: Merhaba Dünya!"); // tr-TR
-                ui.label("Ukrainian: Привіт Світ!"); // uk-UA
-                ui.label("Urdu: السلام علیکم دنیا!"); // ur-PK
-                ui.label("Uzbek: Salom dunyo!"); // uz-UZ
-                ui.label("Vietnamese: Xin chào thế giới!"); // vi-VN
-                ui.label("Welsh: Helo Byd!"); // cy-GB
-                ui.label("Xhosa: Molo Lizwe!"); // xh-ZA
-                */
+                ui.add_space(20.0);
+                ui.label(format!("You selected: {}", &self.lang_name));
             });
         } else if self.panel_central == true && self.panel_setting == false {
             egui::CentralPanel::default().show(ctx, |ui| {
@@ -499,22 +585,22 @@ impl eframe::App for CT {
                     let button_size = egui::Vec2::new(button_width, button_height);
 
                     let _password = ui.add(
-                        egui::TextEdit::singleline(&mut self.password)
-                            .hint_text("Password")
+                        egui::TextEdit::singleline(&mut self._password)
+                            .hint_text(&self.password)
                             .desired_width(password_width)
-                            .password(!self.hide_password),
+                            .password(!self._hide_password),
                     );
 
-                    let button_text = if self.hide_password {
-                        "Hide Password"
+                    let button_text = if self._hide_password {
+                        &self.hide_password
                     } else {
-                        "Show Password"
+                        &self.show_password
                     };
                     if ui
                         .add(egui::Button::new(button_text).min_size(button_size))
                         .clicked()
                     {
-                        self.hide_password = !self.hide_password;
+                        self._hide_password = !self._hide_password;
                     }
                 });
 
@@ -529,30 +615,30 @@ impl eframe::App for CT {
                     let button_size = egui::Vec2::new(button_width, button_height);
 
                     if ui
-                        .add(egui::Button::new("Open").min_size(button_size))
+                        .add(egui::Button::new(&self.open).min_size(button_size))
                         .clicked()
                     {
                         if let Some(path) = rfd::FileDialog::new().pick_file() {
                             self.picked_path = path.display().to_string();
                             let ct = read_file(&self.picked_path.clone());
-                            self.text = decrypt(&ct, &self.password);
+                            self.text = decrypt(&ct, &self._password);
                         }
                     }
 
                     if ui
-                        .add(egui::Button::new("Save").min_size(button_size))
+                        .add(egui::Button::new(&self.save).min_size(button_size))
                         .clicked()
                     {
                         if let Some(path) = rfd::FileDialog::new().save_file() {
                             self.picked_path = path.display().to_string();
                             println!("save crypt text to: {}", self.picked_path);
-                            let ct = encrypt(&self.text, &self.password);
+                            let ct = encrypt(&self.text, &self._password);
                             let _x = write_file(&self.picked_path.clone(), &ct);
                         }
                     }
 
                     if ui
-                        .add(egui::Button::new("Cut").min_size(button_size))
+                        .add(egui::Button::new(&self.cut).min_size(button_size))
                         .clicked()
                     {
                         let r = get_char_range(self.cursor1, self.cursor2);
@@ -561,7 +647,7 @@ impl eframe::App for CT {
                         self.text.delete_char_range(r.clone());
                     }
                     if ui
-                        .add(egui::Button::new("Copy").min_size(button_size))
+                        .add(egui::Button::new(&self.copy).min_size(button_size))
                         .clicked()
                     {
                         let r = get_char_range(self.cursor1, self.cursor2);
@@ -569,7 +655,7 @@ impl eframe::App for CT {
                         ui.output_mut(|o| o.copied_text = st.to_string());
                     }
                     if ui
-                        .add(egui::Button::new("Paste").min_size(button_size))
+                        .add(egui::Button::new(&self.paste).min_size(button_size))
                         .clicked()
                     {
                         let txt = cli_clipboard::get_contents().unwrap();
@@ -577,14 +663,14 @@ impl eframe::App for CT {
                         self.text.insert_text(&txt, r.start);
                     }
                     if ui
-                        .add(egui::Button::new("Search").min_size(button_size))
+                        .add(egui::Button::new(&self.search).min_size(button_size))
                         .clicked()
                     {
                         self.search_bar = !self.search_bar;
                     }
 
                     if ui
-                        .add(egui::Button::new("Close").min_size(button_size))
+                        .add(egui::Button::new(&self.close).min_size(button_size))
                         .clicked()
                     {
                         ctx.send_viewport_cmd(egui::ViewportCommand::Close);
@@ -594,8 +680,8 @@ impl eframe::App for CT {
                 if self.search_bar {
                     ui.horizontal(|ui| {
                         let _search = ui.add(
-                            egui::TextEdit::singleline(&mut self.search)
-                                .hint_text("Search")
+                            egui::TextEdit::singleline(&mut self._search)
+                                .hint_text(&self.search)
                                 .desired_width(f32::INFINITY),
                         );
                     });
@@ -605,7 +691,7 @@ impl eframe::App for CT {
                 let _scroll = egui::ScrollArea::vertical().show(ui, |ui| {
                     let mut layouter = |ui: &egui::Ui, string: &str, wrap_width: f32| {
                         let mut layout_job = egui::text::LayoutJob::default();
-                        let target_word: &str = self.search.as_str();
+                        let target_word: &str = self._search.as_str();
                         if target_word != ""
                             && let Some(pos) = string.find(target_word)
                         {
@@ -638,7 +724,7 @@ impl eframe::App for CT {
 
                     let textedit = egui::TextEdit::multiline(&mut self.text)
                         .desired_width(f32::INFINITY)
-                        .hint_text(fl!(self.loader, "open"))
+                        .hint_text(&self.enter_text)
                         .layouter(&mut layouter);
                     let response = ui.add_sized(ui.available_size(), textedit);
                     //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
@@ -665,24 +751,24 @@ impl eframe::App for CT {
                 .fixed_pos(self.popup_position)
                 .show(ctx, |ui| {
                     egui::Frame::popup(ui.style()).show(ui, |ui| {
-                        if ui.button("Copy").clicked() {
+                        if ui.button(&self.copy).clicked() {
                             ui.output_mut(|o| o.copied_text = self.st.to_string());
                             self.show_popup = false;
                         }
 
-                        if ui.button("Paste").clicked() {
+                        if ui.button(&self.paste).clicked() {
                             let txt = cli_clipboard::get_contents().unwrap();
                             let r = get_char_range(self.cursor1, self.cursor2);
                             self.text.insert_text(&txt, r.start);
                             self.show_popup = false;
                         }
-                        if ui.button("Cut").clicked() {
+                        if ui.button(&self.cut).clicked() {
                             ui.output_mut(|o| o.copied_text = self.st.to_string());
                             self.text.delete_char_range(self.r.clone());
                             self.show_popup = false;
                         }
 
-                        if ui.button("Close").clicked() {
+                        if ui.button(&self.close).clicked() {
                             self.show_popup = false;
                         }
                     });
@@ -695,48 +781,48 @@ impl eframe::App for CT {
 
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
-                ui.menu_button("File", |ui| {
-                    if ui.button(fl!(self.loader, "open")).clicked() {
+                ui.menu_button(&self.file, |ui| {
+                    if ui.button(&self.open).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
                         ui.close_menu();
                     }
-                    if ui.button("Save").clicked() {
-                        self.panel_central = true;
-                        self.panel_setting = false;
-                        ui.close_menu();
-                    }
-                });
-                ui.menu_button("Edit", |ui| {
-                    if ui.button("Copy").clicked() {
-                        self.panel_central = true;
-                        self.panel_setting = false;
-                        ui.close_menu();
-                    }
-                    if ui.button("Paste").clicked() {
-                        self.panel_central = true;
-                        self.panel_setting = false;
-                        ui.close_menu();
-                    }
-                    if ui.button("Cut").clicked() {
+                    if ui.button(&self.save).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
                         ui.close_menu();
                     }
                 });
-                ui.menu_button("Settings", |ui| {
-                    if ui.button("Languages").clicked() {
+                ui.menu_button(&self.edit, |ui| {
+                    if ui.button(&self.copy).clicked() {
+                        self.panel_central = true;
+                        self.panel_setting = false;
+                        ui.close_menu();
+                    }
+                    if ui.button(&self.paste).clicked() {
+                        self.panel_central = true;
+                        self.panel_setting = false;
+                        ui.close_menu();
+                    }
+                    if ui.button(&self.cut).clicked() {
+                        self.panel_central = true;
+                        self.panel_setting = false;
+                        ui.close_menu();
+                    }
+                });
+                ui.menu_button(&self.settings, |ui| {
+                    if ui.button(&self.language).clicked() {
                         self.panel_central = false;
                         self.panel_setting = true;
 
                         ui.close_menu();
                     }
                 });
-                ui.menu_button("About", |ui| {
-                    if ui.button("Help").clicked() {
+                ui.menu_button(&self.about_us, |ui| {
+                    if ui.button(&self.help).clicked() {
                         ui.close_menu();
                     }
-                    if ui.button("About CT").clicked() {
+                    if ui.button(&self.about_us).clicked() {
                         ui.close_menu();
                     }
                 });
@@ -745,7 +831,7 @@ impl eframe::App for CT {
 
         egui::TopBottomPanel::bottom("status_panel").show(ctx, |ui| {
             ui.horizontal(|ui| {
-                ui.label(format!("Status: {}", self.status_text));
+                ui.label(format!("{0}: {1}", &self.status, self.status_text));
                 ui.separator();
                 //ui.add(egui::ProgressBar::new(self.progress).show_percentage());
             });
