@@ -11,15 +11,13 @@ use eframe::egui::TextBuffer;
 use eframe::egui::{ComboBox, IconData, Pos2, Vec2};
 
 use egui::{Context, FontDefinitions};
-use i18n_embed::{
-    DesktopLanguageRequester,
-    fluent::{FluentLanguageLoader, fluent_language_loader},
-};
-use i18n_embed::{LanguageLoader, unic_langid};
+use i18n_embed::fluent::{FluentLanguageLoader, fluent_language_loader};
+use i18n_embed::unic_langid;
 use i18n_embed_fl::fl;
 use rust_embed::RustEmbed;
 use std::collections::BTreeMap;
 use std::ops::Range;
+use std::path::Path;
 use unic_langid::LanguageIdentifier;
 
 #[derive(RustEmbed)]
@@ -77,7 +75,6 @@ struct CT {
     panel_central: bool,
     panel_setting: bool,
     selected_language: String,
-    languages: Vec<String>,
     language_map: BTreeMap<String, String>,
     open: String,
     _hide_password: bool,
@@ -110,95 +107,99 @@ impl CT {
     pub fn configure_egui_fonts(ctx: &Context) {
         let mut fonts = FontDefinitions::default();
 
+        let base_dir = Path::new("assets");
+        let font_dir = base_dir.join("fonts");
+        let font_file_path = font_dir.join("noto-sans.ttf");
+
         fonts.font_data.insert(
             "noto_sans".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/noto-sans.ttf")),
         );
 
         fonts.font_data.insert(
             "noto_sans_cjk".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/noto-sans-cjk.otf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/noto-sans-cjk.otf")),
         );
 
         fonts.font_data.insert(
             "thai".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/thai.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/thai.ttf")),
         );
 
         fonts.font_data.insert(
             "ethiopic".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/ethiopic.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/ethiopic.ttf")),
         );
 
         fonts.font_data.insert(
             "arabic".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/arabic.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/arabic.ttf")),
         );
 
         fonts.font_data.insert(
             "armenian".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/armenian.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/armenian.ttf")),
         );
 
         fonts.font_data.insert(
             "bengali".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/bengali.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/bengali.ttf")),
         );
         fonts.font_data.insert(
             "georgian".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/georgian.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/georgian.ttf")),
         );
         fonts.font_data.insert(
             "gujarati".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/gujarati.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/gujarati.ttf")),
         );
         fonts.font_data.insert(
             "kannada".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/kannada.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/kannada.ttf")),
         );
         fonts.font_data.insert(
             "khmer".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/khmer.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/khmer.ttf")),
         );
 
         fonts.font_data.insert(
             "lao".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/lao.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/lao.ttf")),
         );
 
         fonts.font_data.insert(
             "myammar".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/myammar.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/myammar.ttf")),
         );
 
         fonts.font_data.insert(
             "malayalam".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/malayalam.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/malayalam.ttf")),
         );
 
         fonts.font_data.insert(
             "gurmukhi".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/gurmukhi.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/gurmukhi.ttf")),
         );
 
         fonts.font_data.insert(
             "sinhala".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/sinhala.tff")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/sinhala.tff")),
         );
 
         fonts.font_data.insert(
             "tamil".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/tamil.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/tamil.ttf")),
         );
 
         fonts.font_data.insert(
             "telugu".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/telugu.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/telugu.ttf")),
         );
 
         fonts.font_data.insert(
             "hebrew".to_owned(),
-            egui::FontData::from_static(include_bytes!("../assets/fonts/hebrew.ttf")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/hebrew.ttf")),
         );
 
         fonts
@@ -333,7 +334,7 @@ impl Default for CT {
         let mut new_languages: Vec<LanguageIdentifier> = Vec::new();
         new_languages.push(new_lang_id);
         let _result = i18n_embed::select(&loader, &Localizations, &new_languages);
-        let ftl: Vec<String> = env!("ftl").split(',').map(|s| s.to_string()).collect();
+        //let ftl: Vec<String> = env!("ftl").split(',').map(|s| s.to_string()).collect();
         let mut language_map: BTreeMap<String, String> = BTreeMap::new();
 
         // Populate with the transformed data:
@@ -485,7 +486,6 @@ impl Default for CT {
             panel_central: true,
             panel_setting: false,
             selected_language: config.language,
-            languages: ftl,
             language_map: language_map,
             open: open,
             search: search,
@@ -522,7 +522,7 @@ impl eframe::App for CT {
                 )
                 .selected_text(&self.selected_language)
                 .show_ui(ui, |ui| {
-                    for (i, name) in &self.language_map {
+                    for (i, _name) in &self.language_map {
                         if ui.selectable_label(false, i).clicked() {
                             self.selected_language = self.language_map[&i.clone()].clone();
                             self.lang_name = i.to_string();
@@ -731,8 +731,8 @@ impl eframe::App for CT {
                     let resp_id = response.id;
 
                     if let Some(state) = egui::TextEdit::load_state(ui.ctx(), resp_id) {
-                        if let Some(ccursor) = state.ccursor_range() {
-                            //if let Some(ccursor) = self.cursor.char_range() {
+                        //if let Some(ccursor) = state.ccursor_range() {
+                        if let Some(ccursor) = state.cursor.char_range() {
                             self.cursor1 = ccursor.secondary.index;
                             self.cursor2 = ccursor.primary.index;
                         }

@@ -1,17 +1,14 @@
 use homedir::my_home;
-use i18n_embed::{
-    DesktopLanguageRequester,
-    fluent::{FluentLanguageLoader, fluent_language_loader},
-};
+use i18n_embed::DesktopLanguageRequester;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::fs;
 use std::io;
-use std::num::ParseIntError;
+
 use std::path::Path;
 
 pub fn save_config(language: &str) -> bool {
-    let mut r = true;
+    let r = true;
     let mut config = get_config();
     config.language = language.to_string();
     let toml = toml::to_string(&config).unwrap();
