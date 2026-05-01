@@ -15,6 +15,8 @@ permissions:
 jobs:
   Build:
     runs-on: windows-latest
+    if: github.repository_owner == 'myridiax'
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,7 +31,7 @@ jobs:
           cargo build --release
            
       - name: Release
-        if: github.repository_owner == 'myridia'                  
+        if: github.repository_owner == 'myridiax'                  
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
