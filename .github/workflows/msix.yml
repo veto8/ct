@@ -16,14 +16,16 @@ jobs:
   Build:
     runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+
           
       - name: Install Rust          
         uses: actions-rs/toolchain@v1 
         with:
           toolchain: nightly 
-
+          
+      - name: Checkout
+        uses: actions/checkout@v4
+        
       - name: Build
         run: |
           cargo build --release
