@@ -10,21 +10,20 @@ use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::{ComboBox, IconData, Pos2, Vec2};
 
+use egui::{Context, FontDefinitions};
 use i18n_embed::{
     DesktopLanguageRequester,
     fluent::{FluentLanguageLoader, fluent_language_loader},
 };
 use i18n_embed::{LanguageLoader, unic_langid};
 use i18n_embed_fl::fl;
-use unic_langid::LanguageIdentifier;
-// use libs::config::get_config;
-use egui::{Context, FontDefinitions};
 use rust_embed::RustEmbed;
 use std::collections::BTreeMap;
-use std::ops::Range; // A standard library error type
+use std::ops::Range;
+use unic_langid::LanguageIdentifier;
 
 #[derive(RustEmbed)]
-#[folder = "i18n"] // path to the compiled localization resources
+#[folder = "i18n"]
 struct Localizations;
 
 fn main() -> Result<(), eframe::Error> {
@@ -68,7 +67,7 @@ struct CT {
     status_text: String,
     cursor1: usize,
     cursor2: usize,
-    password: String,
+    _password: String,
 
     search_bar: bool,
     show_popup: bool,
@@ -82,6 +81,7 @@ struct CT {
     language_map: BTreeMap<String, String>,
     open: String,
     _hide_password: bool,
+    _search: String,
     search: String,
     save: String,
     copy: String,
@@ -100,6 +100,8 @@ struct CT {
     select_a_language: String,
     show_password: String,
     hide_password: String,
+    password: String,
+    lang_name: String,
 }
 
 //    fn new(_cc: &eframe::CreationContext<'_>) -> Self {
@@ -453,6 +455,7 @@ impl Default for CT {
         let status = fl!(loader, "status");
         let show_password = fl!(loader, "open");
         let hide_password = fl!(loader, "open");
+        let password = fl!(loader, "password");
         let about_us = fl!(loader, "about_us");
         let exit = fl!(loader, "exit");
         let file = fl!(loader, "file");
@@ -468,13 +471,15 @@ impl Default for CT {
             text: "".to_string(),
             picked_path: "".to_string(),
             status_text: "".to_string(),
+            lang_name: "".to_string(),
             cursor1: 0,
             cursor2: 0,
-            password: "".to_string(),
+            _password: "".to_string(),
             st: "".to_string(),
             r: 0..0,
             _hide_password: false,
             search_bar: false,
+            _search: "".to_string(),
             show_popup: false,
             popup_position: Pos2 { x: 0.0, y: 0.0 },
             panel_central: true,
@@ -501,6 +506,7 @@ impl Default for CT {
             select_a_language: select_a_language,
             show_password: show_password,
             hide_password: hide_password,
+            password: password,
         }
     }
 }
@@ -519,6 +525,7 @@ impl eframe::App for CT {
                     for (i, name) in &self.language_map {
                         if ui.selectable_label(false, i).clicked() {
                             self.selected_language = self.language_map[&i.clone()].clone();
+                            self.lang_name = i.to_string();
                             save_config(&self.selected_language);
 
                             let new_code = self.selected_language.clone();
@@ -529,6 +536,7 @@ impl eframe::App for CT {
                                 i18n_embed::select(&self.loader, &Localizations, &new_languages);
                             self.open = fl!(&self.loader, "open");
 
+                            self.password = fl!(&self.loader, "password");
                             self.save = fl!(&self.loader, "save");
                             self.copy = fl!(&self.loader, "copy");
                             self.paste = fl!(&self.loader, "paste");
@@ -554,8 +562,7 @@ impl eframe::App for CT {
                 });
 
                 ui.add_space(20.0);
-
-                ui.label(format!("You selected: {}", self.selected_language));
+                ui.label(format!("You selected: {}", &self.lang_name));
             });
         } else if self.panel_central == true && self.panel_setting == false {
             egui::CentralPanel::default().show(ctx, |ui| {
@@ -578,8 +585,8 @@ impl eframe::App for CT {
                     let button_size = egui::Vec2::new(button_width, button_height);
 
                     let _password = ui.add(
-                        egui::TextEdit::singleline(&mut self.password)
-                            .hint_text("Password")
+                        egui::TextEdit::singleline(&mut self._password)
+                            .hint_text(&self.password)
                             .desired_width(password_width)
                             .password(!self._hide_password),
                     );
@@ -614,7 +621,7 @@ impl eframe::App for CT {
                         if let Some(path) = rfd::FileDialog::new().pick_file() {
                             self.picked_path = path.display().to_string();
                             let ct = read_file(&self.picked_path.clone());
-                            self.text = decrypt(&ct, &self.password);
+                            self.text = decrypt(&ct, &self._password);
                         }
                     }
 
@@ -625,13 +632,13 @@ impl eframe::App for CT {
                         if let Some(path) = rfd::FileDialog::new().save_file() {
                             self.picked_path = path.display().to_string();
                             println!("save crypt text to: {}", self.picked_path);
-                            let ct = encrypt(&self.text, &self.password);
+                            let ct = encrypt(&self.text, &self._password);
                             let _x = write_file(&self.picked_path.clone(), &ct);
                         }
                     }
 
                     if ui
-                        .add(egui::Button::new("Cut").min_size(button_size))
+                        .add(egui::Button::new(&self.cut).min_size(button_size))
                         .clicked()
                     {
                         let r = get_char_range(self.cursor1, self.cursor2);
@@ -640,7 +647,7 @@ impl eframe::App for CT {
                         self.text.delete_char_range(r.clone());
                     }
                     if ui
-                        .add(egui::Button::new("Copy").min_size(button_size))
+                        .add(egui::Button::new(&self.copy).min_size(button_size))
                         .clicked()
                     {
                         let r = get_char_range(self.cursor1, self.cursor2);
@@ -648,7 +655,7 @@ impl eframe::App for CT {
                         ui.output_mut(|o| o.copied_text = st.to_string());
                     }
                     if ui
-                        .add(egui::Button::new("Paste").min_size(button_size))
+                        .add(egui::Button::new(&self.paste).min_size(button_size))
                         .clicked()
                     {
                         let txt = cli_clipboard::get_contents().unwrap();
@@ -656,14 +663,14 @@ impl eframe::App for CT {
                         self.text.insert_text(&txt, r.start);
                     }
                     if ui
-                        .add(egui::Button::new("Search").min_size(button_size))
+                        .add(egui::Button::new(&self.search).min_size(button_size))
                         .clicked()
                     {
                         self.search_bar = !self.search_bar;
                     }
 
                     if ui
-                        .add(egui::Button::new("Close").min_size(button_size))
+                        .add(egui::Button::new(&self.close).min_size(button_size))
                         .clicked()
                     {
                         ctx.send_viewport_cmd(egui::ViewportCommand::Close);
@@ -673,8 +680,8 @@ impl eframe::App for CT {
                 if self.search_bar {
                     ui.horizontal(|ui| {
                         let _search = ui.add(
-                            egui::TextEdit::singleline(&mut self.search)
-                                .hint_text("Search")
+                            egui::TextEdit::singleline(&mut self._search)
+                                .hint_text(&self.search)
                                 .desired_width(f32::INFINITY),
                         );
                     });
@@ -684,7 +691,7 @@ impl eframe::App for CT {
                 let _scroll = egui::ScrollArea::vertical().show(ui, |ui| {
                     let mut layouter = |ui: &egui::Ui, string: &str, wrap_width: f32| {
                         let mut layout_job = egui::text::LayoutJob::default();
-                        let target_word: &str = self.search.as_str();
+                        let target_word: &str = self._search.as_str();
                         if target_word != ""
                             && let Some(pos) = string.find(target_word)
                         {
@@ -717,7 +724,7 @@ impl eframe::App for CT {
 
                     let textedit = egui::TextEdit::multiline(&mut self.text)
                         .desired_width(f32::INFINITY)
-                        .hint_text("write here")
+                        .hint_text(&self.enter_text)
                         .layouter(&mut layouter);
                     let response = ui.add_sized(ui.available_size(), textedit);
                     //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
@@ -744,24 +751,24 @@ impl eframe::App for CT {
                 .fixed_pos(self.popup_position)
                 .show(ctx, |ui| {
                     egui::Frame::popup(ui.style()).show(ui, |ui| {
-                        if ui.button("Copy").clicked() {
+                        if ui.button(&self.copy).clicked() {
                             ui.output_mut(|o| o.copied_text = self.st.to_string());
                             self.show_popup = false;
                         }
 
-                        if ui.button("Paste").clicked() {
+                        if ui.button(&self.paste).clicked() {
                             let txt = cli_clipboard::get_contents().unwrap();
                             let r = get_char_range(self.cursor1, self.cursor2);
                             self.text.insert_text(&txt, r.start);
                             self.show_popup = false;
                         }
-                        if ui.button("Cut").clicked() {
+                        if ui.button(&self.cut).clicked() {
                             ui.output_mut(|o| o.copied_text = self.st.to_string());
                             self.text.delete_char_range(self.r.clone());
                             self.show_popup = false;
                         }
 
-                        if ui.button("Close").clicked() {
+                        if ui.button(&self.close).clicked() {
                             self.show_popup = false;
                         }
                     });
@@ -774,48 +781,48 @@ impl eframe::App for CT {
 
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
-                ui.menu_button("File", |ui| {
+                ui.menu_button(&self.file, |ui| {
                     if ui.button(&self.open).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
                         ui.close_menu();
                     }
-                    if ui.button("Save").clicked() {
+                    if ui.button(&self.save).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
                         ui.close_menu();
                     }
                 });
-                ui.menu_button("Edit", |ui| {
-                    if ui.button("Copy").clicked() {
+                ui.menu_button(&self.edit, |ui| {
+                    if ui.button(&self.copy).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
                         ui.close_menu();
                     }
-                    if ui.button("Paste").clicked() {
+                    if ui.button(&self.paste).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
                         ui.close_menu();
                     }
-                    if ui.button("Cut").clicked() {
+                    if ui.button(&self.cut).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
                         ui.close_menu();
                     }
                 });
-                ui.menu_button("Settings", |ui| {
-                    if ui.button("Languages").clicked() {
+                ui.menu_button(&self.settings, |ui| {
+                    if ui.button(&self.language).clicked() {
                         self.panel_central = false;
                         self.panel_setting = true;
 
                         ui.close_menu();
                     }
                 });
-                ui.menu_button("About", |ui| {
-                    if ui.button("Help").clicked() {
+                ui.menu_button(&self.about_us, |ui| {
+                    if ui.button(&self.help).clicked() {
                         ui.close_menu();
                     }
-                    if ui.button("About CT").clicked() {
+                    if ui.button(&self.about_us).clicked() {
                         ui.close_menu();
                     }
                 });
@@ -824,7 +831,7 @@ impl eframe::App for CT {
 
         egui::TopBottomPanel::bottom("status_panel").show(ctx, |ui| {
             ui.horizontal(|ui| {
-                ui.label(format!("Status: {}", self.status_text));
+                ui.label(format!("{0}: {1}", &self.status, self.status_text));
                 ui.separator();
                 //ui.add(egui::ProgressBar::new(self.progress).show_percentage());
             });
