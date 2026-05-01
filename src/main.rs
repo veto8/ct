@@ -21,7 +21,8 @@ use unic_langid::LanguageIdentifier;
 use egui::{Context, FontDefinitions};
 use rust_embed::RustEmbed;
 use std::collections::BTreeMap;
-use std::ops::Range;
+use std::ops::Range; // A standard library error type
+
 #[derive(RustEmbed)]
 #[folder = "i18n"] // path to the compiled localization resources
 struct Localizations;
@@ -53,7 +54,7 @@ fn main() -> Result<(), eframe::Error> {
         options,
         Box::new(|cc| {
             cc.egui_ctx.set_pixels_per_point(2.2);
-            CT::configure_egui_fonts(&cc.egui_ctx); // ← Add this line
+            CT::configure_egui_fonts(&cc.egui_ctx);
 
             Box::new(CT::default())
         }),
@@ -68,8 +69,7 @@ struct CT {
     cursor1: usize,
     cursor2: usize,
     password: String,
-    search: String,
-    hide_password: bool,
+
     search_bar: bool,
     show_popup: bool,
     popup_position: Pos2,
@@ -80,6 +80,26 @@ struct CT {
     selected_language: String,
     languages: Vec<String>,
     language_map: BTreeMap<String, String>,
+    open: String,
+    _hide_password: bool,
+    search: String,
+    save: String,
+    copy: String,
+    paste: String,
+    cut: String,
+    close: String,
+    enter_text: String,
+    status: String,
+    about_us: String,
+    exit: String,
+    file: String,
+    edit: String,
+    settings: String,
+    help: String,
+    language: String,
+    select_a_language: String,
+    show_password: String,
+    hide_password: String,
 }
 
 //    fn new(_cc: &eframe::CreationContext<'_>) -> Self {
@@ -303,10 +323,15 @@ impl Default for CT {
     fn default() -> Self {
         let config = get_config();
         let loader: FluentLanguageLoader = fluent_language_loader!();
-        let requested_languages = DesktopLanguageRequester::requested_languages();
-        let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
-        let ftl: Vec<String> = env!("ftl").split(',').map(|s| s.to_string()).collect();
 
+        //let _result = i18n_embed::select(&loader, &Localizations, &requested_languages);
+
+        let new_code = &config.language;
+        let new_lang_id: LanguageIdentifier = new_code.parse().unwrap();
+        let mut new_languages: Vec<LanguageIdentifier> = Vec::new();
+        new_languages.push(new_lang_id);
+        let _result = i18n_embed::select(&loader, &Localizations, &new_languages);
+        let ftl: Vec<String> = env!("ftl").split(',').map(|s| s.to_string()).collect();
         let mut language_map: BTreeMap<String, String> = BTreeMap::new();
 
         // Populate with the transformed data:
@@ -417,6 +442,27 @@ impl Default for CT {
         language_map.insert("Yoruba Yorùbá".to_string(), "yo-NG".to_string());
         language_map.insert("Zulu isiZulu".to_string(), "zu-ZA".to_string());
 
+        let open = fl!(loader, "open");
+        let save = fl!(loader, "save");
+        let copy = fl!(loader, "copy");
+        let paste = fl!(loader, "paste");
+        let cut = fl!(loader, "cut");
+        let search = fl!(loader, "search");
+        let close = fl!(loader, "close");
+        let enter_text = fl!(loader, "enter_text");
+        let status = fl!(loader, "status");
+        let show_password = fl!(loader, "open");
+        let hide_password = fl!(loader, "open");
+        let about_us = fl!(loader, "about_us");
+        let exit = fl!(loader, "exit");
+        let file = fl!(loader, "file");
+        let edit = fl!(loader, "edit");
+
+        let settings = fl!(loader, "settings");
+        let help = fl!(loader, "help");
+        let language = fl!(loader, "languages");
+        let select_a_language = fl!(loader, "select_a_language");
+
         CT {
             loader: loader,
             text: "".to_string(),
@@ -425,10 +471,9 @@ impl Default for CT {
             cursor1: 0,
             cursor2: 0,
             password: "".to_string(),
-            search: "".to_string(),
             st: "".to_string(),
             r: 0..0,
-            hide_password: false,
+            _hide_password: false,
             search_bar: false,
             show_popup: false,
             popup_position: Pos2 { x: 0.0, y: 0.0 },
@@ -437,31 +482,76 @@ impl Default for CT {
             selected_language: config.language,
             languages: ftl,
             language_map: language_map,
+            open: open,
+            search: search,
+            save: save,
+            copy: copy,
+            paste: paste,
+            cut: cut,
+            close: close,
+            enter_text: enter_text,
+            status: status,
+            about_us: about_us,
+            exit: exit,
+            file: file,
+            edit: edit,
+            settings: settings,
+            help: help,
+            language: language,
+            select_a_language: select_a_language,
+            show_password: show_password,
+            hide_password: hide_password,
         }
     }
 }
 
 impl eframe::App for CT {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        let new_code = self.selected_language.clone();
-        let new_lang_id: LanguageIdentifier = new_code.parse().unwrap();
-        let mut new_languages: Vec<LanguageIdentifier> = Vec::new();
-        new_languages.push(new_lang_id);
-        let _result = i18n_embed::select(&self.loader, &Localizations, &new_languages);
-
         if self.panel_central == false && self.panel_setting == true {
             egui::CentralPanel::default().show(ctx, |ui| {
                 ui.add_space(20.0);
-                ComboBox::new("language", "Select a language")
-                    .selected_text(&self.selected_language)
-                    .show_ui(ui, |ui| {
-                        for (i, name) in &self.language_map {
-                            if ui.selectable_label(false, i).clicked() {
-                                self.selected_language = self.language_map[&i.clone()].clone();
-                                save_config(&self.selected_language);
-                            }
+                ComboBox::new(
+                    "language",
+                    format!("{}  Select a Language", self.select_a_language),
+                )
+                .selected_text(&self.selected_language)
+                .show_ui(ui, |ui| {
+                    for (i, name) in &self.language_map {
+                        if ui.selectable_label(false, i).clicked() {
+                            self.selected_language = self.language_map[&i.clone()].clone();
+                            save_config(&self.selected_language);
+
+                            let new_code = self.selected_language.clone();
+                            let new_lang_id: LanguageIdentifier = new_code.parse().unwrap();
+                            let mut new_languages: Vec<LanguageIdentifier> = Vec::new();
+                            new_languages.push(new_lang_id);
+                            let _result =
+                                i18n_embed::select(&self.loader, &Localizations, &new_languages);
+                            self.open = fl!(&self.loader, "open");
+
+                            self.save = fl!(&self.loader, "save");
+                            self.copy = fl!(&self.loader, "copy");
+                            self.paste = fl!(&self.loader, "paste");
+                            self.cut = fl!(&self.loader, "cut");
+                            self.search = fl!(&self.loader, "search");
+                            self.close = fl!(&self.loader, "close");
+                            self.enter_text = fl!(&self.loader, "enter_text");
+                            self.status = fl!(&self.loader, "status");
+                            self.show_password = fl!(&self.loader, "open");
+                            self.hide_password = fl!(&self.loader, "open");
+                            self.about_us = fl!(&self.loader, "about_us");
+                            self.exit = fl!(&self.loader, "exit");
+                            self.file = fl!(&self.loader, "file");
+                            self.edit = fl!(&self.loader, "edit");
+                            self.settings = fl!(&self.loader, "settings");
+                            self.help = fl!(&self.loader, "help");
+                            self.language = fl!(&self.loader, "languages");
+                            self.select_a_language = fl!(&self.loader, "select_a_language");
+
+                            println!("{}", fl!(self.loader, "open"));
                         }
-                    });
+                    }
+                });
 
                 ui.add_space(20.0);
 
@@ -491,19 +581,19 @@ impl eframe::App for CT {
                         egui::TextEdit::singleline(&mut self.password)
                             .hint_text("Password")
                             .desired_width(password_width)
-                            .password(!self.hide_password),
+                            .password(!self._hide_password),
                     );
 
-                    let button_text = if self.hide_password {
-                        "Hide Password"
+                    let button_text = if self._hide_password {
+                        &self.hide_password
                     } else {
-                        "Show Password"
+                        &self.show_password
                     };
                     if ui
                         .add(egui::Button::new(button_text).min_size(button_size))
                         .clicked()
                     {
-                        self.hide_password = !self.hide_password;
+                        self._hide_password = !self._hide_password;
                     }
                 });
 
@@ -518,7 +608,7 @@ impl eframe::App for CT {
                     let button_size = egui::Vec2::new(button_width, button_height);
 
                     if ui
-                        .add(egui::Button::new("Open").min_size(button_size))
+                        .add(egui::Button::new(&self.open).min_size(button_size))
                         .clicked()
                     {
                         if let Some(path) = rfd::FileDialog::new().pick_file() {
@@ -529,7 +619,7 @@ impl eframe::App for CT {
                     }
 
                     if ui
-                        .add(egui::Button::new("Save").min_size(button_size))
+                        .add(egui::Button::new(&self.save).min_size(button_size))
                         .clicked()
                     {
                         if let Some(path) = rfd::FileDialog::new().save_file() {
@@ -627,7 +717,7 @@ impl eframe::App for CT {
 
                     let textedit = egui::TextEdit::multiline(&mut self.text)
                         .desired_width(f32::INFINITY)
-                        .hint_text(fl!(self.loader, "open"))
+                        .hint_text("write here")
                         .layouter(&mut layouter);
                     let response = ui.add_sized(ui.available_size(), textedit);
                     //https://docs.rs/egui/0.21.0/egui/struct.Response.html#method.hovered
@@ -685,7 +775,7 @@ impl eframe::App for CT {
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
                 ui.menu_button("File", |ui| {
-                    if ui.button(fl!(self.loader, "open")).clicked() {
+                    if ui.button(&self.open).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
                         ui.close_menu();

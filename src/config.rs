@@ -1,7 +1,13 @@
 use homedir::my_home;
+use i18n_embed::{
+    DesktopLanguageRequester,
+    fluent::{FluentLanguageLoader, fluent_language_loader},
+};
 use serde::{Deserialize, Serialize};
+use std::error::Error;
 use std::fs;
 use std::io;
+use std::num::ParseIntError;
 use std::path::Path;
 
 pub fn save_config(language: &str) -> bool {
@@ -65,9 +71,13 @@ pub struct AppConfig {
 
 impl Default for AppConfig {
     fn default() -> Self {
-        Self {
-            language: "en-US".to_string(),
+        //let requested_languages = DesktopLanguageRequester::requested_languages();
+        let mut lang = "en-US".to_string();
+        let _lang = get_lang();
+        if _lang.is_ok() {
+            lang = _lang.unwrap();
         }
+        Self { language: lang }
     }
 }
 
@@ -95,4 +105,19 @@ fn load_or_initialize() -> Result<AppConfig, ConfigError> {
 
     //    println!(":{:?}", config.host);
     Ok(config)
+}
+
+fn get_lang() -> Result<String, Box<dyn Error>> {
+    let mut r = "en-US".to_string();
+
+    let requested_languages = DesktopLanguageRequester::requested_languages();
+    let ftl: Vec<String> = env!("ftl").split(',').map(|s| s.to_string()).collect();
+    let lang = requested_languages[0].language.to_string();
+    let reg = requested_languages[0].region.unwrap().to_string();
+    let f = format!("{}-{}", lang, reg);
+    if ftl.contains(&f) {
+        r = f;
+    }
+
+    return Ok(r);
 }
