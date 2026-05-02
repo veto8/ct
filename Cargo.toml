@@ -9,16 +9,16 @@ rust-version = "1.94.1 "
 [dependencies]
 ct_nox = { path = "./ct_nox"}
 eframe = {version="0.26.2"} 
-egui_extras = {version="0.26.2"}
+#egui_extras = {version="0.26.2"}
 rfd = {version ="0.14.1"}
 cli-clipboard = {version="0.4.0"} 
 i18n-embed = { version = "*", features = ["fluent-system", "desktop-requester"]}
 i18n-embed-fl = {version ="0.10.0"}
 log = {version ="0.4.29"}
-env_logger = {version ="0.11.10"}
+#env_logger = {version ="0.11.10"}
 rust-embed = {version ="8.11.0"}
 serde = { version = "1.0.228", features = ["derive"] }
-serde_json = {version="1.0.149"}
+#serde_json = {version="1.0.149"}
 toml = {version ="0.5.11"}
 homedir = {version ="0.3.6"}
 unic-langid = {version ="0.9.6"}
