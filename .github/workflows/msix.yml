@@ -26,9 +26,15 @@ jobs:
 
 
      
-      - name: Build Application (Example - Adjust for your build process)
+      - name: Create
         run: |
-          dir 
+          $msixToolPath = ""
+          try {
+              $msixToolPath = (Get-Command msixPackagingTool.exe -ErrorAction Stop).Source
+              Write-Host "MSIX Packaging Tool found at: $msixToolPath"
+          } catch {
+              throw "MSIX Packaging Tool not found in PATH. Please ensure it's installed correctly via winget."
+          }
        
 
  
