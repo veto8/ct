@@ -24,8 +24,6 @@ jobs:
         run: |
            winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
 
-
-     
       - name: Create
         run: |
           $msixToolPath = ""
