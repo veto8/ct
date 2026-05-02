@@ -1,10 +1,17 @@
-name: Msix
-
+name: Windows
 on:
   push:
-    branches:
-      - main # Or your release branch
+    branches: ["main"]
+    tags:
+      - '*'
+  workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write 
+  issues: read
+  packages: none
+  
 jobs:
   build-msix:
     runs-on: windows-latest # Use a Windows runner
