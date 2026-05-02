@@ -110,13 +110,13 @@ impl CT {
         //let base_dir = Path::new("assets");
         //let font_dir = base_dir.join("fonts");
         //let font_file_path = font_dir.join("noto-sans.ttf");
-
+/*
         fonts.font_data.insert(
             "noto_sans".to_owned(),
             egui::FontData::from_static(include_bytes!("assets/fonts/noto-sans.ttf")),
         );
 
-        /*
+        
         fonts.font_data.insert(
             "noto_sans_cjk".to_owned(),
             egui::FontData::from_static(include_bytes!("assets/fonts/noto-sans-cjk.otf")),
@@ -204,12 +204,13 @@ impl CT {
         );
 
         */
+          /*
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
             .or_default()
             .insert(0, "noto_sans".to_owned());
-        /*
+      
         fonts
             .families
             .entry(egui::FontFamily::Proportional)
@@ -314,7 +315,7 @@ impl CT {
             .entry(egui::FontFamily::Proportional)
             .or_default()
             .insert(17, "gurmukhi".to_owned());
-        */
+        
         fonts
             .families
             .entry(egui::FontFamily::Monospace)
@@ -322,6 +323,7 @@ impl CT {
             .insert(0, "noto_sans".to_owned());
 
         ctx.set_fonts(fonts);
+        */
     }
 }
 
