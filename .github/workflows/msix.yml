@@ -1,41 +1,86 @@
-name: Windows
+name: Msix
+
 on:
   push:
-    branches: ["main"]
-    tags:
-      - '*'
-  workflow_dispatch:
-
-permissions:
-  contents: write
-  pull-requests: write 
-  issues: read
-  packages: none
+    branches:
+      - main # Or your release branch
 
 jobs:
-  Build:
-    runs-on: windows-latest
+  build-msix:
+    runs-on: windows-latest # Use a Windows runner
+
     steps:
-      - name: Build
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install MSIX Packaging Tool
         run: |
-          ls 
-        
-      
+          # This uses winget, which is usually pre-installed on Windows runners.
+          # It finds the MSIX Packaging Tool and installs the latest version.
+          # The '--accept-source-agreements' and '--accept-package-agreements' flags are crucial for automation.
+          # The '--silent' flag helps ensure it runs without user interaction.
+          winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
 
-          
+          # Verify installation (optional, but good for debugging)
+          # msixpw.exe --version # This might not work directly as it's meant for internal use.
+          # Instead, we can check if the tool is in the PATH or a known directory.
+          # The tool itself might be in a location like:
+          # C:\Program Files\WindowsApps\Microsoft.MSIXPackagingTool_X.X.X.X_x64__...\msixpw.exe
+          # However, winget should add it to the PATH if configured correctly.
+          echo "MSIX Packaging Tool installation attempted."
 
-          
+      - name: Set up MSBuild (if your app uses it)
+        uses: microsoft/MSBuild-Tool@v1 # Use an MSBuild setup action if needed for your build
 
+      - name: Build Application (Example - Adjust for your build process)
+        run: |
+          # This is where you'd build your application's installer or output.
+          # For example, if you have an MSI installer:
+          # msiexec /i .\path\to\your\installer.msi /qn
+          # Or if you're building a .NET app and then packaging it:
+          # dotnet publish --configuration Release
+          echo "Building your application..."
+          # Replace this with your actual build command for your app's output
 
-    
-   
+      - name: Create MSIX Package using MSIX Packaging Tool
+        run: |
+          # This is the crucial step where you would invoke the MSIX Packaging Tool
+          # or msixpw.exe (less likely to call msixpw.exe directly).
+          # The MSIX Packaging Tool GUI has an "Automate" feature that generates
+          # a PowerShell script you can adapt.
+          #
+          # For a typical Win32 app conversion:
+          # The command would look something like invoking the tool with specific parameters.
+          # It's best to run the tool once manually, use its "Automate" feature to generate
+          # a script, and then adapt that script here.
+          #
+          # Example conceptual command (THIS IS PSEUDO-CODE - CONSULT MSIX Packaging Tool Docs/Automate Feature):
+          # Start-Process -FilePath "msixpw.exe" -ArgumentList @(
+          #    "-PackageType", "msix",
+          #    "-InstallerPath", ".\path\to\your\app\installer.exe", # or MSI
+          #    "-OutputPath", ".\artifacts\MyApp.msix",
+          #    "-AppId", "YourAppId",
+          #    "-Publisher", "YourPublisherName",
+          #    "-Version", "1.0.0"
+          # ) -Wait
 
+          # --- RECOMMENDED APPROACH ---
+          # Use the "Automate" feature in the MSIX Packaging Tool GUI.
+          # This generates a PowerShell script that uses the tool correctly.
+          # You would then copy that script and run it here.
+          #
+          # For example, if the Automate feature generates a script like:
+          # `.\convert_to_msix.ps1 -SourcePath .\path\to\your\app -OutputPath .\artifacts\MyApp.msix`
+          # You would place that script in your repo and run:
+          # powershell -ExecutionPolicy Bypass -File .\convert_to_msix.ps1 -SourcePath .\path\to\your\app -OutputPath .\artifacts\MyApp.msix
+          echo "Executing MSIX packaging script..."
+          # Replace with your actual MSIX packaging command/script call
+          # powershell -ExecutionPolicy Bypass -File .\scripts\CreateMsix.ps1 -AppSourcePath "build_output_directory" -MsixOutputPath "artifacts\MyApp.msix"
 
-        
-
-
-        
-
-
- 
-     
+      - name: Upload MSIX Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: msix-package
+          path: |
+            artifacts/**/*.msix # Adjust path to where your MSIX file is generated
+            # Add any other related build outputs you want to save
