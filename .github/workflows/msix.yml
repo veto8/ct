@@ -25,9 +25,7 @@ jobs:
            winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
 
 
-      - name: Set up MSBuild (if your app uses it)
-        uses: microsoft/MSBuild-Tool@v1 # Use an MSBuild setup action if needed for your build
-
+     
       - name: Build Application (Example - Adjust for your build process)
         run: |
           dir 
