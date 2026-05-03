@@ -43,7 +43,7 @@ jobs:
         
       - name: Certificate 
         run: |
-          makecert /? # Or makecert -?
+          dir C:\Program Files (x86)\Windows Kits\10\
 
 
        
