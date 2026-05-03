@@ -44,7 +44,7 @@ jobs:
           $cert = "CN=Myridia"
           $pfx = ".\Myridia.pfx"
           $ppass = "passpass" 
-          $pass = ConvertTo-SecureString $plainPassword -AsPlainText -Force
+          $pass = ConvertTo-SecureString $ppass -AsPlainText -Force
 
           $loc = "Cert:\"
           $cert = New-SelfSignedCertificate -Subject $cert -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
