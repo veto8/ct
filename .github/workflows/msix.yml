@@ -51,6 +51,12 @@ jobs:
           $cert = New-SelfSignedCertificate -Subject $cert -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
           # Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfx -Password $pass -Force
           
+          if ($cert) {
+            Write-Host "PFX certificate created at $pfxFilePath"
+          } else {
+            Write-Error "Certificate generation failed."
+          }
+
           # makecert -r -pe -n "CN=Myridia" -ss CA -a sha256 -cy authority -sky signature -sv Myridia.pvk Myridia.cer
           # certutil -user -addstore Root Myridia.cer
           # makecert -pe -n "CN=Ct SPC" -a sha256 -cy end -sky signature -ic Myridia.cer -iv Myridia.pvk -sv Ct.pvk Ct.cer
