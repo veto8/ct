@@ -20,9 +20,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install MSIX Packaging Tool
-        run: |
-           winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
+     # - name: Install MSIX Packaging Tool
+     #   run: |
+     #      winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
 
       - name: Download 
         run: |
@@ -38,8 +38,8 @@ jobs:
           
           dir 
           
-      - name: SKD
-        uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.6 
+      #- name: SKD
+      #  uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.6 
         
       - name: Certificate 
         run: |
@@ -52,7 +52,7 @@ jobs:
           $pass = "passpass" # Your plain text password
           $loc = "Cert:\"
           $cert = New-SelfSignedCertificate -Subject $cert -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
-          Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfx -Password $pass -Force
+          # Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfx -Password $pass -Force
           
           # makecert -r -pe -n "CN=Myridia" -ss CA -a sha256 -cy authority -sky signature -sv Myridia.pvk Myridia.cer
           # certutil -user -addstore Root Myridia.cer
