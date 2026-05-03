@@ -33,6 +33,10 @@ jobs:
           } catch {
               throw "MSIX Packaging Tool not found in PATH. Please ensure it's installed correctly via winget."
           }
+          curl -L "https://github.com/myridia/ct/releases/download/main/ct.exe" -o "./ct.exe"
+          dir 
+
+
        
 
  
