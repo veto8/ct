@@ -43,7 +43,9 @@ jobs:
         
       - name: Certificate 
         run: |
-          dir C:\Program Files\Windows Kits\10\
+          dir C:\
+          $currentPath = $env:Path
+          
           
 
 
