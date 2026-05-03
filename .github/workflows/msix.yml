@@ -17,20 +17,17 @@ jobs:
     runs-on: windows-latest # Use a Windows runner
 
     steps:
-      # - name: Checkout code
-      #  uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-     # - name: Install MSIX Packaging Tool
-     #   run: |
-     #      winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
+      - name: Install MSIX Packaging Tool
+        run: |
+           winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
 
       - name: Download 
         run: |
-         
-          
-          # curl -L "https://github.com/myridia/ct/releases/download/main/ct.exe" -o "./ct.exe"
-          
-          dir 
+         curl -L "https://github.com/myridia/ct/releases/download/main/ct.exe" -o "./ct.exe"
+         dir 
           
       #- name: SKD
       #  uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.6 
@@ -69,7 +66,7 @@ jobs:
           # makecert -pe -n "CN=Ct SPC" -a sha256 -cy end -sky signature -ic Myridia.cer -iv Myridia.pvk -sv Ct.pvk Ct.cer
           # pvk2pfx -pvk Ct.pvk -spc Ct.cer -pfx Ct.pfx
           dir 
-          # signtool sign /v /f Ct.pfx /t http://timestamp.digicert.com /fd sha256 ct.exe
+          signtool sign /v /f Ct.pfx /t http://timestamp.digicert.com /fd sha256 ct.exe
           # signtool verify /pa "ct.exe"
           
 
