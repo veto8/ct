@@ -52,7 +52,7 @@ jobs:
           
           if ($cert) {
             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
-            Export-PfxCertificate  -cert $certp  -FilePath $pfx -Password $pass -Force
+            Export-PfxCertificate  -cert $certp  -FilePath ".\Myridia.pfx" -Password $pass -Force
           } else {
             Write-Error "Certificate generation failed."
           }
