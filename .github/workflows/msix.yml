@@ -43,10 +43,11 @@ jobs:
         
       - name: Certificate 
         run: |
-          dir "C:\Program Files (x86)\Windows Kits"
+          dir "C:\Program Files (x86)\Windows Kits\10"
           
 
-          $currentPath = $env:Path
+          # $currentPath = $env:Path
+          # $env:Path = "$folderToAdd;$currentPath"
           
           
 
