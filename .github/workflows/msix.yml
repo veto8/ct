@@ -44,7 +44,7 @@ jobs:
           $cert = "CN=Myridia"
           $pfx = ".\Myridia.pfx"
           $ppass = "passpass" 
-          $pass = ConvertTo-SecureString $ppass -AsPlainText -Force
+          $pass = ConvertTo-SecureString "passpass" -AsPlainText -Force
 
           $loc = "Cert:\CurrentUser\My"
 
