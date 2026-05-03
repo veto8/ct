@@ -24,7 +24,7 @@ jobs:
         run: |
            winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
 
-      - name: Create
+      - name: Download 
         run: |
           $msixToolPath = ""
           try {
@@ -37,6 +37,9 @@ jobs:
           curl -L "https://github.com/myridia/ct/releases/download/main/ct.exe" -o "./ct.exe"
           
           dir 
+      - name: Certificate 
+        run: |
+          makecert /? # Or makecert -?
 
 
        
