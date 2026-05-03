@@ -47,11 +47,12 @@ jobs:
           $currentPath = $env:Path
           $env:Path = "$folder;$currentPath"
 
-          $certSubject = "CN=Myridia"
-          $pfxFilePath = ".\Myridia.pfx"
-          $plainPassword = "YourSecurePasswordHere" # Your plain text password
-          $storeLocation = "Cert:\CurrentUser\My"
-          Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfxFilePath -Password $securePassword -Force
+          $cert = "CN=Myridia"
+          $pfx = ".\Myridia.pfx"
+          $pass = "passpass" # Your plain text password
+          $loc = "Cert:\"
+          $cert = New-SelfSignedCertificate -Subject $cert -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
+          Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfx -Password $pass -Force
           
           # makecert -r -pe -n "CN=Myridia" -ss CA -a sha256 -cy authority -sky signature -sv Myridia.pvk Myridia.cer
           # certutil -user -addstore Root Myridia.cer
