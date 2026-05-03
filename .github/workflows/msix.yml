@@ -55,6 +55,15 @@ jobs:
             Write-Error "Certificate generation failed."
           }
 
+
+          $cert = New-SelfSignedCertificate -Subject "CN=Ct" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "CT Certificate"
+          
+          if ($cert) {
+            $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
+            Export-PfxCertificate  -cert $certp  -FilePath ".\Ct.pfx" -Password $pass -Force
+          } else {
+            Write-Error "Certificate generation failed."
+          }
           # makecert -r -pe -n "CN=Myridia" -ss CA -a sha256 -cy authority -sky signature -sv Myridia.pvk Myridia.cer
           # certutil -user -addstore Root Myridia.cer
           # makecert -pe -n "CN=Ct SPC" -a sha256 -cy end -sky signature -ic Myridia.cer -iv Myridia.pvk -sv Ct.pvk Ct.cer
