@@ -46,7 +46,9 @@ jobs:
           $ppass = "passpass" 
           $pass = ConvertTo-SecureString $ppass -AsPlainText -Force
 
-          $loc = "Cert:\LocalMachine\My"
+       
+          $loc = "Cert:\CurrentUser\TempCertExport" # Temporary store for generation
+
           $cert = New-SelfSignedCertificate -Subject $cert -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
           Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfx -Password $pass -Force
           
