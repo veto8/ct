@@ -48,12 +48,12 @@ jobs:
           $env:Path = "$folder;$currentPath"
           
           makecert -r -pe -n "CN=Myridia" -ss CA -a sha256 -cy authority -sky signature -sv Myridia.pvk Myridia.cer
-          certutil -user -addstore Root Myridia.cer
-          makecert -pe -n "CN=Ct SPC" -a sha256 -cy end -sky signature -ic Myridia.cer -iv Myridia.pvk -sv Ct.pvk Ct.cer
-          pvk2pfx -pvk Ct.pvk -spc Ct.cer -pfx Ct.pfx
+          # certutil -user -addstore Root Myridia.cer
+          # makecert -pe -n "CN=Ct SPC" -a sha256 -cy end -sky signature -ic Myridia.cer -iv Myridia.pvk -sv Ct.pvk Ct.cer
+          # pvk2pfx -pvk Ct.pvk -spc Ct.cer -pfx Ct.pfx
           dir 
-          signtool sign /v /f Ct.pfx /t http://timestamp.digicert.com /fd sha256 ct.exe
-          signtool verify /pa "ct.exe"
+          # signtool sign /v /f Ct.pfx /t http://timestamp.digicert.com /fd sha256 ct.exe
+          # signtool verify /pa "ct.exe"
           
 
 
