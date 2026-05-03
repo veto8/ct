@@ -48,14 +48,11 @@ jobs:
 
           $loc = "Cert:\CurrentUser\My"
 
-          $cert = New-SelfSignedCertificate -Subject $cert -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
+          $cert = New-SelfSignedCertificate -Subject "CN=Myridia" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
           
           if ($cert) {
-             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
-
+            $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
             Export-PfxCertificate  -cert $certp  -FilePath $pfx -Password $pass -Force
-            #echo  $cert.Thumbprint 
-            Write-Host "PFX certificate created at $pfx"
           } else {
             Write-Error "Certificate generation failed."
           }
