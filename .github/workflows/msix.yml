@@ -46,6 +46,15 @@ jobs:
           $folder = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\"
           $currentPath = $env:Path
           $env:Path = "$folder;$currentPath"
+
+   
+          $certSubject = "CN=Myridia"
+          $pfxFilePath = ".\Myridia.pfx"
+          $pfxPassword = "YourSecurePasswordHere" # Change this!
+          $storeLocation = "Cert:\CurrentUser\My"
+          $cert = New-SelfSignedCertificate -Subject $certSubject -CertStoreLocation $storeLocation -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
+          if ($cert) { Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfxFilePath -Password $pfxPassword -Force; Write-Host "PFX certificate created at $pfxFilePath" } else { Write-Error "Certificate generation failed." }
+
           
           # makecert -r -pe -n "CN=Myridia" -ss CA -a sha256 -cy authority -sky signature -sv Myridia.pvk Myridia.cer
           # certutil -user -addstore Root Myridia.cer
