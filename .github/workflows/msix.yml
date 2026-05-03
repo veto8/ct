@@ -41,9 +41,7 @@ jobs:
           # $currentPath = $env:Path
           # $env:Path = "$folder;$currentPath"
 
-          $cert = "CN=Myridia"
-          $pfx = ".\Myridia.pfx"
-          $ppass = "passpass" 
+
           $pass = ConvertTo-SecureString "passpass" -AsPlainText -Force
 
           $loc = "Cert:\CurrentUser\My"
