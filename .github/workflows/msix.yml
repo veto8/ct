@@ -37,6 +37,10 @@ jobs:
           curl -L "https://github.com/myridia/ct/releases/download/main/ct.exe" -o "./ct.exe"
           
           dir 
+          
+      - name: SKD
+        uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.6 
+        
       - name: Certificate 
         run: |
           makecert /? # Or makecert -?
