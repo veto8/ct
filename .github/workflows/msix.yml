@@ -17,8 +17,8 @@ jobs:
     runs-on: windows-latest # Use a Windows runner
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      # - name: Checkout code
+      #  uses: actions/checkout@v4
 
      # - name: Install MSIX Packaging Tool
      #   run: |
@@ -46,11 +46,10 @@ jobs:
           $ppass = "passpass" 
           $pass = ConvertTo-SecureString $ppass -AsPlainText -Force
 
-       
-          $loc = "Cert:\CurrentUser\TempCertExport" # Temporary store for generation
+          $loc = "Cert:\CurrentUser\My"
 
           $cert = New-SelfSignedCertificate -Subject $cert -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
-          Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfx -Password $pass -Force
+          # Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfx -Password $pass -Force
           
           # makecert -r -pe -n "CN=Myridia" -ss CA -a sha256 -cy authority -sky signature -sv Myridia.pvk Myridia.cer
           # certutil -user -addstore Root Myridia.cer
