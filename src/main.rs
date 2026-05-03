@@ -455,8 +455,8 @@ impl Default for CT {
         let close = fl!(loader, "close");
         let enter_text = fl!(loader, "enter_text");
         let status = fl!(loader, "status");
-        let show_password = fl!(loader, "open");
-        let hide_password = fl!(loader, "open");
+        let show_password = fl!(loader, "show_password");
+        let hide_password = fl!(loader, "hide_password");
         let password = fl!(loader, "password");
         let about_us = fl!(loader, "about_us");
         let exit = fl!(loader, "exit");
