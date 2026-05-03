@@ -43,7 +43,9 @@ jobs:
         
       - name: Certificate 
         run: |
-          dir C:\
+          dir "C:\Program Files (x86)"
+          dir "C:\Program Files"
+
           $currentPath = $env:Path
           
           
