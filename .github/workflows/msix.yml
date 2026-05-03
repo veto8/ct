@@ -51,8 +51,8 @@ jobs:
           $cert = New-SelfSignedCertificate -Subject $cert -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
           
           if ($cert) {
-            Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfx -Password $pass -Force
-
+            # Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfx -Password $pass -Force
+            echo  $cert.Thumbprint 
             Write-Host "PFX certificate created at $pfx"
           } else {
             Write-Error "Certificate generation failed."
