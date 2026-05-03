@@ -29,14 +29,14 @@ jobs:
          curl -L "https://github.com/myridia/ct/releases/download/main/ct.exe" -o "./ct.exe"
          dir 
           
-      #- name: SKD
-      #  uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.6 
+      - name: SKD
+        uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.6 
         
       - name: Certificate 
         run: |
-          # $folder = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\"
-          # $currentPath = $env:Path
-          # $env:Path = "$folder;$currentPath"
+          $folder = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\"
+          $currentPath = $env:Path
+          $env:Path = "$folder;$currentPath"
 
 
           $pass = ConvertTo-SecureString "passpass" -AsPlainText -Force
