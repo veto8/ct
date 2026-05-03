@@ -46,7 +46,7 @@ jobs:
           $ppass = "passpass" 
           $pass = ConvertTo-SecureString $ppass -AsPlainText -Force
 
-          $loc = "Cert:\CurrentUser\My"
+          $loc = "Cert:\LocalMachine\My"
           $cert = New-SelfSignedCertificate -Subject $cert -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
           Export-PfxCertificate -Cert $cert.Thumbprint -FilePath $pfx -Password $pass -Force
           
