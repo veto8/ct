@@ -59,11 +59,12 @@ jobs:
       - name: Sign  
         run: |
           dir
-          Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root
-          $cert = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
+          Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root -Force  
+          # $cert = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
+          # Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
           # Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root
           # Import-Certificate -FilePath "cert:\CurrentUser\My\$($cert.Thumbprint)" -CertStoreLocation Cert:\CurrentUser\Root
-          Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
+          # Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
           # $pfx = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
           # $pfx.HasPrivateKey
           # passpass" /v /f Ct.pfx /t http://timestamp.digicert.com /fd sha256 ct.exe
