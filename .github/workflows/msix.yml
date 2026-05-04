@@ -47,7 +47,7 @@ jobs:
             Write-Error "Certificate generation failed."
           }
           
-          $cert = New-SelfSignedCertificate -Subject "CN=Ct" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "CT Certificate"
+          $cert = New-SelfSignedCertificate -Subject "CN=Ct" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "CT Certificate" -Type CodeSigningCert
           if ($cert) {
             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
             Export-PfxCertificate  -cert $certp  -FilePath ".\Ct.pfx" -Password $pass -Force
