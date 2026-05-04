@@ -52,7 +52,7 @@ jobs:
           }
 
           $caCert = Get-ChildItem -Path $loc | Where-Object { $_.Subject -eq "CN=Myridia" }
-          $cert = New-SelfSignedCertificate -Subject "CN=Ct" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "CT Certificate" -Type CodeSigningCert
+          $cert = New-SelfSignedCertificate  -Signer $caCert -Subject "CN=Ct" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "CT Certificate" -Type CodeSigningCert
           if ($cert) {
             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
             Export-PfxCertificate  -cert $certp  -FilePath ".\Ct.pfx" -Password $pass -Force
