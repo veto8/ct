@@ -52,10 +52,10 @@ jobs:
             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
             Export-PfxCertificate  -cert $certp  -FilePath ".\Ct.pfx" -Password $pass -Force
           } else {
-            Write-Error "Certificate generation failed."
+            Write-Error "Certificate generation failed."  
           }
           dir
-          $cert = Import-PfxCertificate -FilePath ".\Ct.pfx" -CertStoreLocation Cert:\CurrentUser\My -Password $pass
+          $cert = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
           Import-Certificate -FilePath "cert:\CurrentUser\My\$($cert.Thumbprint)" -CertStoreLocation Cert:\CurrentUser\Root
           Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
           # $pfx = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
