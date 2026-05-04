@@ -67,15 +67,7 @@ jobs:
           # Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root -Confirm:$false 
           $cert = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
           Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
-          # Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root
-          # Import-Certificate -FilePath "cert:\CurrentUser\My\$($cert.Thumbprint)" -CertStoreLocation Cert:\CurrentUser\Root
-          # Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
-          # $pfx = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
-          # $pfx.HasPrivateKey
-          # passpass" /v /f Ct.pfx /t http://timestamp.digicert.com /fd sha256 ct.exe
-          # signtool sign /v /f Ct.pfx /p passpass /fd sha256 ct.exe
-          # signtool verify /pa "ct.exe"
-          # where signtool
+          dir 
           
 
 
