@@ -37,24 +37,17 @@ jobs:
           $folder = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\"
           $currentPath = $env:Path
           $env:Path = "$folder;$currentPath"
-
-
           $pass = ConvertTo-SecureString "passpass" -AsPlainText -Force
-
           $loc = "Cert:\CurrentUser\My"
-
           $cert = New-SelfSignedCertificate -Subject "CN=Myridia" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
-          
           if ($cert) {
             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
             Export-PfxCertificate  -cert $certp  -FilePath ".\Myridia.pfx" -Password $pass -Force
           } else {
             Write-Error "Certificate generation failed."
           }
-
-
-          $cert = New-SelfSignedCertificate -Subject "CN=Ct" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "CT Certificate"
           
+          $cert = New-SelfSignedCertificate -Subject "CN=Ct" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "CT Certificate"
           if ($cert) {
             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
             Export-PfxCertificate  -cert $certp  -FilePath ".\Ct.pfx" -Password $pass -Force
@@ -64,7 +57,7 @@ jobs:
           dir 
           # signtool sign /v /f Ct.pfx /t http://timestamp.digicert.com /fd sha256 ct.exe
           # signtool verify /pa "ct.exe"
-          whereis signtool
+          where signtool
           
 
 
