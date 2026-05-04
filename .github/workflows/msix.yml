@@ -56,7 +56,7 @@ jobs:
           }
           dir 
           # signtool sign /p "passpass" /v /f Ct.pfx /t http://timestamp.digicert.com /fd sha256 ct.exe
-          signtool sign /v /f Ct.pfx /p passpass /t http://timestamp.digicert.com /fd sha256 ct.exe
+          signtool sign /v /f Ct.pfx /p passpass /fd sha256 ct.exe
           # signtool verify /pa "ct.exe"
           # where signtool
           
