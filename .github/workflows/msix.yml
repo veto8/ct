@@ -45,6 +45,7 @@ jobs:
             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
             Export-PfxCertificate  -cert $certp  -FilePath ".\Myridia.pfx" -Password $pass -Force
             Export-Certificate -Cert "Cert:\CurrentUser\My\$($cert.Thumbprint)" -FilePath ".\Myridia.cer" -Force 
+            certutil -addstore Root ".\Myridia.cer"
 
           } else {
             Write-Error "Certificate generation failed."
