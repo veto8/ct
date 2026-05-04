@@ -47,7 +47,8 @@ jobs:
           } else {
             Write-Error "Certificate generation failed."
           }
-          
+
+          $caCert = Get-ChildItem -Path $loc | Where-Object { $_.Subject -eq "CN=Myridia" }
           $cert = New-SelfSignedCertificate -Subject "CN=Ct" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "CT Certificate" -Type CodeSigningCert
           if ($cert) {
             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
