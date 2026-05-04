@@ -65,8 +65,8 @@ jobs:
         run: |
           dir
           # Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root -Confirm:$false 
-          # $cert = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
-          # Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
+          $cert = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
+          Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
           # Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root
           # Import-Certificate -FilePath "cert:\CurrentUser\My\$($cert.Thumbprint)" -CertStoreLocation Cert:\CurrentUser\Root
           # Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
