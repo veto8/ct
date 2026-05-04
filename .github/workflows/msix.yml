@@ -40,7 +40,7 @@ jobs:
           $pass = ConvertTo-SecureString "passpass" -AsPlainText -Force
           $loc = "Cert:\CurrentUser\My"
           # $cert = New-SelfSignedCertificate -Subject "CN=Myridia" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage DigitalSignature -FriendlyName "Myridia Certificate"
-          $cert = New-SelfSignedCertificate -Subject "CN=Myridia" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage CertSign,CrlSign -FriendlyName "Myridia Root CA" -TextExtension @("2.5.29.19={text}Critical=1&PathLength=2")
+            $cert = New-SelfSignedCertificate -Subject "CN=Myridia" -CertStoreLocation $loc -KeyExportPolicy Exportable -KeyUsage CertSign,CrlSign -FriendlyName "Myridia Root CA"
           if ($cert) {
             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
             Export-PfxCertificate  -cert $certp  -FilePath ".\Myridia.pfx" -Password $pass -Force
