@@ -55,7 +55,8 @@ jobs:
             Write-Error "Certificate generation failed."
           }
           dir
-          $cert = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
+          $cert = Import-PfxCertificate -FilePath ".\Ct.pfx" -CertStoreLocation Cert:\CurrentUser\My -Password $pass
+          Import-Certificate -FilePath "cert:\CurrentUser\My\$($cert.Thumbprint)" -CertStoreLocation Cert:\CurrentUser\Root
           Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
           # $pfx = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
           # $pfx.HasPrivateKey
