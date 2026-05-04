@@ -55,7 +55,7 @@ jobs:
             Write-Error "Certificate generation failed."
           }
           dir 
-          signtool sign /v /f Ct.pfx /t http://timestamp.digicert.com /fd sha256 ct.exe
+          signtool sign /p $pass /v /f Ct.pfx /t http://timestamp.digicert.com /fd sha256 ct.exe
           # signtool verify /pa "ct.exe"
           # where signtool
           
