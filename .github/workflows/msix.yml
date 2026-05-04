@@ -20,14 +20,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install MSIX Packaging Tool
+      - name: Dependencies
         run: |
            winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
 
-      - name: Download 
+      - name: Download_exe 
         run: |
          curl -L "https://github.com/myridia/ct/releases/download/main/ct.exe" -o "./ct.exe"
-         dir 
+         
           
       #- name: SKD
       #  uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.6 
@@ -59,6 +59,7 @@ jobs:
       - name: Sign  
         run: |
           dir
+          Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root
           $cert = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
           # Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root
           # Import-Certificate -FilePath "cert:\CurrentUser\My\$($cert.Thumbprint)" -CertStoreLocation Cert:\CurrentUser\Root
