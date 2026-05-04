@@ -59,7 +59,7 @@ jobs:
       - name: Sign  
         run: |
           dir
-          Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root -Force  
+          Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root -Confirm:$false 
           # $cert = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
           # Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
           # Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root
