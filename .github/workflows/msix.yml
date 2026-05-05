@@ -23,6 +23,7 @@ jobs:
       - name: Dependencies
         run: |
            winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
+           winget install microsoft.winappcli --source winget 
 
       - name: Download_exe 
         run: |
