@@ -67,11 +67,9 @@ jobs:
           $cert2 = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2(".\Ct.pfx", "passpass")
           Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert2
           
-          # Import-Certificate -FilePath ".\Ct.cer" -CertStoreLocation Cert:\CurrentUser\Root -Confirm:$false 
-          # $cert = Get-PfxCertificate -FilePath ".\Ct.pfx" -Password $pass
-          # Set-AuthenticodeSignature -FilePath ".\ct.exe" -Certificate $cert
+      - name: Packing  
+        run: |    
           dir 
-          
 
 
        
