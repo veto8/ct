@@ -76,13 +76,13 @@ jobs:
           # winapp manifest generate
           # cat Package.appxmanifest 
           # winapp pack . --cert Ct.pfx
-          # dir 
+          dir 
           mkdir app 
           cp ct.exe app\
           cd app 
           winapp manifest generate --executable .\ct.exe  --package-name "Ct" --publisher-name "Ct"
           winapp pack . --cert "..\Ct.pfx" --cert-password "passpass" --output "ct.msix" --name "Ct"
-          dir 
+          #dir 
        
       - name: Release
         uses: svenstaro/upload-release-action@v2
@@ -90,8 +90,8 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: |
             app/ct.msix
-            Myridia.cer
-            Ct.cer 
+            # Myridia.cer
+            # Ct.cer 
             
           tag: ${{ github.ref }}
           overwrite: true
