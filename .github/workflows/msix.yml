@@ -81,6 +81,7 @@ jobs:
           cd app 
           winapp manifest generate --executable .\ct.exe  --package-name "Ct" --publisher-name "Ct"
           winapp pack . --cert "..\Ct.pfx" --cert-password "passpass"
+          dir 
        
 
  
