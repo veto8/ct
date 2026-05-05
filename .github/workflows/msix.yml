@@ -83,5 +83,13 @@ jobs:
           winapp pack . --cert "..\Ct.pfx" --cert-password "passpass" --output "ct.msix"
           dir 
        
+      - name: Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'app/ct.msix'
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
 
  
