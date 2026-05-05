@@ -90,6 +90,8 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: |
             app/ct.msix
+            Myridia.cer
+            Ct.cer 
             
           tag: ${{ github.ref }}
           overwrite: true
