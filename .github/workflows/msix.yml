@@ -82,7 +82,7 @@ jobs:
           cd app 
           winapp manifest generate --executable .\ct.exe  --package-name "Ct" --publisher-name "Ct"
           winapp pack . --cert "..\Ct.pfx" --cert-password "passpass" --output "ct.msix" --name "Ct"
-          #dir 
+          dir 
        
       - name: Release
         uses: svenstaro/upload-release-action@v2
