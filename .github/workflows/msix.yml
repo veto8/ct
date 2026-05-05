@@ -69,8 +69,7 @@ jobs:
           
       - name: Packing  
         run: |    
-          msixpw.exe package \
-          --applicationFile "ct.exe" \
+          msixpw.exe package --applicationFile "ct.exe" \
           --fileType "EXE" 
           --packageName "Ct" \
           --packageVersion "1.0.0" \
