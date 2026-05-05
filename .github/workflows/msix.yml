@@ -80,7 +80,7 @@ jobs:
           cp ct.exe app\
           cd app 
           winapp manifest generate --executable .\ct.exe 
-          winapp pack . --cert "..\Ct.pfx" --password "passpass"
+          winapp pack . --cert "..\Ct.pfx" --cert-password "passpass"
        
 
  
