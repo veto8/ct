@@ -536,7 +536,6 @@ impl eframe::App for CT {
                             let _result =
                                 i18n_embed::select(&self.loader, &Localizations, &new_languages);
                             self.open = fl!(&self.loader, "open");
-
                             self.password = fl!(&self.loader, "password");
                             self.save = fl!(&self.loader, "save");
                             self.copy = fl!(&self.loader, "copy");
@@ -786,7 +785,6 @@ impl eframe::App for CT {
                     if ui.button(&self.open).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
-
                         if let Some(path) = rfd::FileDialog::new().pick_file() {
                             self.picked_path = path.display().to_string();
                             let ct = read_file(&self.picked_path.clone());
@@ -803,6 +801,16 @@ impl eframe::App for CT {
                             let ct = encrypt(&self.text, &self._password);
                             let _x = write_file(&self.picked_path.clone(), &ct);
                         }
+                        ui.close_menu();
+                    }
+                    if ui.button("Open Text File").clicked() {
+                        self.panel_central = true;
+                        self.panel_setting = false;
+                        if let Some(path) = rfd::FileDialog::new().pick_file() {
+                            self.picked_path = path.display().to_string();
+                            self.text = read_file(&self.picked_path.clone());
+                        }
+
                         ui.close_menu();
                     }
                 });
