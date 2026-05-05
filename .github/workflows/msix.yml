@@ -22,7 +22,7 @@ jobs:
 
       - name: Dependencies
         run: |
-           winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
+           # winget install --id Microsoft.MSIXPackagingTool -e --accept-source-agreements --accept-package-agreements --silent
            winget install microsoft.winappcli --source winget 
 
       - name: Download_exe 
@@ -72,9 +72,10 @@ jobs:
         run: |    
           # msixpw package --applicationFile "ct.exe"  --fileType "EXE"  --packageName "Ct"  --packageVersion "1.0.0"  --publisher "CN=Ct"  --publisherDisplayName "Ct" --outDir ".\AppPackages"  --sign  --certificatePath "Ct.pfx"  --password "passpass"  --targetPlatforms "x64"   
           # MsixPackagingTool.exe create-package --template template.xml
-          winapp manifest generate 
-          winapp pack . --cert Ct.pfx
-          dir 
+          winapp manifest generate
+          cat Package.appxmanifest 
+          # winapp pack . --cert Ct.pfx
+          # dir 
 
        
 
