@@ -14,7 +14,7 @@ permissions:
   
 jobs:
   build-msix:
-    runs-on: windows-latest # Use a Windows runner
+    runs-on: windows-latest 
 
     steps:
       - name: Checkout code
@@ -29,10 +29,6 @@ jobs:
         run: |
          curl -L "https://github.com/myridia/ct/releases/download/main/ct.exe" -o "./ct.exe"
          
-          
-      #- name: SKD
-      #  uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.6 
-        
       - name: Certificate 
         run: |
           # $folder = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\"
