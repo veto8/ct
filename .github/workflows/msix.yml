@@ -79,7 +79,7 @@ jobs:
           mkdir app 
           cp ct.exe app\
           cd app 
-          winapp manifest generate --executable .\ct.exe 
+          winapp manifest generate --executable .\ct.exe  --package-name "Ct" --publisher-name "Ct"
           winapp pack . --cert "..\Ct.pfx" --cert-password "passpass"
        
 
