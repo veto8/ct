@@ -69,17 +69,8 @@ jobs:
           
       - name: Packing  
         run: |    
-          msixpw.exe package --applicationFile "ct.exe"  ^ 
-          --fileType "EXE"  ^ 
-          --packageName "Ct"  ^ 
-          --packageVersion "1.0.0"  ^ 
-          --publisher "CN=Ct"  ^ 
-          --publisherDisplayName "Ct"  ^ 
-          --outDir ".\AppPackages"  ^ 
-          --sign  ^ 
-          --certificatePath "Ct.pfx"  ^ 
-          --password "passpass"  ^ 
-          --targetPlatforms "x64"  ^ 
+          msixpw.exe package --applicationFile "ct.exe"  --fileType "EXE"  --packageName "Ct"  --packageVersion "1.0.0"  --publisher "CN=Ct"  --publisherDisplayName "Ct"  ^ 
+          --outDir ".\AppPackages"  --sign  --certificatePath "Ct.pfx"  --password "passpass"  --targetPlatforms "x64"   
 
 
        
