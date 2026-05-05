@@ -72,11 +72,15 @@ jobs:
         run: |    
           # msixpw package --applicationFile "ct.exe"  --fileType "EXE"  --packageName "Ct"  --packageVersion "1.0.0"  --publisher "CN=Ct"  --publisherDisplayName "Ct" --outDir ".\AppPackages"  --sign  --certificatePath "Ct.pfx"  --password "passpass"  --targetPlatforms "x64"   
           # MsixPackagingTool.exe create-package --template template.xml
-          winapp manifest generate
-          cat Package.appxmanifest 
+          # winapp manifest generate
+          # cat Package.appxmanifest 
           # winapp pack . --cert Ct.pfx
           # dir 
-
+          mkdir app 
+          cp ct.exe app\
+          cd app 
+          winapp manifest generate --executable .\ct.exe 
+          winapp pack . --cert "..\Ct.pfx"
        
 
  
