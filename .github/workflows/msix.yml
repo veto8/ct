@@ -58,6 +58,7 @@ jobs:
             $certp = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
             Export-PfxCertificate  -cert $certp  -FilePath ".\Ct.pfx" -Password $pass -Force
             Export-Certificate -Cert "Cert:\CurrentUser\My\$($cert.Thumbprint)" -FilePath ".\Ct.cer" -Force 
+            certutil -addstore Root ".\Myridia.cer"
           } else {
             Write-Error "Certificate generation failed."  
           }
@@ -80,14 +81,14 @@ jobs:
           cp ct.exe app\
           cd app 
           winapp manifest generate --executable .\ct.exe  --package-name "Ct" --publisher-name "Ct"
-          winapp pack . --cert "..\Ct.pfx" --cert-password "passpass" --output "ct.msix"
+          winapp pack . --cert "..\Ct.pfx" --cert-password "passpass" --output "ct.msix" --name "Ct"
           dir 
        
       - name: Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'app/ct.msix'
+          file: 'app/ct.msix,Myridia.cer,Ct.cer'
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
