@@ -30,7 +30,7 @@ jobs:
       - name: Build
         run: |
           cargo build --release --target x86_64-pc-windows-gnu 
-          cd target/x86_64-pc-windows-gnu/
+          cd target/x86_64-pc-windows-gnu/release/
           dir 
            
       - name: Release
@@ -38,7 +38,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'target/x86_64-pc-windows-gnu/ct.exe'
+          file: 'target/x86_64-pc-windows-gnu/release/ct.exe'
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
