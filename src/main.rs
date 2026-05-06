@@ -19,13 +19,20 @@ use std::collections::BTreeMap;
 use std::ops::Range;
 //use std::path::Path;
 use unic_langid::LanguageIdentifier;
-
+use winres::*;
 #[derive(RustEmbed)]
 #[folder = "i18n"]
 struct Localizations;
 
 fn main() -> Result<(), eframe::Error> {
     //println!("{:?}", config.language);
+    if cfg!(target_os = "windows") {
+        let mut res = winres::WindowsResource::new();
+        res.set_icon("icon.ico")
+            .set("InternalName", "TEST.EXE")
+            .set_version_info(winres::VersionInfo::PRODUCTVERSION, 0x0001000000000000);
+        res.compile().unwrap();
+    }
 
     let (icon_rgba, icon_width, icon_height) = {
         let rgba = get_icon();
