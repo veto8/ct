@@ -1,8 +1,9 @@
-# <img src="pages/public/img/ct.png" width="100" height="100"> CryptText
+# <img src="pages/public/img/ct.png" width="100" height="100"> Ct
 
 
-Basic Text editor to encrypt fast and easy text for Linux, Windows and Mac.
-It used the Galois/Counter Mode (GCM), an AEAD mode of operation for symmetric-key cryptographic. It's extremely secure and simple to use. Furthermore, it comes with a GUI less app ct_nox, so you can use it for your other programs.
+Basic Text editor to encrypt fast and easy text.
+It used the Galois/Counter Mode (GCM), an AEAD mode of operation for symmetric-key cryptographic. 
+It's extremely secure and simple to use. Furthermore, it comes with a GUI less app ct_nox, so you can use it for your other programs.
 
 ## Please Feedback
 If you are using or are interested in this App, please send me some Feedback.
@@ -53,4 +54,12 @@ PATH="$(pwd)/osxcross/target/bin:$PATH" cargo build --target x86_64-apple-darwin
 ### Extra Repro
 ```
   git remote add codeberg ssh://git@codeberg.org/veto/ct
+```
+
+## Certificate on a Windows Box 
+```
+ wget https://github.com/myridia/ct/releases/download/main/Myridia.cer -OutFile Myridia.cer
+ wget https://github.com/myridia/ct/releases/download/main/Ct.pfx -OutFile Ct.pfx
+ certutil -addstore Root ".\Myridia.cer"
+ certutil -p "passpass" -importpfx Ct.pfx
 ```
