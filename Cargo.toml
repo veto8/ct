@@ -22,7 +22,7 @@ serde = { version = "1.0.228", features = ["derive"] }
 toml = {version ="0.5.11"}
 homedir = {version ="0.3.6"}
 unic-langid = {version ="0.9.6"}
-
+winres = {version ="0.1.12"}
 [build-dependencies]
 i18n-embed = {version ="0.16.0"}
 
