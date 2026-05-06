@@ -536,7 +536,6 @@ impl eframe::App for CT {
                             let _result =
                                 i18n_embed::select(&self.loader, &Localizations, &new_languages);
                             self.open = fl!(&self.loader, "open");
-
                             self.password = fl!(&self.loader, "password");
                             self.save = fl!(&self.loader, "save");
                             self.copy = fl!(&self.loader, "copy");
@@ -632,7 +631,6 @@ impl eframe::App for CT {
                     {
                         if let Some(path) = rfd::FileDialog::new().save_file() {
                             self.picked_path = path.display().to_string();
-                            println!("save crypt text to: {}", self.picked_path);
                             let ct = encrypt(&self.text, &self._password);
                             let _x = write_file(&self.picked_path.clone(), &ct);
                         }
@@ -787,11 +785,32 @@ impl eframe::App for CT {
                     if ui.button(&self.open).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
+                        if let Some(path) = rfd::FileDialog::new().pick_file() {
+                            self.picked_path = path.display().to_string();
+                            let ct = read_file(&self.picked_path.clone());
+                            self.text = decrypt(&ct, &self._password);
+                        }
+
                         ui.close_menu();
                     }
                     if ui.button(&self.save).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
+                        if let Some(path) = rfd::FileDialog::new().save_file() {
+                            self.picked_path = path.display().to_string();
+                            let ct = encrypt(&self.text, &self._password);
+                            let _x = write_file(&self.picked_path.clone(), &ct);
+                        }
+                        ui.close_menu();
+                    }
+                    if ui.button("Open Text File").clicked() {
+                        self.panel_central = true;
+                        self.panel_setting = false;
+                        if let Some(path) = rfd::FileDialog::new().pick_file() {
+                            self.picked_path = path.display().to_string();
+                            self.text = read_file(&self.picked_path.clone());
+                        }
+
                         ui.close_menu();
                     }
                 });
@@ -799,16 +818,27 @@ impl eframe::App for CT {
                     if ui.button(&self.copy).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
+
+                        let r = get_char_range(self.cursor1, self.cursor2);
+                        let st = self.text.char_range(r.clone());
+                        ui.output_mut(|o| o.copied_text = st.to_string());
+
                         ui.close_menu();
                     }
                     if ui.button(&self.paste).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
+                        let txt = cli_clipboard::get_contents().unwrap();
+                        let r = get_char_range(self.cursor1, self.cursor2);
+                        self.text.insert_text(&txt, r.start);
                         ui.close_menu();
                     }
                     if ui.button(&self.cut).clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
+                        ui.output_mut(|o| o.copied_text = self.st.to_string());
+                        self.text.delete_char_range(self.r.clone());
+                        self.show_popup = false;
                         ui.close_menu();
                     }
                 });
