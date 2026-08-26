@@ -118,6 +118,104 @@ pub fn encode_to_image(text: &str, output_path: &str) -> Result<(), Box<dyn std:
     Ok(())
 }
 
+pub fn encode_to_selected_image(
+    text: &str,
+    bg_path: &str,
+    output_path: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let bg_file = File::open(bg_path)?;
+    let bg_decoder = png::Decoder::new(bg_file);
+    let mut bg_reader = bg_decoder.read_info()?;
+    let mut bg_buf = vec![0u8; bg_reader.output_buffer_size()];
+    let bg_info = bg_reader.next_frame(&mut bg_buf)?;
+    let raw = &bg_buf[..bg_info.buffer_size()];
+    let bg_w = bg_info.width;
+    let bg_h = bg_info.height;
+
+    let bg_pixels: Vec<u8> = match bg_info.color_type {
+        png::ColorType::Rgba => raw.to_vec(),
+        png::ColorType::Rgb => {
+            let mut out = Vec::with_capacity((bg_w * bg_h * 4) as usize);
+            for chunk in raw.chunks(3) {
+                out.extend_from_slice(chunk);
+                out.push(255);
+            }
+            out
+        }
+        png::ColorType::Grayscale => {
+            let mut out = Vec::with_capacity((bg_w * bg_h * 4) as usize);
+            for &g in raw {
+                out.extend_from_slice(&[g, g, g, 255]);
+            }
+            out
+        }
+        png::ColorType::GrayscaleAlpha => {
+            let mut out = Vec::with_capacity((bg_w * bg_h * 4) as usize);
+            for chunk in raw.chunks(2) {
+                out.extend_from_slice(&[chunk[0], chunk[0], chunk[0], chunk[1]]);
+            }
+            out
+        }
+        _ => return Err(format!("Unsupported color type: {:?}", bg_info.color_type).into()),
+    };
+
+    let mut border: i32 = STRIP_DEPTH;
+    loop {
+        let canvas_w = bg_w as i32 + border * 2;
+        let canvas_h = bg_h as i32 + border * 2;
+        let cols = frame_columns(canvas_w as u32);
+        if text.len() <= cols.len() {
+            break;
+        }
+        border += STRIP_DEPTH;
+    }
+
+    let canvas_w = bg_w as u32 + border as u32 * 2;
+    let canvas_h = bg_h as u32 + border as u32 * 2;
+    let mut pixels = vec![255u8; (canvas_w * canvas_h * 4) as usize];
+
+    for by in 0..bg_h {
+        for bx in 0..bg_w {
+            let src = ((by * bg_w + bx) * 4) as usize;
+            let dst = (((by + border as u32) * canvas_w + (bx + border as u32)) * 4) as usize;
+            pixels[dst] = bg_pixels[src];
+            pixels[dst + 1] = bg_pixels[src + 1];
+            pixels[dst + 2] = bg_pixels[src + 2];
+            pixels[dst + 3] = bg_pixels[src + 3];
+        }
+    }
+
+    let cols = frame_columns(canvas_w);
+    for (i, ch) in text.bytes().enumerate() {
+        let (cx, cy, dx, dy) = cols[i];
+        for bit in 0..8u32 {
+            let set = (ch >> (7 - bit)) & 1 == 1;
+            let px = cx as i32 + dx * bit as i32;
+            let py = cy as i32 + dy * bit as i32;
+            if px >= 0 && px < canvas_w as i32 && py >= 0 && py < canvas_h as i32 {
+                let dst = ((py as u32 * canvas_w + px as u32) * 4) as usize;
+                if set {
+                    pixels[dst] = 0;
+                    pixels[dst + 1] = 0;
+                    pixels[dst + 2] = 0;
+                }
+            }
+        }
+    }
+
+    let logo_bytes = include_bytes!("../../test/assets/icons/ct64.png");
+    overlay_logo(&mut pixels, logo_bytes, canvas_w);
+
+    let file = File::create(output_path)?;
+    let w_out = BufWriter::new(file);
+    let mut encoder = png::Encoder::new(w_out, canvas_w, canvas_h);
+    encoder.set_color(png::ColorType::Rgba);
+    encoder.set_depth(png::BitDepth::Eight);
+    let mut writer = encoder.write_header()?;
+    writer.write_image_data(&pixels)?;
+    Ok(())
+}
+
 pub fn decode_from_image(input_path: &str) -> Result<String, Box<dyn std::error::Error>> {
     let file = File::open(input_path)?;
     let decoder = png::Decoder::new(file);

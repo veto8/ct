@@ -6,7 +6,7 @@ use ct::icon::get_icon;
 use ct_nox::ct_nox::{read_file, write_file};
 use ct_nox::decrypt::decrypt;
 use ct_nox::encrypt::encrypt;
-use ct_nox::image_strip::{encode_to_image, decode_from_image};
+use ct_nox::image_strip::{encode_to_image, encode_to_selected_image, decode_from_image};
 use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::{ComboBox, IconData, Pos2, Vec2};
@@ -614,7 +614,7 @@ impl eframe::App for CT {
                 });
 
                 ui.horizontal(|ui| {
-                    let num_buttons = 9.0;
+                    let num_buttons = 10.0;
                     let spacing = ui.spacing().item_spacing.x;
                     let total_spacing = spacing * (num_buttons - 1.0);
 
@@ -668,6 +668,28 @@ impl eframe::App for CT {
                         {
                             if let Ok(ct) = decode_from_image(&path.display().to_string()) {
                                 self.text = decrypt(&ct, &self._password);
+                            }
+                        }
+                    }
+
+                    if ui
+                        .add(egui::Button::new("Export Selected").min_size(button_size))
+                        .clicked()
+                    {
+                        if let Some(bg) = rfd::FileDialog::new()
+                            .add_filter("PNG", &["png"])
+                            .pick_file()
+                        {
+                            if let Some(out) = rfd::FileDialog::new()
+                                .add_filter("PNG", &["png"])
+                                .save_file()
+                            {
+                                let ct = encrypt(&self.text, &self._password);
+                                let _ = encode_to_selected_image(
+                                    &ct,
+                                    &bg.display().to_string(),
+                                    &out.display().to_string(),
+                                );
                             }
                         }
                     }
@@ -872,6 +894,27 @@ impl eframe::App for CT {
                         {
                             if let Ok(ct) = decode_from_image(&path.display().to_string()) {
                                 self.text = decrypt(&ct, &self._password);
+                            }
+                        }
+                        ui.close_menu();
+                    }
+                    if ui.button("Export as Selected Image").clicked() {
+                        self.panel_central = true;
+                        self.panel_setting = false;
+                        if let Some(bg) = rfd::FileDialog::new()
+                            .add_filter("PNG", &["png"])
+                            .pick_file()
+                        {
+                            if let Some(out) = rfd::FileDialog::new()
+                                .add_filter("PNG", &["png"])
+                                .save_file()
+                            {
+                                let ct = encrypt(&self.text, &self._password);
+                                let _ = encode_to_selected_image(
+                                    &ct,
+                                    &bg.display().to_string(),
+                                    &out.display().to_string(),
+                                );
                             }
                         }
                         ui.close_menu();
