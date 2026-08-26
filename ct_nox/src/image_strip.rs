@@ -162,7 +162,7 @@ pub fn encode_to_selected_image(
     let mut border: i32 = STRIP_DEPTH;
     loop {
         let canvas_w = bg_w as i32 + border * 2;
-        let canvas_h = bg_h as i32 + border * 2;
+        let _canvas_h = bg_h as i32 + border * 2;
         let cols = frame_columns(canvas_w as u32);
         if text.len() <= cols.len() {
             break;
