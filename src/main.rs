@@ -6,6 +6,7 @@ use ct::icon::get_icon;
 use ct_nox::ct_nox::{read_file, write_file};
 use ct_nox::decrypt::decrypt;
 use ct_nox::encrypt::encrypt;
+use ct_nox::image_strip::{encode_to_image, decode_from_image};
 use eframe::egui;
 use eframe::egui::TextBuffer;
 use eframe::egui::{ComboBox, IconData, Pos2, Vec2};
@@ -190,9 +191,9 @@ impl CT {
             egui::FontData::from_static(include_bytes!("assets/fonts/gurmukhi.ttf")),
         );
 
-        fonts.font_data.insert(
+                        fonts.font_data.insert(
             "sinhala".to_owned(),
-            egui::FontData::from_static(include_bytes!("assets/fonts/sinhala.tff")),
+            egui::FontData::from_static(include_bytes!("assets/fonts/sinhala.ttf")),
         );
 
         fonts.font_data.insert(
@@ -613,7 +614,7 @@ impl eframe::App for CT {
                 });
 
                 ui.horizontal(|ui| {
-                    let num_buttons = 7.0;
+                    let num_buttons = 9.0;
                     let spacing = ui.spacing().item_spacing.x;
                     let total_spacing = spacing * (num_buttons - 1.0);
 
@@ -641,6 +642,33 @@ impl eframe::App for CT {
                             self.picked_path = path.display().to_string();
                             let ct = encrypt(&self.text, &self._password);
                             let _x = write_file(&self.picked_path.clone(), &ct);
+                        }
+                    }
+
+                    if ui
+                        .add(egui::Button::new("Export Image").min_size(button_size))
+                        .clicked()
+                    {
+                        if let Some(path) = rfd::FileDialog::new()
+                            .add_filter("PNG", &["png"])
+                            .save_file()
+                        {
+                            let ct = encrypt(&self.text, &self._password);
+                            let _ = encode_to_image(&ct, &path.display().to_string());
+                        }
+                    }
+
+                    if ui
+                        .add(egui::Button::new("Import Image").min_size(button_size))
+                        .clicked()
+                    {
+                        if let Some(path) = rfd::FileDialog::new()
+                            .add_filter("PNG", &["png"])
+                            .pick_file()
+                        {
+                            if let Ok(ct) = decode_from_image(&path.display().to_string()) {
+                                self.text = decrypt(&ct, &self._password);
+                            }
                         }
                     }
 
@@ -700,27 +728,29 @@ impl eframe::App for CT {
                     let mut layouter = |ui: &egui::Ui, string: &str, wrap_width: f32| {
                         let mut layout_job = egui::text::LayoutJob::default();
                         let target_word: &str = self._search.as_str();
-                        if target_word != ""
-                            && let Some(pos) = string.find(target_word)
-                        {
-                            layout_job.append(&string[..pos], 0.0, egui::TextFormat::default());
+                        if let Some(pos) = string.find(target_word) {
+                            if !target_word.is_empty() {
+                                layout_job.append(&string[..pos], 0.0, egui::TextFormat::default());
 
-                            let red_color = egui::Color32::RED;
-                            let color_format = egui::TextFormat {
-                                color: red_color,
-                                ..Default::default()
-                            };
-                            layout_job.append(
-                                &string[pos..pos + target_word.len()],
-                                0.0,
-                                color_format,
-                            );
+                                let red_color = egui::Color32::RED;
+                                let color_format = egui::TextFormat {
+                                    color: red_color,
+                                    ..Default::default()
+                                };
+                                layout_job.append(
+                                    &string[pos..pos + target_word.len()],
+                                    0.0,
+                                    color_format,
+                                );
 
-                            layout_job.append(
-                                &string[pos + target_word.len()..],
-                                0.0,
-                                egui::TextFormat::default(),
-                            );
+                                layout_job.append(
+                                    &string[pos + target_word.len()..],
+                                    0.0,
+                                    egui::TextFormat::default(),
+                                );
+                            } else {
+                                layout_job.append(string, 0.0, egui::TextFormat::default());
+                            }
                         } else {
                             layout_job.append(string, 0.0, egui::TextFormat::default());
                         }
@@ -790,7 +820,7 @@ impl eframe::App for CT {
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
                 ui.menu_button(&self.file, |ui| {
-                    if ui.button(&self.open).clicked() {
+                    if ui.button("Open CT File").clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
                         if let Some(path) = rfd::FileDialog::new().pick_file() {
@@ -801,7 +831,7 @@ impl eframe::App for CT {
 
                         ui.close_menu();
                     }
-                    if ui.button(&self.save).clicked() {
+                    if ui.button("Save CT File").clicked() {
                         self.panel_central = true;
                         self.panel_setting = false;
                         if let Some(path) = rfd::FileDialog::new().save_file() {
@@ -819,6 +849,31 @@ impl eframe::App for CT {
                             self.text = read_file(&self.picked_path.clone());
                         }
 
+                        ui.close_menu();
+                    }
+                    if ui.button("Export as Image").clicked() {
+                        self.panel_central = true;
+                        self.panel_setting = false;
+                        if let Some(path) = rfd::FileDialog::new()
+                            .add_filter("PNG", &["png"])
+                            .save_file()
+                        {
+                            let ct = encrypt(&self.text, &self._password);
+                            let _ = encode_to_image(&ct, &path.display().to_string());
+                        }
+                        ui.close_menu();
+                    }
+                    if ui.button("Import from Image").clicked() {
+                        self.panel_central = true;
+                        self.panel_setting = false;
+                        if let Some(path) = rfd::FileDialog::new()
+                            .add_filter("PNG", &["png"])
+                            .pick_file()
+                        {
+                            if let Ok(ct) = decode_from_image(&path.display().to_string()) {
+                                self.text = decrypt(&ct, &self._password);
+                            }
+                        }
                         ui.close_menu();
                     }
                 });
