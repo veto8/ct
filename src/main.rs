@@ -685,11 +685,12 @@ impl eframe::App for CT {
                                 .add_filter("PNG", &["png"])
                                 .save_file()
                             {
+                                let out_path = ensure_extension(&out.display().to_string(), ".png");
                                 let ct = encrypt(&self.text, &self._password);
                                 let _ = encode_to_selected_image(
                                     &ct,
                                     &bg.display().to_string(),
-                                    &out.display().to_string(),
+                                    &out_path,
                                 );
                             }
                         }
@@ -858,7 +859,7 @@ impl eframe::App for CT {
                         self.panel_central = true;
                         self.panel_setting = false;
                         if let Some(path) = rfd::FileDialog::new().save_file() {
-                            self.picked_path = path.display().to_string();
+                            self.picked_path = ensure_extension(&path.display().to_string(), ".ct");
                             let ct = encrypt(&self.text, &self._password);
                             let _x = write_file(&self.picked_path.clone(), &ct);
                         }
@@ -881,8 +882,9 @@ impl eframe::App for CT {
                             .add_filter("PNG", &["png"])
                             .save_file()
                         {
+                            let out = ensure_extension(&path.display().to_string(), ".png");
                             let ct = encrypt(&self.text, &self._password);
-                            let _ = encode_to_image(&ct, &path.display().to_string());
+                            let _ = encode_to_image(&ct, &out);
                         }
                         ui.close_menu();
                     }
@@ -910,11 +912,12 @@ impl eframe::App for CT {
                                 .add_filter("PNG", &["png"])
                                 .save_file()
                             {
+                                let out_path = ensure_extension(&out.display().to_string(), ".png");
                                 let ct = encrypt(&self.text, &self._password);
                                 let _ = encode_to_selected_image(
                                     &ct,
                                     &bg.display().to_string(),
-                                    &out.display().to_string(),
+                                    &out_path,
                                 );
                             }
                         }

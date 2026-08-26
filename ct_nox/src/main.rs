@@ -4,6 +4,20 @@ use ct_nox::decrypt::decrypt;
 use ct_nox::encrypt::encrypt;
 use ct_nox::image_strip::{encode_to_image, encode_to_selected_image, decode_from_image};
 
+fn ensure_extension(path: &str, ext: &str) -> String {
+    match path.rfind('.') {
+        Some(pos) => {
+            let existing = &path[pos..];
+            if existing.eq_ignore_ascii_case(ext) {
+                path.to_string()
+            } else {
+                format!("{}{}", path, ext)
+            }
+        }
+        None => format!("{}{}", path, ext),
+    }
+}
+
 fn main() {
     let matches = Command::new("ct_nox")
         .author("veto")
@@ -54,8 +68,9 @@ fn main() {
             if let Some(text) = args.get_one::<String>("text") {
                 let ct = encrypt(text, password);
                 if let Some(output) = args.get_one::<String>("output") {
-                    write_file(output, &ct).unwrap();
-                    println!("saved to: {}", output);
+                    let out = ensure_extension(output, ".ct");
+                    write_file(&out, &ct).unwrap();
+                    println!("saved to: {}", out);
                 } else {
                     println!("{}", ct);
                 }
@@ -63,8 +78,9 @@ fn main() {
                 let txt = read_file(file);
                 let ct = encrypt(&txt, password);
                 if let Some(output) = args.get_one::<String>("output") {
-                    write_file(output, &ct).unwrap();
-                    println!("saved to: {}", output);
+                    let out = ensure_extension(output, ".ct");
+                    write_file(&out, &ct).unwrap();
+                    println!("saved to: {}", out);
                 } else {
                     println!("{}", ct);
                 }
@@ -93,10 +109,11 @@ fn main() {
                 return;
             };
             let ct = encrypt(&text, password);
-            if let Err(e) = encode_to_image(&ct, output) {
+            let out = ensure_extension(output, ".png");
+            if let Err(e) = encode_to_image(&ct, &out) {
                 eprintln!("Error encoding image: {}", e);
             } else {
-                println!("Image saved to: {}", output);
+                println!("Image saved to: {}", out);
             }
         }
         Some(("image-decode", args)) => {
@@ -123,10 +140,11 @@ fn main() {
                 return;
             };
             let ct = encrypt(&text, password);
-            if let Err(e) = encode_to_selected_image(&ct, background, output) {
+            let out = ensure_extension(output, ".png");
+            if let Err(e) = encode_to_selected_image(&ct, background, &out) {
                 eprintln!("Error encoding image: {}", e);
             } else {
-                println!("Image saved to: {}", output);
+                println!("Image saved to: {}", out);
             }
         }
         _ => {
