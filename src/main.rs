@@ -639,7 +639,7 @@ impl eframe::App for CT {
                         .clicked()
                     {
                         if let Some(path) = rfd::FileDialog::new().save_file() {
-                            self.picked_path = path.display().to_string();
+                            self.picked_path = ensure_extension(&path.display().to_string(), ".ct");
                             let ct = encrypt(&self.text, &self._password);
                             let _x = write_file(&self.picked_path.clone(), &ct);
                         }
@@ -653,8 +653,9 @@ impl eframe::App for CT {
                             .add_filter("PNG", &["png"])
                             .save_file()
                         {
+                            let out = ensure_extension(&path.display().to_string(), ".png");
                             let ct = encrypt(&self.text, &self._password);
-                            let _ = encode_to_image(&ct, &path.display().to_string());
+                            let _ = encode_to_image(&ct, &out);
                         }
                     }
 
@@ -974,6 +975,20 @@ impl eframe::App for CT {
                 //ui.add(egui::ProgressBar::new(self.progress).show_percentage());
             });
         });
+    }
+}
+
+fn ensure_extension(path: &str, ext: &str) -> String {
+    match path.rfind('.') {
+        Some(pos) => {
+            let existing = &path[pos..];
+            if existing.eq_ignore_ascii_case(ext) {
+                path.to_string()
+            } else {
+                format!("{}{}", path, ext)
+            }
+        }
+        None => format!("{}{}", path, ext),
     }
 }
 
