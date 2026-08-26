@@ -2,24 +2,25 @@ use std::fs::File;
 use std::io::BufWriter;
 
 const IMAGE_SIZE: u32 = 256;
-const LOGO_SIZE: u32 = 64;
+const STRIP_DEPTH: i32 = 8;
 
-fn clockwise_frame_coords() -> Vec<(u32, u32)> {
-    let mut coords = Vec::with_capacity(1020);
-    let s = IMAGE_SIZE - 1;
-    for x in 0..=s {
-        coords.push((x, 0));
+fn frame_columns() -> Vec<(u32, u32, i32, i32)> {
+    let mut cols = Vec::with_capacity(127);
+    let s = IMAGE_SIZE as i32 - 1;
+
+    for x in 0..=(s - STRIP_DEPTH) {
+        cols.push((x as u32, 0, 0, 1));
     }
-    for y in 1..=s {
-        coords.push((s, y));
+    for y in 1..=(s - STRIP_DEPTH) {
+        cols.push((s as u32, y as u32, -1, 0));
     }
-    for x in (0..=s - 1).rev() {
-        coords.push((x, s));
+    for x in (STRIP_DEPTH..=s).rev() {
+        cols.push((x as u32, s as u32, 0, -1));
     }
-    for y in (1..=s - 1).rev() {
-        coords.push((0, y));
+    for y in (STRIP_DEPTH + 1..=s).rev() {
+        cols.push((0, y as u32, 1, 0));
     }
-    coords
+    cols
 }
 
 fn overlay_logo(pixels: &mut [u8], logo_bytes: &[u8]) {
@@ -63,23 +64,27 @@ fn overlay_logo(pixels: &mut [u8], logo_bytes: &[u8]) {
 }
 
 pub fn encode_to_image(text: &str, output_path: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let coords = clockwise_frame_coords();
-    let max_chars = coords.len() / 8;
+    let cols = frame_columns();
+    let max_chars = cols.len();
     if text.len() > max_chars {
-        return Err(format!("Text too long: {} chars, max {} for 256x256 frame", text.len(), max_chars).into());
+        return Err(format!("Text too long: {} chars, max {}", text.len(), max_chars).into());
     }
 
     let mut pixels = vec![255u8; (IMAGE_SIZE * IMAGE_SIZE * 4) as usize];
+
     for (i, ch) in text.bytes().enumerate() {
-        for bit in 0..8 {
-            let pixel_idx = i * 8 + bit;
-            let (x, y) = coords[pixel_idx];
+        let (cx, cy, dx, dy) = cols[i];
+        for bit in 0..8u32 {
             let set = (ch >> (7 - bit)) & 1 == 1;
-            let dst = ((y * IMAGE_SIZE + x) * 4) as usize;
-            if set {
-                pixels[dst] = 0;
-                pixels[dst + 1] = 0;
-                pixels[dst + 2] = 0;
+            let px = cx as i32 + dx * bit as i32;
+            let py = cy as i32 + dy * bit as i32;
+            if px >= 0 && px < IMAGE_SIZE as i32 && py >= 0 && py < IMAGE_SIZE as i32 {
+                let dst = ((py as u32 * IMAGE_SIZE + px as u32) * 4) as usize;
+                if set {
+                    pixels[dst] = 0;
+                    pixels[dst + 1] = 0;
+                    pixels[dst + 2] = 0;
+                }
             }
         }
     }
@@ -105,18 +110,19 @@ pub fn decode_from_image(input_path: &str) -> Result<String, Box<dyn std::error:
     let info = reader.next_frame(&mut buf)?;
     let pixels = &buf[..info.buffer_size()];
 
-    let coords = clockwise_frame_coords();
-    let num_chars = coords.len() / 8;
-    let mut result = Vec::with_capacity(num_chars);
+    let cols = frame_columns();
+    let mut result = Vec::with_capacity(cols.len());
 
-    for i in 0..num_chars {
+    for (i, &(cx, cy, dx, dy)) in cols.iter().enumerate() {
         let mut byte = 0u8;
-        for bit in 0..8 {
-            let pixel_idx = i * 8 + bit;
-            let (x, y) = coords[pixel_idx];
-            let dst = ((y * info.width + x) * 4) as usize;
-            if pixels[dst] < 128 {
-                byte |= 1 << (7 - bit);
+        for bit in 0..8u32 {
+            let px = cx as i32 + dx * bit as i32;
+            let py = cy as i32 + dy * bit as i32;
+            if px >= 0 && px < IMAGE_SIZE as i32 && py >= 0 && py < IMAGE_SIZE as i32 {
+                let dst = ((py as u32 * info.width + px as u32) * 4) as usize;
+                if pixels[dst] < 128 {
+                    byte |= 1 << (7 - bit);
+                }
             }
         }
         if byte == 0 {
