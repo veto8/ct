@@ -1,0 +1,7 @@
+# Commentor comments for test/rust/src/main.rs
+# This file pairs with the source file under .comments.d/<source>.cmt.
+# Marker: @N or @N-M, optionally followed by [a=start anchor,b=end anchor].
+# Get Commentor: https://commentor.myridia.com/
+
+@1
+Add a comment for test/rust/src/main.rs.
